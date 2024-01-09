@@ -1,21 +1,22 @@
-import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Main from "./layouts/Main";
+
+import Home from "./pages/Home";
+import Contact from "./pages/Contact";
+import About from "./pages/About";
 
 const App = () => {
-  const [data, setData] = useState("");
-  const handleClick = async (e) => {
-    e.preventDefault();
-
-    const response = await fetch("http://localhost/temp.php");
-    const data = await response.json();
-
-    setData(data);
-  };
-
   return (
-    <div>
-      <button onClick={handleClick}>Test</button>
-      {data && <p>{data.message}</p>}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Main />}>
+          <Route index element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 };
 
