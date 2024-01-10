@@ -83,18 +83,30 @@ ul {
   text-decoration: underline;
 }
 
+.menu-toggle-btn {
+  color: var(--black);
+  font-size: 1.4rem;
+  display: none !important;
+}
+
 /* Header */
 header {
   background-color: var(--background);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-block: 2rem;
+  height: 15dvh;
 }
 
-header ul {
+header .nav-links {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 1.5rem;
+}
+
+header .nav-links .btn-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }

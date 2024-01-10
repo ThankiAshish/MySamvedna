@@ -1,0 +1,26 @@
+@media screen and (max-width: 920px) {
+  .menu-toggle-btn {
+    display: block !important;
+    cursor: pointer;
+  }
+
+  .nav-links {
+    display: none !important;
+    font-size: 1.3rem;
+  }
+
+  .nav-links.active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    position: absolute !important;
+    width: 100% !important;
+    height: 85dvh !important;
+    top: 15dvh !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+    padding-inline: 10%;
+  }
+}

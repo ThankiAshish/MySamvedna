@@ -1,12 +1,26 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const Header = () => {
+  const [icon, setIcon] = useState("bars");
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 920) {
+        document.querySelector(".nav-links").classList.remove("active");
+        setIcon("bars");
+      }
+    });
+  }, []);
+
   return (
     <header>
       <Link to="/">
         <h1>Logo</h1>
       </Link>
-      <ul>
+      <ul className="nav-links">
         <li>
           <Link to="/" className="nav-link">
             Home
@@ -24,9 +38,19 @@ const Header = () => {
         <li>
           <Link className="nav-link">Contact</Link>
         </li>
-        <button className="btn btn-outline">Register</button>
-        <button className="btn">Login</button>
+        <div className="btn-container">
+          <button className="btn btn-outline">Register</button>
+          <button className="btn">Login</button>
+        </div>
       </ul>
+      <FontAwesomeIcon
+        icon={icon}
+        className="fa-bars menu-toggle-btn"
+        onClick={() => {
+          icon === "bars" ? setIcon("xmark") : setIcon("bars");
+          document.querySelector(".nav-links").classList.toggle("active");
+        }}
+      />
     </header>
   );
 };
