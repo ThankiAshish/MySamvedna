@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import Logo from "../../assets/images/logo.png";
+
 const Header = () => {
   const [icon, setIcon] = useState("bars");
 
@@ -17,8 +19,8 @@ const Header = () => {
 
   return (
     <header>
-      <Link to="/">
-        <h1>Logo</h1>
+      <Link to="/" className="logo-link">
+        <img src={Logo} alt="MySamvedna Logo" className="logo" />
       </Link>
       <ul className="nav-links">
         <li>
@@ -27,16 +29,24 @@ const Header = () => {
           </Link>
         </li>
         <li>
-          <Link className="nav-link">Donate</Link>
+          <Link className="nav-link" to="/donate">
+            Donate
+          </Link>
         </li>
         <li>
-          <Link className="nav-link">Gallery</Link>
+          <Link className="nav-link" to="/galley">
+            Gallery
+          </Link>
         </li>
         <li>
-          <Link className="nav-link">About Us</Link>
+          <Link className="nav-link" to="/about">
+            About Us
+          </Link>
         </li>
         <li>
-          <Link className="nav-link">Contact</Link>
+          <Link className="nav-link" to="/contact">
+            Contact
+          </Link>
         </li>
         <div className="btn-container">
           <button className="btn btn-outline">Register</button>

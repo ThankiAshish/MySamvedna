@@ -1,4 +1,9 @@
 @media screen and (max-width: 920px) {
+  header .logo {
+    width: 25dvw;
+    min-width: 200px;
+  }
+
   .menu-toggle-btn {
     display: block !important;
     cursor: pointer;
@@ -7,20 +12,23 @@
   .nav-links {
     display: none !important;
     font-size: 1.3rem;
+    animation: slideOutToRight 0.5s ease-out forwards;
   }
 
   .nav-links.active {
     display: flex !important;
     flex-direction: column !important;
-    align-items: center;
+    align-items: flex-end;
     justify-content: flex-start;
-    gap: 10px;
+    gap: 1.5rem;
     position: absolute !important;
     width: 100% !important;
     height: 85dvh !important;
+    background: var(--background) !important;
     top: 15dvh !important;
     right: 0 !important;
     z-index: 9999 !important;
     padding-inline: 10%;
+    animation: slideInFromRight 0.5s ease-out forwards;
   }
 }

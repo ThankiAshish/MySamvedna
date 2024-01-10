@@ -2,10 +2,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap");
 
 :root {
-  --background: #f1faee;
+  --background: #f0f4ef;
   --text: #232c33;
-  --primary: #e63946;
-  --secondary: #1d3557;
+  --primary: #4c954c;
+
+  --secondary: #8c9c8c;
+  --highlight: #a0d6b4;
+  --error: #d64545;
 }
 
 * {
@@ -30,6 +33,22 @@ h6 {
   font-weight: 600;
 }
 
+h1 {
+  font-size: 2.8rem;
+  text-transform: uppercase;
+}
+
+h1::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 3px;
+  background-color: var(--primary);
+  margin: 0.5rem auto;
+  transition: width 0.5s ease-in-out;
+  animation: growLine 1s forwards;
+}
+
 a {
   text-decoration: none;
   color: var(--text);
@@ -37,6 +56,10 @@ a {
 
 ul {
   list-style: none;
+}
+
+section {
+  padding-block: 2rem;
 }
 
 .container {
@@ -62,25 +85,41 @@ ul {
 }
 
 .btn:hover {
-  background-color: transparent;
-  border: 1px solid var(--primary);
-  color: var(--primary);
+  background: transparent;
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
+  animation: pulse 0.5s;
 }
 
 .btn-outline:hover {
-  background-color: var(--primary);
-  border: 1px solid var(--primary);
+  background-color: var(--secondary);
+  border: 1px solid var(--secondary);
   color: var(--background);
+  animation: pulse 0.5s;
 }
 
 .nav-link {
   font-family: "Open Sans", sans-serif;
   font-weight: 500;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  position: relative;
 }
 
-.nav-link:hover {
-  text-decoration: underline;
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: currentColor;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-link:hover::after {
+  visibility: visible;
+  width: 100%;
 }
 
 .menu-toggle-btn {
@@ -89,7 +128,7 @@ ul {
   display: none !important;
 }
 
-/* Header */
+/* Components > Header */
 header {
   background-color: var(--background);
   display: flex;
@@ -98,15 +137,78 @@ header {
   height: 15dvh;
 }
 
+header .logo-link {
+  width: 30%;
+}
+
+header .logo {
+  width: 15dvw;
+}
+
 header .nav-links {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 1.5rem;
+  width: 70%;
 }
 
 header .nav-links .btn-container {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+/* Pages > Contact */
+.contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-slogan {
+  font-size: 1.4rem;
+  font-weight: 300;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes growLine {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 150px;
+  }
 }
