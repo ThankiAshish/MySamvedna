@@ -250,6 +250,34 @@ header .nav-links .btn-container .btn {
   overflow: hidden !important;
 }
 
+/* Pages > Home */
+.slogan {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3rem;
+  padding-block: 5rem;
+}
+
+.slogan p {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.slogan .italic {
+  font-style: italic;
+}
+
+.what-are-we {
+  display: grid;
+  place-content: center;
+  place-items: center;
+  gap: 3rem;
+  height: 100dvh;
+}
+
 /* Pages > Login */
 /* Pages > Register */
 .login-type-container,
