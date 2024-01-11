@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Logo from "../../assets/images/logo.png";
+import Logo from "../../assets/images/Logo.png";
 
 const Header = () => {
   const [icon, setIcon] = useState("bars");

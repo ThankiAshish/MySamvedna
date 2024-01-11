@@ -17,10 +17,18 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   background-color: var(--background);
   color: var(--text);
+}
+
+main {
+  min-height: 100dvh;
 }
 
 h1,
@@ -31,6 +39,7 @@ h5,
 h6 {
   font-family: "Lato", sans-serif;
   font-weight: 600;
+  text-align: center;
 }
 
 h1 {
@@ -60,6 +69,7 @@ ul {
 
 section {
   padding-block: 2rem;
+  min-height: calc(100dvh - 15dvh);
 }
 
 .container {
@@ -98,6 +108,17 @@ section {
   animation: pulse 0.5s;
 }
 
+.btn-full {
+  width: 100%;
+}
+
+.link {
+  color: var(--primary);
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+  text-decoration: underline;
+}
+
 .nav-link {
   font-family: "Open Sans", sans-serif;
   font-weight: 500;
@@ -128,6 +149,24 @@ section {
   display: none !important;
 }
 
+input,
+textarea {
+  width: 100%;
+  outline: 0;
+  border: 1px solid var(--secondary);
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.25rem;
+  background-color: var(--background);
+  color: var(--text);
+  transition: all 0.3s ease-in-out;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 500;
+}
+
+textarea {
+  resize: vertical;
+}
+
 /* Components > Header */
 header {
   background-color: var(--background);
@@ -142,7 +181,7 @@ header .logo-link {
 }
 
 header .logo {
-  width: 15dvw;
+  width: 19dvw;
 }
 
 header .nav-links {
@@ -161,16 +200,106 @@ header .nav-links .btn-container {
 
 /* Pages > Contact */
 .contact {
+  display: grid;
+  place-content: start;
+  place-items: center;
+  grid-template-rows: 0.5fr;
+  gap: 1rem;
+  height: calc(100dvh - 15dvh);
+}
+
+.contact p {
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-align: center;
+}
+
+.address-information,
+.contact-persons {
+  display: grid;
+  place-content: center;
+  place-items: center;
+  gap: 1rem;
+  min-height: 100dvh;
+}
+
+.address-information div {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 50%;
+  gap: 1rem;
+  font-size: 1.2rem;
 }
 
-.contact-slogan {
-  font-size: 1.4rem;
-  font-weight: 300;
+.contact-persons {
+  gap: 3rem;
+}
+
+.contact-persons .persons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.contact-persons .persons .person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  gap: 1rem;
+  width: 100%;
+  max-height: 400px;
+  background: var(--background);
+  color: var(--text);
   padding: 2rem;
+  border-radius: 4px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.contact-persons .persons .person img {
+  width: 150px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.contact-persons .persons .person span {
+  display: block;
+}
+
+.person-title {
+  font-size: 1rem;
+  text-transform: capitalize;
+  font-weight: 300;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  height: 100dvh;
+}
+
+.contact-form form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+.contact-form form label {
+  font-size: 1rem;
+  font-weight: 300;
+  align-self: flex-start;
 }
 
 /* Animations */
