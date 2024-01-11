@@ -45,4 +45,14 @@
   .contact-persons .persons {
     grid-template-columns: 1fr;
   }
+
+  .login-type-container,
+  .register-type-container {
+    grid-template-columns: 1fr !important;
+  }
+
+  .login-type,
+  .register-type {
+    height: 300px;
+  }
 }

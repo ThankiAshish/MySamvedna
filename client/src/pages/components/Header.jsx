@@ -15,6 +15,23 @@ const Header = () => {
         setIcon("bars");
       }
     });
+
+    window.addEventListener("change", () => {
+      if (window.innerWidth > 920) {
+        document.querySelector(".nav-links").classList.remove("active");
+        setIcon("bars");
+      }
+    });
+
+    window.addEventListener("scroll", () => {
+      document.querySelector(".nav-links").classList.remove("active");
+      setIcon("bars");
+    });
+
+    return () => {
+      window.removeEventListener("resize", () => {});
+      window.removeEventListener("change", () => {});
+    };
   }, []);
 
   return (
@@ -50,8 +67,12 @@ const Header = () => {
             </Link>
           </li>
           <div className="btn-container">
-            <button className="btn btn-outline">Register</button>
-            <button className="btn">Login</button>
+            <Link className="btn btn-outline" to="/register">
+              Register
+            </Link>
+            <Link className="btn" to="/login">
+              Login
+            </Link>
           </div>
         </ul>
         <FontAwesomeIcon
