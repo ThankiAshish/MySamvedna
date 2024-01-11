@@ -4,7 +4,7 @@ import Sagar from "../assets/images/Sagar Patel.jpg";
 
 const Contact = () => {
   return (
-    <>
+    <div className="container">
       <section className="contact">
         <h1>Contact Information</h1>
         <p>
@@ -123,7 +123,7 @@ const Contact = () => {
           <button className="btn btn-full">Submit</button>
         </form>
       </section>
-    </>
+    </div>
   );
 };
 

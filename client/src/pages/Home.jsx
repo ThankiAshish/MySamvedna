@@ -1,8 +1,13 @@
+import CustomCarousel from "./components/CustomCarousel";
+
 const Home = () => {
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
+    <>
+      <CustomCarousel />
+      <section>
+        <h1>Some</h1>
+      </section>
+    </>
   );
 };
 

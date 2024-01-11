@@ -198,6 +198,24 @@ header .nav-links .btn-container {
   gap: 10px;
 }
 
+/* Extra > Carousel */
+.custom-carousel,
+.custom-carousel .carousel__slider,
+.custom-carousel .carousel__slide {
+  height: calc(100dvh - 15dvh) !important;
+}
+
+.carousel__slide {
+  padding-bottom: 0 !important;
+}
+
+.carousel__inner-slide img {
+  height: calc(100dvh - 15dvh) !important;
+  width: 100% !important;
+  object-fit: cover !important;
+  overflow: hidden !important;
+}
+
 /* Pages > Contact */
 .contact {
   display: grid;

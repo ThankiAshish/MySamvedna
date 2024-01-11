@@ -18,50 +18,52 @@ const Header = () => {
   }, []);
 
   return (
-    <header>
-      <Link to="/" className="logo-link">
-        <img src={Logo} alt="MySamvedna Logo" className="logo" />
-      </Link>
-      <ul className="nav-links">
-        <li>
-          <Link to="/" className="nav-link">
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link className="nav-link" to="/donate">
-            Donate
-          </Link>
-        </li>
-        <li>
-          <Link className="nav-link" to="/galley">
-            Gallery
-          </Link>
-        </li>
-        <li>
-          <Link className="nav-link" to="/about">
-            About Us
-          </Link>
-        </li>
-        <li>
-          <Link className="nav-link" to="/contact">
-            Contact
-          </Link>
-        </li>
-        <div className="btn-container">
-          <button className="btn btn-outline">Register</button>
-          <button className="btn">Login</button>
-        </div>
-      </ul>
-      <FontAwesomeIcon
-        icon={icon}
-        className="fa-bars menu-toggle-btn"
-        onClick={() => {
-          icon === "bars" ? setIcon("xmark") : setIcon("bars");
-          document.querySelector(".nav-links").classList.toggle("active");
-        }}
-      />
-    </header>
+    <div className="container">
+      <header>
+        <Link to="/" className="logo-link">
+          <img src={Logo} alt="MySamvedna Logo" className="logo" />
+        </Link>
+        <ul className="nav-links">
+          <li>
+            <Link to="/" className="nav-link">
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link className="nav-link" to="/donate">
+              Donate
+            </Link>
+          </li>
+          <li>
+            <Link className="nav-link" to="/galley">
+              Gallery
+            </Link>
+          </li>
+          <li>
+            <Link className="nav-link" to="/about">
+              About Us
+            </Link>
+          </li>
+          <li>
+            <Link className="nav-link" to="/contact">
+              Contact
+            </Link>
+          </li>
+          <div className="btn-container">
+            <button className="btn btn-outline">Register</button>
+            <button className="btn">Login</button>
+          </div>
+        </ul>
+        <FontAwesomeIcon
+          icon={icon}
+          className="fa-bars menu-toggle-btn"
+          onClick={() => {
+            icon === "bars" ? setIcon("xmark") : setIcon("bars");
+            document.querySelector(".nav-links").classList.toggle("active");
+          }}
+        />
+      </header>
+    </div>
   );
 };
 
