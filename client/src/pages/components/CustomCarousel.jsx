@@ -25,6 +25,7 @@ const CustomCarousel = () => {
       autoPlay={true}
       naturalSlideHeight={100}
       naturalSlideWidth={100}
+      infinite={true}
       className="custom-carousel"
     >
       <Slider>
