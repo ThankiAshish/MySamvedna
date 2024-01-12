@@ -196,7 +196,7 @@ const Home = () => {
           <h1>
             Our <span className="highlight-text">Goals</span>
           </h1>
-          <ol className="goals">
+          <ol className="goals" role="list">
             <li>To take measures for creating a Barrier-free environment.</li>
             <li>
               To assist in accessibility of Equal Opportunity and Protection of

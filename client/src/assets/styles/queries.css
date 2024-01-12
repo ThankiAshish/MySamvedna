@@ -39,6 +39,10 @@
   .card p {
     font-size: 0.9rem !important;
   }
+
+  .goals li {
+    font-size: 1.1rem !important;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -103,6 +107,10 @@
   }
 
   .card p {
+    font-size: 1rem !important;
+  }
+
+  .goals li {
     font-size: 1rem !important;
   }
 }
