@@ -3,6 +3,7 @@
 
 :root {
   --background: #f0f4ef;
+  --background-transparent: rgba(240, 244, 239, 0.7);
   --text: #232c33;
   --primary: #4c954c;
 
@@ -172,6 +173,10 @@ section {
   display: none !important;
 }
 
+.highlight-text {
+  color: var(--primary) !important;
+}
+
 input,
 textarea {
   width: 100%;
@@ -203,6 +208,9 @@ header {
   align-items: center;
   justify-content: space-between;
   height: 15dvh;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 999 !important;
 }
 
 header .logo-link {
@@ -232,11 +240,67 @@ header .nav-links .btn-container .btn {
   font-size: 0.8rem;
 }
 
+/* Components > Footer */
+footer {
+  background-color: var(--background);
+  padding: 2rem 0;
+  box-shadow: 0px -10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  row-gap: 2rem;
+  gap: 2rem;
+  text-align: center;
+}
+
+.footer-content__left,
+.footer-content__right {
+  width: 45%;
+  min-width: 300px;
+}
+
+.footer-content__left h2,
+.footer-content__right h2 {
+  margin-bottom: 1rem;
+}
+
+.footer-content__right ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+}
+
+.footer-content__right ul li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-content__right ul li a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.footer-bottom {
+  text-align: center;
+}
+
+.footer-bottom p {
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
 /* Extra > Carousel */
 .custom-carousel,
 .custom-carousel .carousel__slider,
 .custom-carousel .carousel__slide {
-  height: calc(100dvh - 15dvh) !important;
+  height: calc(100dvh) !important;
 }
 
 .carousel__slide {
@@ -244,15 +308,15 @@ header .nav-links .btn-container .btn {
 }
 
 .carousel__inner-slide img {
-  height: calc(100dvh - 15dvh) !important;
+  height: calc(100dvh) !important;
   width: 100% !important;
   object-fit: cover !important;
   overflow: hidden !important;
 }
 
 /* Pages > Home */
-.slogan {
-  height: 100dvh;
+.main-slogan {
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -261,21 +325,125 @@ header .nav-links .btn-container .btn {
   padding-block: 5rem;
 }
 
-.slogan p {
+.main-slogan p {
   font-size: 1.5rem;
   text-align: center;
 }
 
-.slogan .italic {
+.italic {
   font-style: italic;
 }
 
 .what-are-we {
-  display: grid;
-  place-content: center;
-  place-items: center;
+  min-height: 100dvh;
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.7),
+      rgba(255, 255, 255, 0.7)
+    ),
+    url("../images/inspirational-photo.jpg") no-repeat center center/cover;
+}
+
+.what-are-we .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 3rem;
-  height: 100dvh;
+  height: 100%;
+}
+
+.what-are-we .container p {
+  font-size: 1.3rem;
+  font-weight: 400;
+  text-align: center;
+}
+
+.what-are-we .container .highlight {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  background: var(--highlight);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-inline: 1rem;
+}
+
+.dot-icon {
+  font-size: 10px;
+}
+
+.understand-disability {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  background-image: url("../images/Animated-Shape.svg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: cover !important;
+  background-color: var(--background) !important;
+}
+
+.understand-disability .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  height: 100%;
+  width: 80%;
+}
+
+.understand-disability .slogan {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  row-gap: 2rem;
+  width: 100%;
+}
+
+.understand-disability h1 span {
+  text-transform: none;
+}
+
+.understand-disability .images {
+  width: 40%;
+  min-width: 300px;
+  background: var(--background-transparent) center center no-repeat;
+  background-size: cover;
+  aspect-ratio: 4 / 3;
+  border-radius: 7px;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+.understand-disability .images::after {
+  content: "";
+  background: url("../images/inspirational-photo.jpg") center center no-repeat;
+  background-size: cover;
+  aspect-ratio: 4 / 3;
+  position: absolute;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.25);
+  width: 100%;
+  top: -0.6rem;
+  left: -0.6rem;
+  border-radius: 7px;
+  animation: imagesBounce 1s ease infinite alternate;
+  backdrop-filter: blur(15px);
+  opacity: 0.9;
+}
+
+.understand-disability .slogan p {
+  font-size: 1.2rem;
+  font-weight: 400;
+  text-align: center;
+  width: 48%;
 }
 
 /* Pages > Login */
@@ -469,5 +637,15 @@ header .nav-links .btn-container .btn {
   }
   100% {
     width: 150px;
+  }
+}
+
+@keyframes imagesBounce {
+  0% {
+    transform: translate3d(-0.2rem, -0.2rem, 0);
+  }
+
+  100% {
+    transform: translate3d(0);
   }
 }

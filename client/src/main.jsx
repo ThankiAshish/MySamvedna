@@ -5,9 +5,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
-import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faXmark, faCircle } from "@fortawesome/free-solid-svg-icons";
 
-library.add(fab, faBars, faXmark);
+library.add(fab, faBars, faXmark, faCircle);
 
 import App from "./App.jsx";
 import "./assets/styles/style.css";

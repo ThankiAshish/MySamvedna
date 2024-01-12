@@ -38,8 +38,28 @@
     font-size: 2.3rem;
   }
 
-  .contact p {
-    font-size: 1.2rem;
+  .contact p,
+  .main-slogan p,
+  .understand-disability .slogan p {
+    font-size: 1.2rem !important;
+  }
+
+  .what-are-we p {
+    font-size: 1.1rem !important;
+  }
+
+  .what-are-we .highlight {
+    font-size: 1rem !important;
+    gap: 10px !important;
+    word-wrap: break-word !important;
+    flex-wrap: wrap !important;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 0 !important;
+  }
+
+  .dot-icon {
+    font-size: 7px !important;
   }
 
   .contact-persons .persons {
@@ -54,5 +74,13 @@
   .login-type,
   .register-type {
     height: 300px;
+  }
+
+  .understand-disability .slogan p {
+    width: 100% !important;
+  }
+
+  .understand-disability .slogan .images {
+    width: 70% !important;
   }
 }
