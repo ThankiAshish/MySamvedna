@@ -1,8 +1,24 @@
+import { useEffect } from "react";
+
 import CustomCarousel from "./components/CustomCarousel";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Home = () => {
+  useEffect(() => {
+    window.addEventListener("scroll", function () {
+      const elements = document.querySelectorAll(".animate-on-scroll");
+
+      elements.forEach(function (element) {
+        const elementTop = element.getBoundingClientRect().top;
+
+        if (elementTop <= window.innerHeight / 1.3) {
+          element.classList.add("animate");
+        }
+      });
+    });
+  }, []);
+
   return (
     <>
       <CustomCarousel />
