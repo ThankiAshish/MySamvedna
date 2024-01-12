@@ -97,6 +97,153 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      <div className="container">
+        <section className="what-we-do">
+          <h1>
+            What <span className="highlight-text">We</span> Do?
+          </h1>
+          <div className="cards">
+            <div className="card">
+              <h2 className="highlight-text">INTENTION</h2>
+              <p>
+                <strong>Samvedna</strong> aims to redefine{" "}
+                <strong>disABILITY</strong>, emphasizing abilities over
+                limitations. The trust seeks to empower and integrate the
+                challenged community, fostering hope and aspirations. The goal
+                is to be heard, seen, and supported, advocating for a shift from
+                disABILITY to undeniable potential.
+              </p>
+            </div>
+            <div className="card">
+              <h2 className="highlight-text">AIM</h2>
+              <p>
+                <strong>Samvedna</strong> strives to stand beside and empower
+                physically challenged individuals, promoting independence
+                through skill development. The trust focuses on integration and
+                inclusion, emphasizing financial self-sufficiency for persons
+                with <strong>disABILITIES.</strong>
+              </p>
+            </div>
+            <div className="card">
+              <h2 className="highlight-text">BELIEF</h2>
+              <p>
+                <strong>Samvedna</strong> believes in adding value by
+                empowering, not just sympathizing. The trust rejects charity in
+                favor of empowering through employment or self-employment. It
+                recognizes the potential of the disabled to lead meaningful
+                lives with proper care, training, and support.
+              </p>
+            </div>
+
+            <div className="card">
+              <h2 className="highlight-text">EXPECTATION</h2>
+              <p>
+                <strong>Samvedna</strong> urges equal opportunities for persons
+                with <strong>disABILITIES</strong>, aligning with India&apos;s
+                constitutional principles. It highlights the need for inclusive
+                policies, services, and opportunities for the holistic
+                development of this valuable human resource.
+              </p>
+            </div>
+            <div className="card">
+              <h2 className="highlight-text">VISION</h2>
+              <p>
+                The trust envisions a society where every individual contributes
+                generously to those less privileged. Samvedna emphasizes
+                empowerment by providing vocational skills, fostering
+                self-reliance, and elevating the self-esteem of the disabled.
+              </p>
+            </div>
+            <div className="card">
+              <h2 className="highlight-text">MISSION</h2>
+              <p>
+                <strong>Mission Empowerment</strong> focuses on aiding skilled,
+                semi-skilled, and unskilled persons with{" "}
+                <strong>disABILITY</strong> in securing proper employment or
+                self-employment. Samvedna acts as a bridge between the disabled
+                community and suitable opportunities, considering their
+                abilities.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+      <section className="journey">
+        <div className="container">
+          <h1>
+            Our <span className="highlight-text">Journey</span>
+          </h1>
+          <div className="counter-container">
+            <div className="counter">
+              <h2>6</h2>
+              <p>States in India</p>
+            </div>
+            <div className="counter">
+              <h2>1000</h2>
+              <p>People</p>
+            </div>
+            <div className="counter">
+              <h2>200</h2>
+              <p>Jobs</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="container">
+        <section className="goal">
+          <h1>
+            Our <span className="highlight-text">Goals</span>
+          </h1>
+          <ol className="goals">
+            <li>To take measures for creating a Barrier-free environment.</li>
+            <li>
+              To assist in accessibility of Equal Opportunity and Protection of
+              Rights, life, and inherent dignity.
+            </li>
+            <li>
+              To contribute efforts in providing Employment/Placement related
+              services.
+            </li>
+            <li>To contribute efforts for uplifting Social Status.</li>
+            <li>
+              To provide Technical or Vocational Training/skills for
+              self-independence.
+            </li>
+            <li>
+              To assist in marketing commodities and articles manufactured by
+              disABLED persons.
+            </li>
+            <li>
+              Arrange job work for skilled craftsman and artisan personnel to
+              enable self-support.
+            </li>
+            <li>Bring together people who are maimed or deformed.</li>
+            <li>
+              Seek solutions to disABILITY through access to orthopedic
+              services, surgery, aids, and appliances.
+            </li>
+            <li>
+              Prevent members from leading secluded lives and involve them in
+              social, cultural, and sporting activities/events.
+            </li>
+            <li>Promote cooperative ventures.</li>
+            <li>
+              Facilitate work-at-home projects like dressmaking, sewing,
+              tailoring, art, and craft.
+            </li>
+            <li>
+              Help poor and needy meritorious students by providing educational
+              aids.
+            </li>
+            <li>
+              Exhibit, market, and export handicrafts products made by
+              differently-abled persons.
+            </li>
+          </ol>
+        </section>
+      </div>
     </>
   );
 };

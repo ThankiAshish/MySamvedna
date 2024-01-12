@@ -31,6 +31,14 @@
     padding-inline: 10%;
     animation: slideInFromRight 0.5s ease-out forwards;
   }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .card p {
+    font-size: 0.9rem !important;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -82,5 +90,19 @@
 
   .understand-disability .slogan .images {
     width: 70% !important;
+  }
+
+  .cards {
+    grid-template-columns: 1fr !important;
+    place-content: center !important;
+    place-items: center !important;
+  }
+
+  .card {
+    width: 80% !important;
+  }
+
+  .card p {
+    font-size: 1rem !important;
   }
 }
