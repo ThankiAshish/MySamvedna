@@ -197,47 +197,55 @@ const Home = () => {
             Our <span className="highlight-text">Goals</span>
           </h1>
           <ol className="goals" role="list">
-            <li>To take measures for creating a Barrier-free environment.</li>
-            <li>
+            <li className="animate-on-scroll goal-list-item">
+              To take measures for creating a Barrier-free environment.
+            </li>
+            <li className="animate-on-scroll goal-list-item">
               To assist in accessibility of Equal Opportunity and Protection of
               Rights, life, and inherent dignity.
             </li>
-            <li>
+            <li className="animate-on-scroll goal-list-item">
               To contribute efforts in providing Employment/Placement related
               services.
             </li>
-            <li>To contribute efforts for uplifting Social Status.</li>
-            <li>
+            <li className="animate-on-scroll goal-list-item">
+              To contribute efforts for uplifting Social Status.
+            </li>
+            <li className="animate-on-scroll goal-list-item">
               To provide Technical or Vocational Training/skills for
               self-independence.
             </li>
-            <li>
+            <li className="animate-on-scroll goal-list-item">
               To assist in marketing commodities and articles manufactured by
               disABLED persons.
             </li>
-            <li>
+            <li className="animate-on-scroll goal-list-item">
               Arrange job work for skilled craftsman and artisan personnel to
               enable self-support.
             </li>
-            <li>Bring together people who are maimed or deformed.</li>
-            <li>
+            <li className="animate-on-scroll goal-list-item">
+              Bring together people who are maimed or deformed.
+            </li>
+            <li className="animate-on-scroll goal-list-item">
               Seek solutions to disABILITY through access to orthopedic
               services, surgery, aids, and appliances.
             </li>
-            <li>
+            <li className="animate-on-scroll goal-list-item">
               Prevent members from leading secluded lives and involve them in
               social, cultural, and sporting activities/events.
             </li>
-            <li>Promote cooperative ventures.</li>
-            <li>
+            <li className="animate-on-scroll goal-list-item">
+              Promote cooperative ventures.
+            </li>
+            <li className="animate-on-scroll goal-list-item">
               Facilitate work-at-home projects like dressmaking, sewing,
               tailoring, art, and craft.
             </li>
-            <li>
+            <li className="animate-on-scroll goal-list-item">
               Help poor and needy meritorious students by providing educational
               aids.
             </li>
-            <li>
+            <li className="animate-on-scroll goal-list-item">
               Exhibit, market, and export handicrafts products made by
               differently-abled persons.
             </li>

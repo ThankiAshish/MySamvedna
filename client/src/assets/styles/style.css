@@ -508,37 +508,37 @@ footer .container {
   font-size: 1.2rem;
 }
 
-.goals li.animate {
-  animation: slideInFromLeft 1s ease-in-out;
-}
-
 .goal ol {
   list-style: none;
   padding: 0;
 }
 
-li + li {
+.goal-list-item + .goal-list-item {
   margin-top: 1rem;
 }
 
-li {
+.goal-list-item {
   display: flex;
   align-items: center;
   gap: 1rem;
   background: var(--primary);
-  padding: 1.5rem;
+  padding: 0.5rem;
   border-radius: 1rem;
   width: calc(100% - 2rem);
   box-shadow: 0.25rem 0.25rem 0.75rem rgb(0 0 0 / 0.1);
 }
 
-li::before {
+.goal-list-item.animate {
+  animation: slideInFromRight 1s ease-in-out;
+}
+
+.goal-list-item::before {
   counter-increment: list-item;
   content: counter(list-item);
-  font-size: 3rem;
+  font-size: 20px;
   font-weight: 700;
-  width: 2em;
-  height: 2em;
+  width: 50px;
+  height: 50px;
   background: var(--text);
   flex: 0 0 auto;
   border-radius: 50%;
@@ -548,11 +548,15 @@ li::before {
   align-items: center;
 }
 
-li:nth-child(even) {
+.goal-list-item:nth-child(even) {
   flex-direction: row-reverse;
   background: var(--secondary);
   margin-right: -2rem;
   margin-left: 2rem;
+}
+
+.goal-list-item.animate:nth-child(even) {
+  animation: slideInFromLeft 1s ease-in-out !important;
 }
 
 /* Pages > Login */
