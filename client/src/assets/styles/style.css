@@ -311,7 +311,8 @@ footer p {
       rgba(255, 255, 255, 0.7),
       rgba(255, 255, 255, 0.7)
     ),
-    url("../images/inspirational-photo.jpg") no-repeat center center/cover;
+    url("../images/Backgrounds/inspirational-photo.jpg") no-repeat center
+      center/cover;
 }
 
 .what-are-we .container {
@@ -351,7 +352,7 @@ footer p {
   align-items: center;
   justify-content: center;
   gap: 3rem;
-  background-image: url("../images/Animated-Shape.svg") !important;
+  background-image: url("../images/Backgrounds/Animated-Shape.svg") !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
   background-size: cover !important;
@@ -396,7 +397,8 @@ footer p {
 
 .understand-disability .images::after {
   content: "";
-  background: url("../images/inspirational-photo.jpg") center center no-repeat;
+  background: url("../images/Backgrounds/inspirational-photo.jpg") center center
+    no-repeat;
   background-size: cover;
   aspect-ratio: 4 / 3;
   position: absolute;
@@ -460,7 +462,7 @@ footer p {
       rgba(255, 255, 255, 0.7),
       rgba(255, 255, 255, 0.7)
     ),
-    url("../images/Growth.jpg") no-repeat center center/cover;
+    url("../images/Backgrounds/Growth.jpg") no-repeat center center/cover;
 }
 
 .journey .container {
@@ -575,7 +577,7 @@ footer p {
 /* Pages > Donate */
 .donate {
   min-height: 100dvh;
-  background: url("../images/Waves.svg") no-repeat center bottom;
+  background: url("../images/Backgrounds/Waves.svg") no-repeat center bottom;
 }
 
 .donate .container {
@@ -830,6 +832,25 @@ table td:last-child {
   opacity: 1;
 }
 
+/* Pages > About Us */
+.about {
+  min-height: 100dvh;
+}
+
+.about .persons {
+  height: 100% !important;
+  grid-template-columns: repeat(4, minmax(20rem, 1fr)) !important;
+  place-content: center !important;
+  place-items: center !important;
+  padding-block: 2rem;
+}
+
+.about .persons .person {
+  width: 100% !important;
+  max-width: 275px !important;
+  height: 300px !important;
+}
+
 /* Pages > Contact */
 .contact {
   display: grid;
@@ -870,13 +891,13 @@ table td:last-child {
   gap: 3rem;
 }
 
-.contact-persons .persons {
+.persons {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 }
 
-.contact-persons .persons .person {
+.persons .person {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -892,14 +913,14 @@ table td:last-child {
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.contact-persons .persons .person img {
+.persons .person img {
   width: 150px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.contact-persons .persons .person span {
+.persons .person span {
   display: block;
 }
 

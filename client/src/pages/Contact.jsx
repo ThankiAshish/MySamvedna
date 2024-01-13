@@ -1,6 +1,6 @@
-import Tarulata from "../assets/images/Tarulata Patel.jpg";
-import Mayank from "../assets/images/Mayank Patel.jpg";
-import Sagar from "../assets/images/Sagar Patel.jpg";
+import Tarulata from "../assets/images/Team/Core/Tarulata Patel.jpg";
+import Mayank from "../assets/images/Team/Core/Mayank Patel.jpg";
+import Sagar from "../assets/images/Team/Management/Sagar Patel.jpg";
 
 const Contact = () => {
   return (
