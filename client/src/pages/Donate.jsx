@@ -58,11 +58,9 @@ const Donate = () => {
             following methods:
           </p>
           <ol>
-            <Link></Link>
             <li className="donate-now-list-item flex-list">
-              Secure Online Donation
               <Link to="https://www.payumoney.com/paybypayumoney/#/A5CFF1F49EB0F1000EFE26FF3757C90B">
-                Donate
+                Secure Online Donation
               </Link>
             </li>
             <li className="donate-now-list-item">
@@ -76,31 +74,40 @@ const Donate = () => {
               Direct NEFT/RTGS/IMPS bank transfer
             </li>
           </ol>
-          <h2>BANK DETAILS</h2>
+
           <table>
-            <tr>
-              <td>Our Bank</td>
-              <td>State Bank Of India</td>
-            </tr>
-            <tr>
-              <td>Branch</td>
-              <td>
-                Nakshatra Building, Sangam Cross Road, Harni Road, Vadodara -
-                390 018 (Gujarat) India.
-              </td>
-            </tr>
-            <tr>
-              <td>Branch Code</td>
-              <td>04725</td>
-            </tr>
-            <tr>
-              <td>Account no.</td>
-              <td>31690284449</td>
-            </tr>
-            <tr>
-              <td>IFSC code</td>
-              <td>SBIN0004725</td>
-            </tr>
+            <thead>
+              <tr>
+                <th colSpan="2">
+                  <h2>BANK DETAILS</h2>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Our Bank</td>
+                <td>State Bank Of India</td>
+              </tr>
+              <tr>
+                <td>Branch</td>
+                <td>
+                  Nakshatra Building, Sangam Cross Road, Harni Road, Vadodara -
+                  390 018 (Gujarat) India.
+                </td>
+              </tr>
+              <tr>
+                <td>Branch Code</td>
+                <td>04725</td>
+              </tr>
+              <tr>
+                <td>Account no.</td>
+                <td>31690284449</td>
+              </tr>
+              <tr>
+                <td>IFSC code</td>
+                <td>SBIN0004725</td>
+              </tr>
+            </tbody>
           </table>
         </section>
       </div>

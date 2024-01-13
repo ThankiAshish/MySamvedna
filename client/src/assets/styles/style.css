@@ -669,6 +669,46 @@ footer p {
   color: var(--highlight);
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+
+thead tr {
+  border: 1px solid var(--text);
+  background: var(--secondary) !important;
+}
+
+thead th {
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+table td {
+  padding: 1rem;
+  border: 1px solid var(--text);
+  font-size: 20px;
+}
+
+table tr:nth-child(even) {
+  background: var(--secondary);
+}
+
+table tr:nth-child(odd) {
+  background: var(--background);
+}
+
+table td:first-child {
+  font-weight: 700;
+  color: var(--text);
+}
+
+table td:last-child {
+  text-align: right;
+}
+
 /* Pages > Login */
 /* Pages > Register */
 .login-type-container,
