@@ -22,7 +22,7 @@
     justify-content: flex-start;
     gap: 1.5rem;
     position: absolute !important;
-    width: 100% !important;
+    width: 100dvw !important;
     height: 85dvh !important;
     background: var(--background) !important;
     top: 15dvh !important;
@@ -52,7 +52,9 @@
 
   .contact p,
   .main-slogan p,
-  .understand-disability .slogan p {
+  .understand-disability .slogan p,
+  .donate .container p,
+  #donate-now p {
     font-size: 1.2rem !important;
   }
 
@@ -112,5 +114,17 @@
 
   .goals li {
     font-size: 1rem !important;
+  }
+
+  .counter p {
+    font-size: 1rem !important;
+  }
+
+  .donate-now-list-item,
+  .goal-list-item {
+    width: 100% !important;
+    font-size: 0.9rem !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
   }
 }

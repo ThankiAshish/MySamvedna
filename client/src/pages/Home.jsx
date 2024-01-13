@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import CustomCarousel from "./components/CustomCarousel";
 
@@ -17,12 +17,39 @@ const Home = () => {
         }
       });
     });
+
+    incrementCounter(stateCounter, setStateCounter, 6);
+    incrementCounter(peopleCounter, setPeopleCounter, 1000);
+    incrementCounter(jobsCounter, setJobsCounter, 200);
   }, []);
+
+  const [stateCounter, setStateCounter] = useState(0);
+  const [peopleCounter, setPeopleCounter] = useState(0);
+  const [jobsCounter, setJobsCounter] = useState(0);
+
+  const incrementCounter = (counter, setCounter, target) => {
+    const duration = 2000;
+    const increment = target / (duration / 10);
+    let start = 0;
+
+    const animateCounter = () => {
+      start += increment;
+      setCounter(Math.round(start));
+
+      if (start < target) {
+        setTimeout(animateCounter, 10);
+      } else {
+        setCounter(target);
+      }
+    };
+
+    animateCounter();
+  };
 
   return (
     <>
       <CustomCarousel />
-      <div className="container">
+      <div className="container animate-on-scroll">
         <section className="main-slogan">
           <h1>
             What is <strong className="highlight-text">Samvedna?</strong>
@@ -51,7 +78,7 @@ const Home = () => {
         </section>
       </div>
 
-      <section className="what-are-we">
+      <section className="what-are-we animate-on-scroll">
         <div className="container">
           <h1>
             What <span>we</span> are as a <br />{" "}
@@ -93,7 +120,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="understand-disability">
+      <section className="understand-disability animate-on-scroll">
         <div className="container">
           <h1>
             Let&apos;s Understand{" "}
@@ -119,8 +146,8 @@ const Home = () => {
           <h1>
             What <span className="highlight-text">We</span> Do?
           </h1>
-          <div className="cards">
-            <div className="card">
+          <div className="cards animate-on-scroll">
+            <div className="card animate-on-scroll">
               <h2 className="highlight-text">INTENTION</h2>
               <p>
                 <strong>Samvedna</strong> aims to redefine{" "}
@@ -131,7 +158,7 @@ const Home = () => {
                 disABILITY to undeniable potential.
               </p>
             </div>
-            <div className="card">
+            <div className="card animate-on-scroll">
               <h2 className="highlight-text">AIM</h2>
               <p>
                 <strong>Samvedna</strong> strives to stand beside and empower
@@ -141,7 +168,7 @@ const Home = () => {
                 with <strong>disABILITIES.</strong>
               </p>
             </div>
-            <div className="card">
+            <div className="card animate-on-scroll">
               <h2 className="highlight-text">BELIEF</h2>
               <p>
                 <strong>Samvedna</strong> believes in adding value by
@@ -152,7 +179,7 @@ const Home = () => {
               </p>
             </div>
 
-            <div className="card">
+            <div className="card animate-on-scroll">
               <h2 className="highlight-text">EXPECTATION</h2>
               <p>
                 <strong>Samvedna</strong> urges equal opportunities for persons
@@ -162,7 +189,7 @@ const Home = () => {
                 development of this valuable human resource.
               </p>
             </div>
-            <div className="card">
+            <div className="card animate-on-scroll">
               <h2 className="highlight-text">VISION</h2>
               <p>
                 The trust envisions a society where every individual contributes
@@ -171,7 +198,7 @@ const Home = () => {
                 self-reliance, and elevating the self-esteem of the disabled.
               </p>
             </div>
-            <div className="card">
+            <div className="card animate-on-scroll">
               <h2 className="highlight-text">MISSION</h2>
               <p>
                 <strong>Mission Empowerment</strong> focuses on aiding skilled,
@@ -192,15 +219,15 @@ const Home = () => {
           </h1>
           <div className="counter-container">
             <div className="counter">
-              <h2>6</h2>
+              <h2 id="state-counter">{stateCounter}</h2>
               <p>States in India</p>
             </div>
             <div className="counter">
-              <h2>1000</h2>
+              <h2 id="people-counter">{peopleCounter}</h2>
               <p>People</p>
             </div>
             <div className="counter">
-              <h2>200</h2>
+              <h2 id="jobs-counter">{jobsCounter}</h2>
               <p>Jobs</p>
             </div>
           </div>
