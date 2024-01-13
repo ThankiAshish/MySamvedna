@@ -51,6 +51,14 @@
     justify-content: center;
     gap: 1rem !important;
   }
+
+  #quotes blockquote {
+    font-size: 1.2rem !important;
+  }
+
+  #quotes .sub-text {
+    font-size: 1rem !important;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -62,7 +70,9 @@
   .main-slogan p,
   .understand-disability .slogan p,
   .donate .container p,
-  #donate-now p {
+  #donate-now p,
+  #financial-support p,
+  #self-employed-professional-support p {
     font-size: 1.2rem !important;
   }
 
@@ -137,7 +147,8 @@
   }
 
   .donate-now-list-item,
-  .goal-list-item {
+  .goal-list-item,
+  .financial-support-list-item {
     width: 100% !important;
     font-size: 0.9rem !important;
     margin-right: 0 !important;

@@ -126,6 +126,12 @@ section {
   color: var(--primary);
 }
 
+.btn-delete {
+  background-color: var(--error);
+  border: 1px solid var(--error);
+  color: var(--background);
+}
+
 .btn:hover {
   background: transparent;
   border: 1px solid var(--secondary);
@@ -136,6 +142,13 @@ section {
 .btn-outline:hover {
   background-color: var(--secondary);
   border: 1px solid var(--secondary);
+  color: var(--background);
+  animation: pulse 0.5s;
+}
+
+.btn-delete:hover {
+  background-color: var(--text);
+  border: 1px solid var(--text);
   color: var(--background);
   animation: pulse 0.5s;
 }
@@ -186,6 +199,7 @@ section {
 }
 
 input,
+select,
 textarea {
   width: 100%;
   outline: 0;
@@ -988,6 +1002,156 @@ table td:last-child {
   font-size: 1rem;
   font-weight: 300;
   align-self: flex-start;
+}
+
+/* Pages > Self-Employment Register */
+#quotes {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.7),
+      rgba(255, 255, 255, 0.7)
+    ),
+    url("../images/Backgrounds/Motivation.jpeg") no-repeat center center/cover;
+}
+
+#quotes .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  height: 100%;
+  width: 80%;
+}
+
+#quotes blockquote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-align: center;
+  font-style: italic;
+  width: 80%;
+  background: var(--background-transparent);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  backdrop-filter: blur(5px);
+  gap: 2rem;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.25);
+}
+
+#quotes .sub-text {
+  font-size: 1.2rem;
+  font-weight: 400;
+  text-align: center;
+  width: 100%;
+}
+
+#financial-support {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  padding-block: 3rem;
+}
+
+#financial-support p {
+  font-size: 1.5rem;
+  font-weight: 400;
+  text-align: center;
+  font-style: italic;
+}
+
+#financial-support ol {
+  list-style: none;
+  width: 100%;
+  padding: 0;
+}
+
+.financial-support-list-item + .financial-support-list-item {
+  margin-top: 1rem;
+}
+
+.financial-support-list-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--primary);
+  padding: 1rem;
+  border-radius: 1rem;
+  width: calc(100% - 2rem);
+  box-shadow: 0.25rem 0.25rem 0.75rem rgb(0 0 0 / 0.1);
+}
+
+.financial-support-list-item.animate {
+  animation: slideInFromRight 1s ease-in-out;
+}
+
+.financial-support-list-item::before {
+  counter-increment: list-item;
+  content: counter(list-item);
+  font-size: 20px;
+  font-weight: 700;
+  width: 50px;
+  height: 50px;
+  background: var(--text);
+  flex: 0 0 auto;
+  border-radius: 50%;
+  color: var(--background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.financial-support-list-item:nth-child(even) {
+  flex-direction: row-reverse;
+  background: var(--secondary);
+  margin-right: -2rem;
+  margin-left: 2rem;
+}
+
+.financial-support-list-item.animate:nth-child(even) {
+  animation: slideInFromLeft 1s ease-in-out !important;
+}
+
+.financial-support-list-item a {
+  text-decoration: underline;
+  color: var(--highlight);
+}
+
+#self-employed-professional-support {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  text-align: center;
+  padding-block: 3rem;
+}
+
+#self-employed-professional-support p {
+  font-size: 1.2rem;
+  font-weight: 400;
+  text-align: center;
+  font-style: italic;
+}
+
+#self-employed-professional-support form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
 }
 
 /* Pages > Login */
