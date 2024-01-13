@@ -5,6 +5,7 @@ import Main from "./layouts/Main";
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import Donate from "./pages/Donate";
+import Gallery from "./pages/Gallery";
 import About from "./pages/About";
 import Login from "./pages/Login";
 import RecruiterLogin from "./pages/RecruiterLogin";
@@ -19,9 +20,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Main />}>
           <Route index element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/about" element={<About />} />
           <Route path="/donate" element={<Donate />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/recruiter-login" element={<RecruiterLogin />} />
           <Route path="/seeker-login" element={<JobSeekerLogin />} />
