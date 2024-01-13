@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Logo from "../../assets/images/Logo.png";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [icon, setIcon] = useState("bars");
 
   useEffect(() => {
@@ -28,11 +29,30 @@ const Header = () => {
       setIcon("bars");
     });
 
+    const handleLinkClick = () => {
+      setIcon("bars");
+      document.querySelector(".nav-links").classList.remove("active");
+    };
+
+    const links = document.querySelectorAll(".nav-link");
+    const btns = document.querySelectorAll(".btn");
+    links.forEach((link) => link.addEventListener("click", handleLinkClick));
+    btns.forEach((btn) => btn.addEventListener("click", handleLinkClick));
+
     return () => {
+      links.forEach((link) =>
+        link.removeEventListener("click", handleLinkClick)
+      );
       window.removeEventListener("resize", () => {});
       window.removeEventListener("change", () => {});
     };
   }, []);
+
+  const handleLinkNavigation = (event) => {
+    event.preventDefault();
+    const link = event.currentTarget;
+    navigate(link.getAttribute("href"));
+  };
 
   return (
     <div className="container">
@@ -42,35 +62,55 @@ const Header = () => {
         </Link>
         <ul className="nav-links">
           <li>
-            <Link to="/" className="nav-link">
+            <Link to="/" className="nav-link" onClick={handleLinkNavigation}>
               Home
             </Link>
           </li>
           <li>
-            <Link className="nav-link" to="/donate">
+            <Link
+              className="nav-link"
+              to="/donate"
+              onClick={handleLinkNavigation}
+            >
               Donate
             </Link>
           </li>
           <li>
-            <Link className="nav-link" to="/gallery">
+            <Link
+              className="nav-link"
+              to="/gallery"
+              onClick={handleLinkNavigation}
+            >
               Gallery
             </Link>
           </li>
           <li>
-            <Link className="nav-link" to="/about">
+            <Link
+              className="nav-link"
+              to="/about"
+              onClick={handleLinkNavigation}
+            >
               About Us
             </Link>
           </li>
           <li>
-            <Link className="nav-link" to="/contact">
+            <Link
+              className="nav-link"
+              to="/contact"
+              onClick={handleLinkNavigation}
+            >
               Contact
             </Link>
           </li>
           <div className="btn-container">
-            <Link className="btn btn-outline" to="/register">
+            <Link
+              className="btn btn-outline"
+              to="/register"
+              onClick={handleLinkNavigation}
+            >
               Register
             </Link>
-            <Link className="btn" to="/login">
+            <Link className="btn" to="/login" onClick={handleLinkNavigation}>
               Login
             </Link>
           </div>

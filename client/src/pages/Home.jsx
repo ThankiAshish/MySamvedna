@@ -5,6 +5,10 @@ import CustomCarousel from "./components/CustomCarousel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Home = () => {
+  const [stateCounter, setStateCounter] = useState(0);
+  const [peopleCounter, setPeopleCounter] = useState(0);
+  const [jobsCounter, setJobsCounter] = useState(0);
+
   useEffect(() => {
     window.addEventListener("scroll", function () {
       const elements = document.querySelectorAll(".animate-on-scroll");
@@ -22,10 +26,6 @@ const Home = () => {
     incrementCounter(peopleCounter, setPeopleCounter, 1000);
     incrementCounter(jobsCounter, setJobsCounter, 200);
   }, []);
-
-  const [stateCounter, setStateCounter] = useState(0);
-  const [peopleCounter, setPeopleCounter] = useState(0);
-  const [jobsCounter, setJobsCounter] = useState(0);
 
   const incrementCounter = (counter, setCounter, target) => {
     const duration = 2000;

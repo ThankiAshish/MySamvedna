@@ -43,6 +43,14 @@
   .goals li {
     font-size: 1.1rem !important;
   }
+
+  .donate-slogan {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem !important;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -83,6 +91,14 @@
   .login-type-container,
   .register-type-container {
     grid-template-columns: 1fr !important;
+  }
+
+  .slider-1 {
+    gap: 2rem !important;
+  }
+
+  .register-type-container h1 {
+    font-size: 1.8rem !important;
   }
 
   .login-type,

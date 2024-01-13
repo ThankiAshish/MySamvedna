@@ -11,7 +11,7 @@ const Donate = () => {
             giving <strong>SACRIFICE</strong> needs your{" "}
             <strong>SUPPORT</strong> which lead us to <strong>SUCCESS</strong>
           </p>
-          <p>
+          <p className="donate-slogan">
             <span className="highlight">
               <strong>SAMVEDNA</strong> NEEDS
             </span>
