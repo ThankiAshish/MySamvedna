@@ -1,56 +1,95 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import CustomCarousel from "./components/CustomCarousel";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Home = () => {
-  const [stateCounter, setStateCounter] = useState(0);
-  const [peopleCounter, setPeopleCounter] = useState(0);
-  const [jobsCounter, setJobsCounter] = useState(0);
+  const [count, setCount] = useState({ state: 0, people: 0, jobs: 0 });
+  const counterRef = useRef(null);
+
+  const incrementCounter = (counter, target) => {
+    let current = count[counter];
+    const interval = setInterval(() => {
+      if (current < target) {
+        current++;
+        setCount((prevCount) => ({ ...prevCount, [counter]: current }));
+      } else {
+        clearInterval(interval);
+      }
+    }, 10);
+  };
 
   useEffect(() => {
-    window.addEventListener("scroll", function () {
-      const elements = document.querySelectorAll(".animate-on-scroll");
-
-      elements.forEach(function (element) {
-        const elementTop = element.getBoundingClientRect().top;
-
-        if (elementTop <= window.innerHeight / 1.3) {
-          element.classList.add("animate");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          incrementCounter("state", 6);
+          incrementCounter("people", 400);
+          incrementCounter("jobs", 200);
         }
       });
     });
 
-    incrementCounter(stateCounter, setStateCounter, 6);
-    incrementCounter(peopleCounter, setPeopleCounter, 1000);
-    incrementCounter(jobsCounter, setJobsCounter, 200);
-  }, []);
+    if (counterRef.current) {
+      observer.observe(counterRef.current);
+    }
 
-  const incrementCounter = (counter, setCounter, target) => {
-    const duration = 2000;
-    const increment = target / (duration / 10);
-    let start = 0;
-
-    const animateCounter = () => {
-      start += increment;
-      setCounter(Math.round(start));
-
-      if (start < target) {
-        setTimeout(animateCounter, 10);
-      } else {
-        setCounter(target);
+    const currentRef = counterRef.current;
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
+  }, []);
 
-    animateCounter();
-  };
+  const [sectionRefs, setSectionRefs] = useState([]);
+  const elementsRef = useRef([]);
+
+  useEffect(() => {
+    setSectionRefs(elementsRef.current);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate");
+          } else {
+            entry.target.classList.remove("animate");
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px",
+      }
+    );
+
+    sectionRefs.forEach((ref) => {
+      if (ref) {
+        observer.observe(ref);
+      }
+    });
+
+    return () => {
+      sectionRefs.forEach((ref) => {
+        if (ref) {
+          observer.unobserve(ref);
+        }
+      });
+    };
+  }, [sectionRefs]);
 
   return (
     <>
       <CustomCarousel />
-      <div className="container animate-on-scroll">
-        <section className="main-slogan">
+      <div className="container ">
+        <section
+          className="main-slogan to-animate"
+          ref={(el) => elementsRef.current.push(el)}
+        >
           <h1>
             What is <strong className="highlight-text">Samvedna?</strong>
           </h1>
@@ -78,8 +117,11 @@ const Home = () => {
         </section>
       </div>
 
-      <section className="what-are-we animate-on-scroll">
-        <div className="container">
+      <section className="what-are-we">
+        <div
+          className="container to-animate"
+          ref={(el) => elementsRef.current.push(el)}
+        >
           <h1>
             What <span>we</span> are as a <br />{" "}
             <span className="highlight-text">SAMVEDNA TRUST</span>
@@ -120,8 +162,11 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="understand-disability animate-on-scroll">
-        <div className="container">
+      <section className="understand-disability ">
+        <div
+          className="container to-animate"
+          ref={(el) => elementsRef.current.push(el)}
+        >
           <h1>
             Let&apos;s Understand{" "}
             <span className="highlight-text">disABILITY</span>
@@ -146,8 +191,11 @@ const Home = () => {
           <h1>
             What <span className="highlight-text">We</span> Do?
           </h1>
-          <div className="cards animate-on-scroll">
-            <div className="card animate-on-scroll">
+          <div
+            className="cards to-animate"
+            ref={(el) => elementsRef.current.push(el)}
+          >
+            <div className="card">
               <h2 className="highlight-text">INTENTION</h2>
               <p>
                 <strong>Samvedna</strong> aims to redefine{" "}
@@ -158,7 +206,7 @@ const Home = () => {
                 disABILITY to undeniable potential.
               </p>
             </div>
-            <div className="card animate-on-scroll">
+            <div className="card ">
               <h2 className="highlight-text">AIM</h2>
               <p>
                 <strong>Samvedna</strong> strives to stand beside and empower
@@ -168,7 +216,7 @@ const Home = () => {
                 with <strong>disABILITIES.</strong>
               </p>
             </div>
-            <div className="card animate-on-scroll">
+            <div className="card ">
               <h2 className="highlight-text">BELIEF</h2>
               <p>
                 <strong>Samvedna</strong> believes in adding value by
@@ -179,7 +227,7 @@ const Home = () => {
               </p>
             </div>
 
-            <div className="card animate-on-scroll">
+            <div className="card ">
               <h2 className="highlight-text">EXPECTATION</h2>
               <p>
                 <strong>Samvedna</strong> urges equal opportunities for persons
@@ -189,7 +237,7 @@ const Home = () => {
                 development of this valuable human resource.
               </p>
             </div>
-            <div className="card animate-on-scroll">
+            <div className="card ">
               <h2 className="highlight-text">VISION</h2>
               <p>
                 The trust envisions a society where every individual contributes
@@ -198,7 +246,7 @@ const Home = () => {
                 self-reliance, and elevating the self-esteem of the disabled.
               </p>
             </div>
-            <div className="card animate-on-scroll">
+            <div className="card ">
               <h2 className="highlight-text">MISSION</h2>
               <p>
                 <strong>Mission Empowerment</strong> focuses on aiding skilled,
@@ -212,22 +260,22 @@ const Home = () => {
           </div>
         </section>
       </div>
-      <section className="journey">
+      <section className="journey" ref={counterRef}>
         <div className="container">
           <h1>
             Our <span className="highlight-text">Journey</span>
           </h1>
           <div className="counter-container">
             <div className="counter">
-              <h2 id="state-counter">{stateCounter}</h2>
+              <h2 id="state-counter">{count.state}</h2>
               <p>States in India</p>
             </div>
             <div className="counter">
-              <h2 id="people-counter">{peopleCounter}</h2>
+              <h2 id="people-counter">{count.people}</h2>
               <p>People</p>
             </div>
             <div className="counter">
-              <h2 id="jobs-counter">{jobsCounter}</h2>
+              <h2 id="jobs-counter">{count.jobs}</h2>
               <p>Jobs</p>
             </div>
           </div>
@@ -240,55 +288,97 @@ const Home = () => {
             Our <span className="highlight-text">Goals</span>
           </h1>
           <ol className="goals" role="list">
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item odd-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               To take measures for creating a Barrier-free environment.
             </li>
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item even-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               To assist in accessibility of Equal Opportunity and Protection of
               Rights, life, and inherent dignity.
             </li>
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item odd-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               To contribute efforts in providing Employment/Placement related
               services.
             </li>
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item even-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               To contribute efforts for uplifting Social Status.
             </li>
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item odd-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               To provide Technical or Vocational Training/skills for
               self-independence.
             </li>
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item even-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               To assist in marketing commodities and articles manufactured by
               disABLED persons.
             </li>
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item odd-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               Arrange job work for skilled craftsman and artisan personnel to
               enable self-support.
             </li>
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item even-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               Bring together people who are maimed or deformed.
             </li>
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item odd-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               Seek solutions to disABILITY through access to orthopedic
               services, surgery, aids, and appliances.
             </li>
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item even-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               Prevent members from leading secluded lives and involve them in
               social, cultural, and sporting activities/events.
             </li>
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item odd-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               Promote cooperative ventures.
             </li>
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item even-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               Facilitate work-at-home projects like dressmaking, sewing,
               tailoring, art, and craft.
             </li>
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item odd-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               Help poor and needy meritorious students by providing educational
               aids.
             </li>
-            <li className="animate-on-scroll goal-list-item">
+            <li
+              className="goal-list-item even-item to-animate"
+              ref={(el) => elementsRef.current.push(el)}
+            >
               Exhibit, market, and export handicrafts products made by
               differently-abled persons.
             </li>

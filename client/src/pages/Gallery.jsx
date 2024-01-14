@@ -11,12 +11,16 @@ const otherImages = importAll(
   import.meta.glob("../assets/images/OtherEvents/*.{jpg,jpeg,png,svg}")
 );
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Gallery = () => {
   const [bandhan, setBandhan] = useState([]);
   const [jobfair, setJobFair] = useState([]);
   const [other, setOther] = useState([]);
+
+  const bandhanRefs = useRef([]);
+  const jobfairRefs = useRef([]);
+  const otherRefs = useRef([]);
 
   useEffect(() => {
     Promise.all(bandhanImages.map((imagePromise) => imagePromise()))
@@ -32,6 +36,44 @@ const Gallery = () => {
       .catch((error) => console.error(error));
   }, []);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("animate");
+        } else {
+          entry.target.classList.remove("animate");
+        }
+      });
+    });
+
+    const currentBandhanRefs = bandhanRefs.current;
+    const currentJobfairRefs = jobfairRefs.current;
+    const currentOtherRefs = otherRefs.current;
+
+    currentBandhanRefs.forEach((ref) => observer.observe(ref));
+    currentJobfairRefs.forEach((ref) => observer.observe(ref));
+    currentOtherRefs.forEach((ref) => observer.observe(ref));
+
+    return () => {
+      currentBandhanRefs.forEach((ref) => {
+        if (ref instanceof Element) {
+          observer.unobserve(ref);
+        }
+      });
+      currentJobfairRefs.forEach((ref) => {
+        if (ref instanceof Element) {
+          observer.unobserve(ref);
+        }
+      });
+      currentOtherRefs.forEach((ref) => {
+        if (ref instanceof Element) {
+          observer.unobserve(ref);
+        }
+      });
+    };
+  }, [bandhan, jobfair, other]);
+
   return (
     <div className="container">
       <section className="events bandhan">
@@ -40,7 +82,7 @@ const Gallery = () => {
         </h1>
         <ul>
           {bandhan.map((image, index) => (
-            <li key={index}>
+            <li key={index} ref={(el) => (bandhanRefs.current[index] = el)}>
               <a href="">
                 <figure>
                   <img src={image.default} alt={`Bandhan - ${index + 1}`} />
@@ -56,7 +98,7 @@ const Gallery = () => {
         <h1>JOB FAIR</h1>
         <ul>
           {jobfair.map((image, index) => (
-            <li key={index}>
+            <li key={index} ref={(el) => (jobfairRefs.current[index] = el)}>
               <a href="">
                 <figure>
                   <img src={image.default} alt={`Jobfair - ${index + 1}`} />
@@ -72,7 +114,7 @@ const Gallery = () => {
         <h1>OTHER EVENTS</h1>
         <ul>
           {other.map((image, index) => (
-            <li key={index}>
+            <li key={index} ref={(el) => (otherRefs.current[index] = el)}>
               <a href="">
                 <figure>
                   <img

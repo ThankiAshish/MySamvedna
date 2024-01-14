@@ -395,6 +395,10 @@ footer p {
   padding-block: 5rem;
 }
 
+.main-slogan.animate {
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
 .main-slogan p {
   font-size: 1.5rem;
   text-align: center;
@@ -421,6 +425,10 @@ footer p {
   justify-content: center;
   gap: 3rem;
   height: 100%;
+}
+
+.what-are-we .container.animate {
+  animation: fadeIn 1s ease-in-out forwards;
 }
 
 .what-are-we .container p {
@@ -466,6 +474,10 @@ footer p {
   gap: 3rem;
   height: 100%;
   width: 80%;
+}
+
+.understand-disability .container.animate {
+  animation: fadeIn 1s ease-in-out forwards;
 }
 
 .understand-disability .slogan {
@@ -532,6 +544,10 @@ footer p {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 3rem;
+}
+
+.what-we-do .cards.animate {
+  animation: slideInFromLeft 1s ease-in-out forwards;
 }
 
 .what-we-do .cards .card {
@@ -844,6 +860,10 @@ table td:last-child {
   position: relative;
   overflow: hidden;
   border-radius: 0.25rem;
+}
+
+.events ul li.animate {
+  animation: fadeIn 1s ease-in-out;
 }
 
 .events ul img {
