@@ -15,6 +15,8 @@ import RecruiterRegister from "./pages/RecruiterRegister";
 import JobSeekerRegister from "./pages/JobSeekerRegister";
 import SelfEmploymentRegister from "./pages/SelfEmploymentRegister";
 
+import NotFound from "./pages/404";
+
 const App = () => {
   return (
     <Router>
@@ -33,6 +35,7 @@ const App = () => {
           <Route path="/seeker-register" element={<JobSeekerRegister />} />
           <Route path="/self-employment" element={<SelfEmploymentRegister />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
