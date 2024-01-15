@@ -547,7 +547,7 @@ footer p {
 }
 
 .what-we-do .cards.animate {
-  animation: slideInFromLeft 1s ease-in-out forwards;
+  animation: flip 1s ease-in-out forwards;
 }
 
 .what-we-do .cards .card {
@@ -563,10 +563,6 @@ footer p {
   box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.25);
   padding: 2rem;
   border-radius: 0.25rem;
-}
-
-.what-we-do .cards .animate-on-scroll.animate {
-  animation: slideInFromRight 1s ease-in-out;
 }
 
 .journey {
@@ -705,6 +701,10 @@ footer p {
   gap: 2rem;
 }
 
+.donate .container.animate {
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
 .donate .container p {
   font-size: 1.5rem;
   font-weight: 400;
@@ -729,6 +729,10 @@ footer p {
   justify-content: center;
   gap: 3rem;
   padding-block: 3rem;
+}
+
+#donate-now.animate {
+  animation: fadeIn 1s ease-in-out forwards;
 }
 
 #donate-now p {
@@ -980,6 +984,10 @@ table td:last-child {
   height: calc(100dvh - 15dvh);
 }
 
+.contact.animate {
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
 .contact p {
   font-size: 1.5rem;
   font-weight: 300;
@@ -993,6 +1001,10 @@ table td:last-child {
   place-items: center;
   gap: 1rem;
   min-height: 100dvh;
+}
+
+.address-information.animate {
+  animation: fadeIn 1s ease-in-out forwards;
 }
 
 .address-information div {
@@ -1032,6 +1044,10 @@ table td:last-child {
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
 }
 
+.persons .person.animate {
+  animation: slideInFromRight 1s ease-in-out;
+}
+
 .persons .person img {
   width: 150px;
   aspect-ratio: 1 / 1;
@@ -1057,6 +1073,10 @@ table td:last-child {
   gap: 2rem;
   width: 100%;
   height: 100dvh;
+}
+
+.contact-form.animate {
+  animation: fadeIn 1s ease-in-out forwards;
 }
 
 .contact-form form {
@@ -1369,15 +1389,31 @@ table td:last-child {
   }
 }
 
-.animate-on-scroll.animate {
-  animation: fadeIn 1s ease-in-out forwards;
-}
-
 @keyframes fadeIn {
   0% {
     opacity: 0;
   }
   100% {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes flip {
+  from {
+    transform: rotateY(90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateY(0);
     opacity: 1;
   }
 }

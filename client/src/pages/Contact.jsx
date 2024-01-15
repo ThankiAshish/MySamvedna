@@ -2,10 +2,116 @@ import Tarulata from "../assets/images/Team/Core/Tarulata Patel.jpg";
 import Mayank from "../assets/images/Team/Core/Mayank Patel.jpg";
 import Sagar from "../assets/images/Team/Management/Sagar Patel.jpg";
 
+import { useEffect, useRef } from "react";
+
 const Contact = () => {
+  const sectionRef1 = useRef(null);
+  const sectionRef2 = useRef(null);
+  const sectionRef3 = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate");
+          } else {
+            entry.target.classList.remove("animate");
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px",
+      }
+    );
+
+    if (sectionRef1.current) {
+      observer.observe(sectionRef1.current);
+    }
+
+    if (sectionRef2.current) {
+      observer.observe(sectionRef2.current);
+    }
+
+    if (sectionRef3.current) {
+      observer.observe(sectionRef3.current);
+    }
+
+    const currentRef1 = sectionRef1.current;
+    const currentRef2 = sectionRef2.current;
+    const currentRef3 = sectionRef2.current;
+
+    return () => {
+      if (currentRef1) {
+        observer.unobserve(currentRef1);
+      }
+
+      if (currentRef2) {
+        observer.unobserve(currentRef2);
+      }
+
+      if (currentRef3) {
+        observer.unobserve(currentRef3);
+      }
+    };
+  }, []);
+
+  const listItemRef1 = useRef(null);
+  const listItemRef2 = useRef(null);
+  const listItemRef3 = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate");
+          } else {
+            entry.target.classList.remove("animate");
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px",
+      }
+    );
+
+    if (listItemRef1.current) {
+      observer.observe(listItemRef1.current);
+    }
+
+    if (listItemRef2.current) {
+      observer.observe(listItemRef2.current);
+    }
+
+    if (listItemRef3.current) {
+      observer.observe(listItemRef3.current);
+    }
+
+    const currentRef1 = listItemRef1.current;
+    const currentRef2 = listItemRef2.current;
+    const currentRef3 = listItemRef3.current;
+
+    return () => {
+      if (currentRef1) {
+        observer.unobserve(currentRef1);
+      }
+
+      if (currentRef2) {
+        observer.unobserve(currentRef2);
+      }
+
+      if (currentRef3) {
+        observer.unobserve(currentRef3);
+      }
+    };
+  }, []);
+
   return (
     <div className="container">
-      <section className="contact">
+      <section className="contact to-animate" ref={sectionRef1}>
         <h1>Contact Information</h1>
         <p>
           We at <strong>SAMVEDNA</strong>, a social welfare trust for{" "}
@@ -20,7 +126,7 @@ const Contact = () => {
         </p>
       </section>
 
-      <section className="address-information">
+      <section className="address-information to-animate" ref={sectionRef2}>
         <h1>Office Address</h1>
         <div>
           <h3>Address:</h3>
@@ -46,7 +152,7 @@ const Contact = () => {
       <section className="contact-persons">
         <h1>Contact Persons</h1>
         <div className="persons">
-          <div className="person">
+          <div className="person to-animate" ref={listItemRef1}>
             <img src={Tarulata} alt="Tarulata Patel" />
             <h3>
               SMT. TARULATTA PATEL
@@ -56,7 +162,7 @@ const Contact = () => {
             </h3>
             <p>TEL: (0265) - 2489807</p>
           </div>
-          <div className="person">
+          <div className="person to-animate" ref={listItemRef2}>
             <img src={Mayank} alt="Mayank Patel" />
             <h3>
               MAYANK PATEL
@@ -69,7 +175,7 @@ const Contact = () => {
               </a>
             </p>
           </div>
-          <div className="person">
+          <div className="person to-animate" ref={listItemRef3}>
             <img src={Sagar} alt="Sagar Patel" />
             <h3>
               SAGAR PATEL<span className="person-title">(Co-Ordinator)</span>
@@ -84,7 +190,7 @@ const Contact = () => {
         </div>
       </section>
 
-      <section className="contact-form">
+      <section className="contact-form to-animate" ref={sectionRef3}>
         <h1>Contact Form</h1>
         <form>
           <input

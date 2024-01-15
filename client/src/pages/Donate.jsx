@@ -1,11 +1,106 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const Donate = () => {
+  const sectionRef1 = useRef(null);
+  const sectionRef2 = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate");
+          } else {
+            entry.target.classList.remove("animate");
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px",
+      }
+    );
+
+    if (sectionRef1.current) {
+      observer.observe(sectionRef1.current);
+    }
+
+    if (sectionRef2.current) {
+      observer.observe(sectionRef2.current);
+    }
+
+    const currentRef1 = sectionRef1.current;
+    const currentRef2 = sectionRef2.current;
+
+    return () => {
+      if (currentRef1) {
+        observer.unobserve(currentRef1);
+      }
+
+      if (currentRef2) {
+        observer.unobserve(currentRef2);
+      }
+    };
+  }, []);
+
+  const listItemRef1 = useRef(null);
+  const listItemRef2 = useRef(null);
+  const listItemRef3 = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate");
+          } else {
+            entry.target.classList.remove("animate");
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px",
+      }
+    );
+
+    if (listItemRef1.current) {
+      observer.observe(listItemRef1.current);
+    }
+
+    if (listItemRef2.current) {
+      observer.observe(listItemRef2.current);
+    }
+
+    if (listItemRef3.current) {
+      observer.observe(listItemRef3.current);
+    }
+
+    const currentRef1 = listItemRef1.current;
+    const currentRef2 = listItemRef2.current;
+    const currentRef3 = listItemRef3.current;
+
+    return () => {
+      if (currentRef1) {
+        observer.unobserve(currentRef1);
+      }
+
+      if (currentRef2) {
+        observer.unobserve(currentRef2);
+      }
+
+      if (currentRef3) {
+        observer.unobserve(currentRef3);
+      }
+    };
+  }, []);
+
   return (
     <>
       <section className="donate">
         <h1>Donate</h1>
-        <div className="container">
+        <div className="container to-animate" ref={sectionRef1}>
           <p>
             SAMVEDNA <strong>SERVE</strong> with <strong>SINCERITY</strong>{" "}
             giving <strong>SACRIFICE</strong> needs your{" "}
@@ -43,7 +138,7 @@ const Donate = () => {
       </section>
 
       <div className="container">
-        <section id="donate-now">
+        <section id="donate-now" className="to-animate" ref={sectionRef2}>
           <h1>
             Support <span className="highlight-text">Samvedna</span>
           </h1>
@@ -58,19 +153,22 @@ const Donate = () => {
             following methods:
           </p>
           <ol>
-            <li className="donate-now-list-item flex-list">
+            <li
+              ref={listItemRef1}
+              className="donate-now-list-item flex-list to-animate"
+            >
               <Link to="https://www.payumoney.com/paybypayumoney/#/A5CFF1F49EB0F1000EFE26FF3757C90B">
                 Secure Online Donation
               </Link>
             </li>
-            <li className="donate-now-list-item">
+            <li ref={listItemRef2} className="donate-now-list-item to-animate">
               Cheque or Demand Draft in favour of SAMVEDNA disABLED PERSONS
               SOCIAL WELFARE TRUST, VADODARA and send it at A/173, Silver Leaf
               Bungalows, Behind Bharat Petrol Pump, Nr. Revashray,
               Waghodia-Dabhoi Ring Road, Soma Talav Crossing, Vadodara -390 025
               (Gujarat) India.
             </li>
-            <li className="donate-now-list-item">
+            <li ref={listItemRef3} className="donate-now-list-item to-animate">
               Direct NEFT/RTGS/IMPS bank transfer
             </li>
           </ol>
