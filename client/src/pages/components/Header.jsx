@@ -102,6 +102,15 @@ const Header = () => {
               Contact
             </Link>
           </li>
+          <li>
+            <Link
+              className="nav-link"
+              to="/search"
+              onClick={handleLinkNavigation}
+            >
+              <FontAwesomeIcon icon="search" className="fa-search" />
+            </Link>
+          </li>
           <div className="btn-container">
             <Link
               className="btn btn-outline"
