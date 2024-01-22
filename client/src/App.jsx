@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Main from "./layouts/Main";
+import Recruiter from "./layouts/Recruiter";
 
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
@@ -14,6 +15,10 @@ import Register from "./pages/Register";
 import RecruiterRegister from "./pages/RecruiterRegister";
 import JobSeekerRegister from "./pages/JobSeekerRegister";
 import SelfEmploymentRegister from "./pages/SelfEmploymentRegister";
+import RecruiterDashboard from "./pages/RecruiterDashboard";
+import ViewJobs from "./pages/ViewJobs";
+import ViewApplications from "./pages/ViewApplications";
+import PostJob from "./pages/PostJob";
 import Search from "./pages/Search";
 
 import NotFound from "./pages/404";
@@ -36,6 +41,12 @@ const App = () => {
           <Route path="/seeker-register" element={<JobSeekerRegister />} />
           <Route path="/self-employment" element={<SelfEmploymentRegister />} />
           <Route path="/search" element={<Search />} />
+        </Route>
+        <Route path="recruiter-dashboard" element={<Recruiter />}>
+          <Route index element={<RecruiterDashboard />} />
+          <Route path="view-jobs" element={<ViewJobs />} />
+          <Route path="view-applications" element={<ViewApplications />} />
+          <Route path="post-job" element={<PostJob />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
