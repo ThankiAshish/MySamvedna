@@ -419,7 +419,7 @@ const JobSeekerRegister = () => {
           </fieldset>
 
           <div className="btn-container">
-            <button type="submit" value="Register" className="btn" >Register</button>
+            <button type="submit" value="Register" className="btn" name="job_seekerRegisterButton">Register</button>
             <button type="button" className="btn btn-delete">
               Cancel
             </button>

@@ -52,7 +52,7 @@ const JobSeekerLogin = () => {
             onChange={handleChange}
             required
           />
-          <button className="btn btn-full">Login</button>
+          <button className="btn btn-full" name="recruiterLoginButton">Login</button>
           <Link to="/job-seeker/forgot-password" className="forgot-password">
             Forgot Password?
           </Link>

@@ -113,7 +113,7 @@ const RecruiterRegister = () => {
             onChange={handleInputChange}
             required
           />
-          <button type="submit" className="btn">
+          <button type="submit" className="btn" name="recruiterRegisterButton">
             Submit
           </button>
         </form>
