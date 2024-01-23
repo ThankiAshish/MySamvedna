@@ -15,16 +15,16 @@ const JobSeekerRegister = () => {
     city: "",
     state: "",
     postalCode: "",
-    country: "India", // Default value
+    country: "",
     contactNumber: "",
     whatsappNumber: "",
     jobAlerts: false,
     homePhone: "",
     addHomePhone: "",
-    qualification: "Below SSC", // Default value
+    qualification: "",
     educationSpecialization: "",
     experienceAndAppliance: "",
-    yesNoQuestion: "yes", // Default value
+    yesNoQuestion: "",
     twoWheeler: false,
     threeWheeler: false,
     car: false,
@@ -200,7 +200,8 @@ const JobSeekerRegister = () => {
               defaultValue="India"
               onChange={handleInputChange}
               required
-            >
+            > 
+              <option value="" disabled>Select Your Country</option>
               <option value="Country - 1">Country - 1</option>
               <option value="Country - 2">Country - 2</option>
               <option value="Country - 3">Country - 3</option>
@@ -212,6 +213,7 @@ const JobSeekerRegister = () => {
               onChange={handleInputChange}
               required
             >
+              <option value="" disabled>Select Your State</option>
               <option value="state1">State 1</option>
               <option value="state2">State 2</option>
             </select>
@@ -291,7 +293,8 @@ const JobSeekerRegister = () => {
               name="qualification"
               onChange={handleInputChange}
               required
-            >
+            > 
+              <option value="" disabled>Select Your Qualification</option>
               <option value="Below SSC">Below SSC</option>
               <option value="SSLC X">SSLC / X</option>
               <option value="HSC XII">HSC / XII</option>
@@ -317,6 +320,7 @@ const JobSeekerRegister = () => {
               onChange={handleInputChange}
               required
             >
+              <option value="" disabled>Select Your Specialization</option>
               <optgroup label="Below X">
                 <option value="Below X">Below X</option>
               </optgroup>
@@ -335,7 +339,6 @@ const JobSeekerRegister = () => {
                 <option value="SY">S.Y</option>
                 <option value="TY">T.Y</option>
               </optgroup>
-              {/* Add more optgroup and options as needed */}
             </select>
           </fieldset>
 
@@ -416,7 +419,7 @@ const JobSeekerRegister = () => {
           </fieldset>
 
           <div className="btn-container">
-            <input type="submit" value="Register" className="btn" />
+            <button type="submit" value="Register" className="btn" >Register</button>
             <button type="button" className="btn btn-delete">
               Cancel
             </button>
