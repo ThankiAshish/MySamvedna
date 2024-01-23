@@ -57,17 +57,23 @@ const PostJob = () => {
 
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
-    if (type === "checkbox") {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: checked,
-      }));
-    } else {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-      }));
-    }
+    setFormData(prevFormData => {
+      if (name.includes('.')) {
+        const [parent, child] = name.split('.');
+        return {
+          ...prevFormData,
+          [parent]: {
+            ...prevFormData[parent],
+            [child]: type === "checkbox" ? checked : value
+          }
+        };
+      } else {
+        return {
+          ...prevFormData,
+          [name]: type === "checkbox" ? checked : value
+        };
+      }
+    });
   };
 
   return (
@@ -258,7 +264,7 @@ const PostJob = () => {
               type="text"
               name="vacancies.regular"
               placeholder="Number of Vacancies (Regular)"
-              value={formData.vacancies?.regular || ""}
+              value={formData.vacancies.regular}
               onChange={handleInputChange}
             />
 
