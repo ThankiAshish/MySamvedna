@@ -76,13 +76,18 @@ const PostJob = () => {
     });
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData);
+  }
+
   return (
     <div className="container">
       <section className="post-jobs">
         <h1>
           <strong className="highlight-text">Post</strong> a Job
         </h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <fieldset>
             <legend>Company Information</legend>
             <input

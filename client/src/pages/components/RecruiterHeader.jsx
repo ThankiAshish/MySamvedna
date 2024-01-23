@@ -76,13 +76,13 @@ const RecruiterHeader = () => {
           </li>
           <div className="btn-container">
             <Link
-              className="link"
+              className="btn"
               to="/recruiter-profile"
               onClick={handleLinkNavigation}
             >
-              Recruiter Name
+              Post a Job
             </Link>
-            <Link className="btn" to="/login" onClick={handleLinkNavigation}>
+            <Link className="btn btn-outline" to="/logout" onClick={handleLinkNavigation}>
               Logout
             </Link>
           </div>
