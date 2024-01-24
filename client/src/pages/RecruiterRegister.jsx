@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const RecruiterRegister = () => {
   const [formData, setFormData] = useState({
-    profilePicture: "",
+    profilePicture: [],
     name: "",
     email: "",
     password: "",
@@ -28,10 +29,24 @@ const RecruiterRegister = () => {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log("Form submitted:", formData);
+    const data = new FormData();
+    for (const key in formData) {
+      data.append(key, formData[key]);
+    }
+
+    fetch("http://localhost/samvednabackend/controller/recruiter.php", {
+      method: "POST",
+      body: data,
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      toast.success(data.message);
+    })
+    .catch((error) => console.error(error));
   };
 
   return (

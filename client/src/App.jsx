@@ -22,7 +22,7 @@ import PostJob from "./pages/PostJob";
 import Search from "./pages/Search";
 
 import NotFound from "./pages/404";
-import ViewApplication from "./pages/ViewApplication";
+// import ViewApplication from "./pages/ViewApplication";
 
 const App = () => {
   return (
@@ -47,7 +47,7 @@ const App = () => {
           <Route index element={<RecruiterDashboard />} />
           <Route path="view-jobs" element={<ViewJobs />} />
           <Route path="view-applications" element={<ViewApplications />} />
-          <Route path="view-application" element={<ViewApplication />} />
+          {/* <Route path="view-application" element={<ViewApplication />} /> */}
           <Route path="post-job" element={<PostJob />} />
         </Route>
         <Route path="*" element={<NotFound />} />
