@@ -48,7 +48,7 @@ const RecruiterRegister = () => {
       data.append(key, formData[key]);
     }
 
-    fetch("http://localhost/samvednabackend/controller/recruiter.php", {
+    fetch("http://localhost/MySamvedna/api/controllers/recruiterRegister.php", {
       method: "POST",
       body: data,
       credentials: "include",
