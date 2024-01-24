@@ -3,29 +3,49 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const RecruiterLogin = () => {
-  const [form, setForm] = useState({
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    setForm({ ...form, [e.target.id]: e.target.value });
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (form.email === "" || form.password === "") {
-      toast.error("Please fill all the fields");
-      return;
-    }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    if (form.password.length < 6) {
-      toast.error("Password must be atleast 6 characters long");
-      return;
-    }
-    console.log(form);
+    const data = new FormData();
+    data.append("email", formData.email);
+    data.append("password", formData.password);
+
+    fetch("http://localhost/samvednabackend/controller/loginrecruiter.php", {
+      method: "POST",
+      body: data,
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          toast.success(data.message);
+        } else {
+          toast.error(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("An error occurred: " + error.message);
+      });
   };
+
   return (
     <div className="container">
       <section className="recruiters-login">
@@ -36,7 +56,7 @@ const RecruiterLogin = () => {
             name="email"
             id="email"
             placeholder="Enter Your Email Address"
-            value={form.email}
+            value={formData.email}
             onChange={handleChange}
             required
           />
@@ -45,11 +65,13 @@ const RecruiterLogin = () => {
             name="password"
             id="password"
             placeholder="Enter Your Password"
-            value={form.password}
+            value={formData.password}
             onChange={handleChange}
             required
           />
-          <button className="btn btn-full" name="recruiterLoginButton">Login</button>
+          <button className="btn btn-full" name="recruiterLoginButton">
+            Login
+          </button>
           <Link to="/recruiter/forgot-password" className="forgot-password">
             Forgot Password?
           </Link>

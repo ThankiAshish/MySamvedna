@@ -36,7 +36,7 @@ const RecruiterDashboard = () => {
               View Jobs
             </Link>
           </div>
-          <div className="recruiter-dashboard-card">
+          {/* <div className="recruiter-dashboard-card">
             <h2>View Applications</h2>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
@@ -49,7 +49,7 @@ const RecruiterDashboard = () => {
             >
               View Applications
             </Link>
-          </div>
+          </div> */}
         </div>
       </section>
     </div>

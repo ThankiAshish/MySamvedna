@@ -119,6 +119,7 @@ const PostJob = () => {
               type="text"
               name="address"
               placeholder="Address in full"
+              autoComplete="on"
               value={formData.address}
               onChange={handleInputChange}
             />
@@ -159,6 +160,7 @@ const PostJob = () => {
               type="text"
               name="email"
               placeholder="E-Mail Address"
+              autoComplete="on"
               value={formData.email}
               onChange={handleInputChange}
             />
@@ -243,6 +245,7 @@ const PostJob = () => {
               <input
                 type="checkbox"
                 name="womenEligible"
+                id="womenEligible"
                 checked={formData.womenEligible}
                 onChange={handleInputChange}
               />
@@ -340,6 +343,7 @@ const PostJob = () => {
               <input
                 type="checkbox"
                 name="interviewDetails.aptitudeTest"
+                id="interviewDetails.aptitudeTest"
                 checked={formData.interviewDetails.aptitudeTest}
                 onChange={handleInputChange}
               />
@@ -350,6 +354,7 @@ const PostJob = () => {
               <input
                 type="checkbox"
                 name="interviewDetails.technicalTest"
+                id="interviewDetails.technicalTest"
                 checked={formData.interviewDetails.technicalTest}
                 onChange={handleInputChange}
               />
@@ -360,6 +365,7 @@ const PostJob = () => {
               <input
                 type="checkbox"
                 name="interviewDetails.groupDiscussion"
+                id="interviewDetails.groupDiscussion"
                 checked={formData.interviewDetails.groupDiscussion}
                 onChange={handleInputChange}
               />
@@ -370,6 +376,7 @@ const PostJob = () => {
               <input
                 type="checkbox"
                 name="interviewDetails.personalInterview"
+                id="interviewDetails.personalInterview"
                 checked={formData.interviewDetails.personalInterview}
                 onChange={handleInputChange}
               />
@@ -433,6 +440,7 @@ const PostJob = () => {
               <input
                 type="checkbox"
                 name="ownVehiclePreferred"
+                id="ownVehiclePreferred"
                 checked={formData.ownVehiclePreferred}
                 onChange={handleInputChange}
               />
@@ -443,6 +451,7 @@ const PostJob = () => {
               <input
                 type="checkbox"
                 name="conveyanceProvided"
+                id="conveyanceProvided"
                 checked={formData.conveyanceProvided}
                 onChange={handleInputChange}
               />

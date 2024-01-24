@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const RecruiterRegister = () => {
   const [formData, setFormData] = useState({
-    profilePicture: "",
+    profilePicture: [],
     name: "",
     email: "",
     password: "",
@@ -28,10 +29,48 @@ const RecruiterRegister = () => {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log("Form submitted:", formData);
+    // Password validation
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    if (formData.password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+
+    const data = new FormData();
+    for (const key in formData) {
+      data.append(key, formData[key]);
+    }
+
+    fetch("http://localhost/samvednabackend/controller/recruiter.php", {
+      method: "POST",
+      body: data,
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          toast.success(data.message);
+        } else {
+          toast.error(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("An error occurred: " + error.message);
+      });
   };
 
   return (
