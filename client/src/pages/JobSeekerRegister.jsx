@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const JobSeekerRegister = () => {
   const [formData, setFormData] = useState({
     email: "",
     username: "",
     password: "",
-    confirm_password: "",
+    confirmPassword: "",
     name: "",
     lastName: "",
     dob: "",
@@ -31,7 +32,9 @@ const JobSeekerRegister = () => {
     specializationInDisability: "",
   });
 
-  // const [checkboxError, setCheckboxError] = useState("");
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
 
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -40,20 +43,107 @@ const JobSeekerRegister = () => {
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
     }));
-
-    // setCheckboxError("");
   };
 
-  const handleSubmit = (event) => {
+  useEffect(() => {
+    fetch("http://localhost/samvednabackend/controller/getcountry.php")
+      .then((response) => response.text())
+      .then((data) => {
+        const options = parseOptions(data);
+        setCountries(options);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
+  useEffect(() => {
+    if (formData.country) {
+      fetch(
+        `http://localhost/samvednabackend/controller/getstate.php?country_id=${formData.country}`
+      )
+        .then((response) => response.text())
+        .then((data) => {
+          const options = parseOptions(data);
+          setStates(options);
+        })
+        .catch((error) => console.error(error));
+    }
+  }, [formData.country]);
+
+  useEffect(() => {
+    if (formData.state) {
+      fetch(
+        `http://localhost/samvednabackend/controller/getcity.php?state_id=${formData.state}`
+      )
+        .then((response) => response.text())
+        .then((data) => {
+          const options = parseOptions(data);
+          setCities(options);
+        })
+        .catch((error) => console.error(error));
+    }
+  }, [formData.state]);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // if (!formData.twoWheeler || !formData.threeWheeler || !formData.car) {
-    //   setCheckboxError("Please select at least one checkbox.");
-    //   return;
-    // }
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
 
-    // Add your form submission logic here
-    console.log("Form submitted:", formData);
+    if (formData.password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+
+    if (!formData.twoWheeler && !formData.threeWheeler && !formData.car) {
+      toast.error("Please select at least one vehicle type");
+      return;
+    }
+
+    const data = new FormData();
+    for (const key in formData) {
+      data.append(key, formData[key]);
+    }
+
+    fetch("http://localhost/samvednabackend/controller/job_seeker.php", {
+      method: "POST",
+      body: data,
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          toast.success(data.message);
+        } else {
+          toast.error(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("An error occurred: " + error.message);
+      });
+
+    console.log("Countries: ", countries);
+    console.log("States: ", states);
+    console.log("Cities: ", cities);
+
+    console.log(formData);
+  };
+
+  const parseOptions = (htmlString) => {
+    const parser = new DOMParser();
+    const htmlDoc = parser.parseFromString(htmlString, "text/html");
+    return Array.from(htmlDoc.querySelectorAll("option")).map((opt) => ({
+      value: opt.value,
+      label: opt.textContent,
+    }));
   };
 
   return (
@@ -103,10 +193,10 @@ const JobSeekerRegister = () => {
 
             <input
               type="password"
-              id="confirm_password"
-              name="confirm_password"
+              id="confirmPassword"
+              name="confirmPassword"
               placeholder="Confirm Password"
-              value={formData.confirm_password}
+              value={formData.confirmPassword}
               onChange={handleInputChange}
               required
             />
@@ -184,38 +274,38 @@ const JobSeekerRegister = () => {
               required
             ></textarea>
 
-            <input
-              type="text"
-              id="city"
+            <select
+              name="country"
+              value={formData.country}
+              onChange={handleInputChange}
+            >
+              {countries.map((country, index) => (
+                <option key={`${country.value}-${index}`} value={country.value}>
+                  {country.label}
+                </option>
+              ))}
+            </select>
+            <select
+              name="state"
+              value={formData.state}
+              onChange={handleInputChange}
+            >
+              {states.map((state, index) => (
+                <option key={`${state.value}-${index}`} value={state.value}>
+                  {state.label}
+                </option>
+              ))}
+            </select>
+            <select
               name="city"
-              placeholder="City"
               value={formData.city}
               onChange={handleInputChange}
-              required
-            />
-
-            <select
-              id="country"
-              name="country"
-              defaultValue="India"
-              onChange={handleInputChange}
-              required
-            > 
-              <option value="" disabled>Select Your Country</option>
-              <option value="Country - 1">Country - 1</option>
-              <option value="Country - 2">Country - 2</option>
-              <option value="Country - 3">Country - 3</option>
-            </select>
-
-            <select
-              id="state"
-              name="state"
-              onChange={handleInputChange}
-              required
             >
-              <option value="" disabled>Select Your State</option>
-              <option value="state1">State 1</option>
-              <option value="state2">State 2</option>
+              {cities.map((city, index) => (
+                <option key={`${city.value}-${index}`} value={city.value}>
+                  {city.label}
+                </option>
+              ))}
             </select>
 
             <input
@@ -293,8 +383,10 @@ const JobSeekerRegister = () => {
               name="qualification"
               onChange={handleInputChange}
               required
-            > 
-              <option value="" disabled>Select Your Qualification</option>
+            >
+              <option value="" disabled>
+                Select Your Qualification
+              </option>
               <option value="Below SSC">Below SSC</option>
               <option value="SSLC X">SSLC / X</option>
               <option value="HSC XII">HSC / XII</option>
@@ -320,7 +412,9 @@ const JobSeekerRegister = () => {
               onChange={handleInputChange}
               required
             >
-              <option value="" disabled>Select Your Specialization</option>
+              <option value="" disabled>
+                Select Your Specialization
+              </option>
               <optgroup label="Below X">
                 <option value="Below X">Below X</option>
               </optgroup>
@@ -363,6 +457,9 @@ const JobSeekerRegister = () => {
                 onChange={handleInputChange}
                 required
               >
+                <option value="" disabled selected>
+                  Select Your Answer
+                </option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
               </select>
@@ -373,8 +470,8 @@ const JobSeekerRegister = () => {
                   type="checkbox"
                   id="twoWheeler"
                   name="twoWheeler"
-                  value="two"
-                  checked
+                  checked={formData.twoWheeler}
+                  onChange={handleInputChange}
                 />
                 <label htmlFor="twoWheeler">Two-Wheeler</label>
 
@@ -382,11 +479,18 @@ const JobSeekerRegister = () => {
                   type="checkbox"
                   id="threeWheeler"
                   name="threeWheeler"
-                  value="three"
+                  checked={formData.threeWheeler}
+                  onChange={handleInputChange}
                 />
                 <label htmlFor="threeWheeler">Three-Wheeler</label>
 
-                <input type="checkbox" id="car" name="car" value="car" />
+                <input
+                  type="checkbox"
+                  id="car"
+                  name="car"
+                  checked={formData.car}
+                  onChange={handleInputChange}
+                />
                 <label htmlFor="car">Car</label>
               </div>
             )}
@@ -419,7 +523,14 @@ const JobSeekerRegister = () => {
           </fieldset>
 
           <div className="btn-container">
-            <button type="submit" value="Register" className="btn" name="job_seekerRegisterButton">Register</button>
+            <button
+              type="submit"
+              value="Register"
+              className="btn"
+              name="job_seekerRegisterButton"
+            >
+              Register
+            </button>
             <button type="button" className="btn btn-delete">
               Cancel
             </button>
