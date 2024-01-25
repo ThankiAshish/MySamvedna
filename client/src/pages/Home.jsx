@@ -1,17 +1,13 @@
-import { useState, useEffect, useRef, useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+// import { Navigate } from "react-router-dom";
 
 import CustomCarousel from "./components/CustomCarousel";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { SessionContext } from "../context/SessionProvider";
-
 const Home = () => {
   const [count, setCount] = useState({ state: 0, people: 0, jobs: 0 });
   const counterRef = useRef(null);
-
-  const { isLoggedIn } = useContext(SessionContext);
 
   const incrementCounter = (counter, target) => {
     let current = count[counter];
@@ -89,7 +85,6 @@ const Home = () => {
 
   return (
     <>
-      {isLoggedIn && <Navigate to="/recruiter-dashboard" />}
       <CustomCarousel />
       <div className="container ">
         <section

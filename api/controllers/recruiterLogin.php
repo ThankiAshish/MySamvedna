@@ -1,42 +1,53 @@
 <?php
 include '../includes/config.php';
 
+session_start();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $email = $_POST['email'];
-  $password = $_POST['password'];
-
-  $stmt = $conn->prepare("SELECT * FROM recruiters WHERE email = ?");
-  $stmt->bind_param("s", $email);
-  $stmt->execute();
-
-  $result = $stmt->get_result();
-  
-  if ($result->num_rows > 0) {
-      $recruiter = $result->fetch_assoc();
-      if ($password === $recruiter['password']) {
-        $response = array(
-            'success' => true,
-            'message' => 'Login Successful!',
-        );
-    } else {
-      $message = 'Incorrect password!';
-      $response = array(
-        'success' => false,
-        'message' => $message,
-      );
-    }
-  } else {
-    $message = 'Email does not exist!';
+  if (isset($_SESSION['recruiters_id'])) {
     $response = array(
       'success' => false,
-      'message' => $message,
+      'message' => 'Already logged in!',
     );
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit;
+  } else {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $stmt = $conn->prepare("SELECT * FROM recruiters WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+      $recruiter = $result->fetch_assoc();
+      if ($password === $recruiter['password']) {
+
+        $_SESSION['recruiters_id'] = $recruiter['recruiters_id'];
+
+        $response = array(
+          'success' => true,
+          'message' => 'Login Successful!',
+        );
+      } else {
+        $response = array(
+          'success' => false,
+          'message' => 'Incorrect password!',
+        );
+      }
+    } else {
+      $response = array(
+        'success' => false,
+        'message' => 'Email does not exist!',
+      );
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode($response);
+
+    $stmt->close();
+    $conn->close();
   }
-
-  header('Content-Type: application/json');
-  $jsonResponse = json_encode($response);
-  echo $jsonResponse;
-
-  $stmt->close();
-  $conn->close();
 }

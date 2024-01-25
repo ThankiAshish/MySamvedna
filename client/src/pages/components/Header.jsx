@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import checkRecruiterSession from "../../helpers/CheckSession";
+
 import Logo from "../../assets/images/Logo.png";
 
 const Header = () => {
@@ -102,27 +104,56 @@ const Header = () => {
               Contact
             </Link>
           </li>
-          <li>
-            <Link
-              className="nav-link"
-              to="/search"
-              onClick={handleLinkNavigation}
-            >
-              <FontAwesomeIcon icon="search" className="fa-search" />
-            </Link>
-          </li>
-          <div className="btn-container">
-            <Link
-              className="btn btn-outline"
-              to="/register"
-              onClick={handleLinkNavigation}
-            >
-              Register
-            </Link>
-            <Link className="btn" to="/login" onClick={handleLinkNavigation}>
-              Login
-            </Link>
-          </div>
+          {checkRecruiterSession().isLoggedIn ? (
+            <>
+              <li>
+                <Link
+                  className="nav-link"
+                  to="/recruiter-dashboard"
+                  onClick={handleLinkNavigation}
+                >
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="nav-link"
+                  to="/search"
+                  onClick={handleLinkNavigation}
+                >
+                  <FontAwesomeIcon icon="search" className="fa-search" />
+                </Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link
+                  className="nav-link"
+                  to="/search"
+                  onClick={handleLinkNavigation}
+                >
+                  <FontAwesomeIcon icon="search" className="fa-search" />
+                </Link>
+              </li>
+              <div className="btn-container">
+                <Link
+                  className="btn btn-outline"
+                  to="/register"
+                  onClick={handleLinkNavigation}
+                >
+                  Register
+                </Link>
+                <Link
+                  className="btn"
+                  to="/login"
+                  onClick={handleLinkNavigation}
+                >
+                  Login
+                </Link>
+              </div>
+            </>
+          )}
         </ul>
         <FontAwesomeIcon
           icon={icon}
