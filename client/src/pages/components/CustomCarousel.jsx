@@ -61,7 +61,7 @@ const CustomCarousel = () => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="input-group">
             <select
               className="form-control"
               id="jobType"
@@ -72,8 +72,6 @@ const CustomCarousel = () => {
               <option value="">Job Type</option>
               {/* Add your job types here */}
             </select>
-          </div>
-          <div className="form-group">
             <select
               className="form-control"
               id="location"
@@ -84,8 +82,6 @@ const CustomCarousel = () => {
               <option value="">Location</option>
               {/* Add your locations here */}
             </select>
-          </div>
-          <div className="form-group">
             <select
               className="form-control"
               id="disabilityPercentage"
