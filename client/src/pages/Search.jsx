@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import Default from "../assets/images/Team/default.png";
 
 const Search = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     search: "",
     jobType: "",
@@ -19,7 +22,36 @@ const Search = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Do something with formData
+
+    const data = new FormData();
+    for (const key in formData) {
+      data.append(key, formData[key]);
+    }
+
+    fetch("http://localhost/MySamvedna/api/controllers/searchJob.php", {
+      method: "POST",
+      body: data,
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          toast.success(data.message);
+          navigate("/job-seeker-login");
+        } else {
+          toast.error(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("An error occurred: " + error.message);
+      });
+
     console.log(formData);
   };
 
@@ -45,9 +77,10 @@ const Search = () => {
               id="jobType"
               value={formData.jobType}
               onChange={handleChange}
-              required
             >
-              <option value="">Job Type</option>
+              <option value="" disabled>
+                Select Job Type
+              </option>
               {/* Add your job types here */}
             </select>
           </div>
@@ -57,9 +90,10 @@ const Search = () => {
               id="location"
               value={formData.location}
               onChange={handleChange}
-              required
             >
-              <option value="">Location</option>
+              <option value="" disabled>
+                Select Location
+              </option>
               {/* Add your locations here */}
             </select>
           </div>
@@ -69,9 +103,10 @@ const Search = () => {
               id="disabilityPercentage"
               value={formData.disabilityPercentage}
               onChange={handleChange}
-              required
             >
-              <option value="">Disability Percentage</option>
+              <option value="" disabled>
+                Select Disability Percentage
+              </option>
               {/* Add your disability percentages here */}
             </select>
           </div>
