@@ -67,7 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conveyanceType = $_POST['conveyanceType'];
         $otherInformation = $_POST['otherInformation'];
 
-
         $query = "INSERT INTO job (
             `recruiters_id`, `companyName`, `website`, `natureOfBusiness`, `address`,
             `fax`, `areaCode`, `landline`, `mobile`, `email`,

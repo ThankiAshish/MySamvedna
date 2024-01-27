@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 import CustomCarousel from "./components/CustomCarousel";
+import JobCarousel from "./components/JobCarousel";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -281,6 +282,15 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      <div className="container">
+        <section className="latest-jobs">
+          <h1>
+            Latest <span className="highlight-text">Jobs</span>
+          </h1>
+          <JobCarousel />
+        </section>
+      </div>
 
       <div className="container">
         <section className="goal">
