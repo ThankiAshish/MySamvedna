@@ -1,7 +1,6 @@
 <?php
 header('Content-Type: application/json');
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
 
 include '../includes/config.php';
 
@@ -90,13 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ?, ?, ?, ?, ?,
                 ?, ?
             )";
-        $stmt2 = $conn->prepare($query);
+        $conn->prepare($query);
 
-        if ($stmt2 === false) {
-            die('prepare() failed: ' . htmlspecialchars($conn->error));
-        }
-
-        $bind_result = $stmt2->bind_param(
+        $stmt2->bind_param(
             "sssss
              sssss
              sssss
@@ -149,15 +144,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $conveyanceType,
             $otherInformation
         );
-
-        if ($bind_result === false) {
-            die('bind_param() failed: ' . htmlspecialchars($stmt2->error));
-        }
-
-        $execute_result = $stmt2->execute();
-        if ($execute_result === false) {
-            die('execute() failed: ' . htmlspecialchars($stmt2->error));
-        }
 
         $message = "Job posted successfully";
         $response = array(
