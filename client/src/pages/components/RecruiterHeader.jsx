@@ -48,9 +48,34 @@ const RecruiterHeader = () => {
     };
   }, []);
 
-  const handleLinkNavigation = (event) => {
+  const handleLinkNavigation = async (event) => {
     event.preventDefault();
     const link = event.currentTarget;
+
+    if(link.getAttribute("href") === "/logout") {
+      const response = await fetch(
+        "http://localhost/MySamvedna/api/controllers/recruiterLogout.php",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+
+      if (responseData.success) {
+        navigate("/recruiter-login");
+      } else {
+        console.log(responseData.message);
+      }
+
+      return;
+    }
+
     navigate(link.getAttribute("href"));
   };
   return (

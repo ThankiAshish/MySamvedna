@@ -46,7 +46,7 @@ const JobSeekerRegister = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost/samvednabackend/controller/getcountry.php")
+    fetch("http://localhost/MySamvedna/api/controllers/getCountry.php")
       .then((response) => response.text())
       .then((data) => {
         const options = parseOptions(data);
@@ -58,7 +58,7 @@ const JobSeekerRegister = () => {
   useEffect(() => {
     if (formData.country) {
       fetch(
-        `http://localhost/samvednabackend/controller/getstate.php?country_id=${formData.country}`
+        `http://localhost/MySamvedna/api/controllers/getState.php?country_id=${formData.country}`
       )
         .then((response) => response.text())
         .then((data) => {
@@ -72,7 +72,7 @@ const JobSeekerRegister = () => {
   useEffect(() => {
     if (formData.state) {
       fetch(
-        `http://localhost/samvednabackend/controller/getcity.php?state_id=${formData.state}`
+        `http://localhost/MySamvedna/api/controllers/getCity.php?state_id=${formData.state}`
       )
         .then((response) => response.text())
         .then((data) => {
@@ -106,7 +106,7 @@ const JobSeekerRegister = () => {
       data.append(key, formData[key]);
     }
 
-    fetch("http://localhost/samvednabackend/controller/job_seeker.php", {
+    fetch("http://localhost/MySamvedna/api/controllers/jobSeeker.php", {
       method: "POST",
       body: data,
       credentials: "include",
@@ -129,10 +129,6 @@ const JobSeekerRegister = () => {
         console.error(error);
         toast.error("An error occurred: " + error.message);
       });
-
-    console.log("Countries: ", countries);
-    console.log("States: ", states);
-    console.log("Cities: ", cities);
 
     console.log(formData);
   };
