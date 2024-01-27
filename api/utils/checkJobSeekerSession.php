@@ -8,10 +8,10 @@ session_start();
 
 function checkSession()
 {
-    if (isset($_SESSION['recruiters_id'])) {
-        echo json_encode(array('is_logged_in' => true, 'recruiters_id' => $_SESSION['recruiters_id']));
+    if (isset($_SESSION['job_seekers_id'])) {
+        echo json_encode(array('is_logged_in' => true, 'job_seekers_id' => $_SESSION['job_seekers_id']));
     } else {
-        echo json_encode(array('is_logged_in' => false, 'recruiters_id' => null));
+        echo json_encode(array('is_logged_in' => false, 'job_seekers_id' => null));
     }
 }
 

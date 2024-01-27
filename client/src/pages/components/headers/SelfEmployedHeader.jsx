@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { SessionState } from "../../../context/SessionProvider";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Logo from "../../assets/images/Logo.png";
+import Logo from "../../../assets/images/Logo.png";
 
 const RecruiterHeader = () => {
   const navigate = useNavigate();
+  const { logout } = SessionState();
   const [icon, setIcon] = useState("bars");
 
   useEffect(() => {
@@ -52,11 +56,11 @@ const RecruiterHeader = () => {
     event.preventDefault();
     const link = event.currentTarget;
 
-    if(link.getAttribute("href") === "/logout") {
+    if (link.getAttribute("href") === "/logout") {
       const response = await fetch(
-        "http://localhost/MySamvedna/api/controllers/recruiterLogout.php",
+        "http://localhost/MySamvedna/api/controllers/selfEmployedLogout.php",
         {
-          method: "POST",
+          method: "GET",
           credentials: "include",
         }
       );
@@ -68,11 +72,13 @@ const RecruiterHeader = () => {
       const responseData = await response.json();
 
       if (responseData.success) {
-        navigate("/recruiter-login");
+        toast.success(responseData.message);
+        logout();
+        navigate("/self-employed-login");
       } else {
         console.log(responseData.message);
+        toast.error(responseData.message);
       }
-
       return;
     }
 
@@ -92,7 +98,7 @@ const RecruiterHeader = () => {
           </li>
           <li>
             <Link
-              to="/recruiter-dashboard"
+              to="/self-employed-dashboard"
               className="nav-link"
               onClick={handleLinkNavigation}
             >
@@ -102,12 +108,16 @@ const RecruiterHeader = () => {
           <div className="btn-container">
             <Link
               className="btn"
-              to="/recruiter-profile"
+              to="/self-employed-profile"
               onClick={handleLinkNavigation}
             >
               Post a Job
             </Link>
-            <Link className="btn btn-outline" to="/logout" onClick={handleLinkNavigation}>
+            <Link
+              className="btn btn-outline"
+              to="/logout"
+              onClick={handleLinkNavigation}
+            >
               Logout
             </Link>
           </div>

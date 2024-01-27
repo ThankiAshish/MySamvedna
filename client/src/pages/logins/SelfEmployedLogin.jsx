@@ -1,23 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import checkRecruiterSession from "../helpers/CheckSession";
+import { SessionState } from "../../context/SessionProvider";
 
 const RecruiterLogin = () => {
   const navigate = useNavigate();
-  useEffect(() => {
-    const { isLoggedIn } = checkRecruiterSession();
-
-    if (isLoggedIn) {
-      navigate("/recruiter-dashboard");
-    }
-  }, [navigate]);
+  const { isLoggedIn, setIsLoggedIn, setRecruiterId } = SessionState();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  });	
+  });
 
   const handleChange = (event) => {
     setFormData({
@@ -35,7 +29,7 @@ const RecruiterLogin = () => {
 
     try {
       const response = await fetch(
-        "http://localhost/MySamvedna/api/controllers/recruiterLogin.php",
+        "http://localhost/MySamvedna/api/controllers/selfEmployedLogin.php",
         {
           method: "POST",
           body: data,
@@ -51,10 +45,10 @@ const RecruiterLogin = () => {
 
       if (responseData.success) {
         toast.success(responseData.message);
-        const { isLoggedIn } = checkRecruiterSession();
-
-        if (isLoggedIn) {
-          navigate("/recruiter-dashboard");
+        setIsLoggedIn(true);
+        setRecruiterId(responseData.recruiters_id);
+        if (response.ok) {
+          navigate("/self-employed-dashboard");
         }
       } else {
         toast.error(responseData.message);
@@ -67,12 +61,10 @@ const RecruiterLogin = () => {
 
   return (
     <>
-      {checkRecruiterSession().isLoggedIn && (
-        <Navigate to="/recruiter-dashboard" />
-      )}
+      {isLoggedIn && <Navigate to="/self-employed-dashboard" />}
       <div className="container">
         <section className="recruiters-login">
-          <h1>Recruiter&apos;s Login</h1>
+          <h1>Self Employement&apos;s Login</h1>
           <form className="login-form" onSubmit={handleSubmit}>
             <input
               type="email"

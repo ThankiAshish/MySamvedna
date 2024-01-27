@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const JobSeekerRegister = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     username: "",
@@ -106,7 +108,7 @@ const JobSeekerRegister = () => {
       data.append(key, formData[key]);
     }
 
-    fetch("http://localhost/MySamvedna/api/controllers/jobSeeker.php", {
+    fetch("http://localhost/MySamvedna/api/controllers/jobSeekerRegister.php", {
       method: "POST",
       body: data,
       credentials: "include",
@@ -118,9 +120,9 @@ const JobSeekerRegister = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         if (data.success) {
           toast.success(data.message);
+          navigate("/job-seeker-login");
         } else {
           toast.error(data.message);
         }
@@ -129,8 +131,6 @@ const JobSeekerRegister = () => {
         console.error(error);
         toast.error("An error occurred: " + error.message);
       });
-
-    console.log(formData);
   };
 
   const parseOptions = (htmlString) => {

@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import SessionProvider from "./context/SessionProvider";
+
 import Main from "./layouts/Main";
 import Recruiter from "./layouts/Recruiter";
 
@@ -8,51 +10,78 @@ import Contact from "./pages/Contact";
 import Donate from "./pages/Donate";
 import Gallery from "./pages/Gallery";
 import About from "./pages/About";
-import Login from "./pages/Login";
-import RecruiterLogin from "./pages/RecruiterLogin";
-import JobSeekerLogin from "./pages/JobSeekerLogin";
-import Register from "./pages/Register";
-import RecruiterRegister from "./pages/RecruiterRegister";
-import JobSeekerRegister from "./pages/JobSeekerRegister";
-import SelfEmploymentRegister from "./pages/SelfEmploymentRegister";
-import RecruiterDashboard from "./pages/RecruiterDashboard";
-import ViewJobs from "./pages/ViewJobs";
-import ViewApplications from "./pages/ViewApplications";
-import PostJob from "./pages/PostJob";
 import Search from "./pages/Search";
 
+import Login from "./pages/Login";
+import RecruiterLogin from "./pages/logins/RecruiterLogin";
+import JobSeekerLogin from "./pages/logins/JobSeekerLogin";
+import SelfEmployedLogin from "./pages/logins/SelfEmployedLogin";
+
+import Register from "./pages/Register";
+import RecruiterRegister from "./pages/registers/RecruiterRegister";
+import JobSeekerRegister from "./pages/registers/JobSeekerRegister";
+import SelfEmploymentRegister from "./pages/registers/SelfEmploymentRegister";
+
+import RecruiterDashboard from "./pages/dashboards/RecruiterDashboard";
+import JobSeekerDashboard from "./pages/dashboards/JobSeekerDashboard";
+import SelfEmployedDashboard from "./pages/dashboards/SelfEmployedDashboard";
+
+import ViewJobs from "./pages/ViewJobs";
+import PostJob from "./pages/PostJob";
+
 import NotFound from "./pages/404";
-// import ViewApplication from "./pages/ViewApplication";
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Main />}>
-          <Route index element={<Home />} />
-          <Route path="/donate" element={<Donate />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/recruiter-login" element={<RecruiterLogin />} />
-          <Route path="/seeker-login" element={<JobSeekerLogin />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/recruiter-register" element={<RecruiterRegister />} />
-          <Route path="/seeker-register" element={<JobSeekerRegister />} />
-          <Route path="/self-employment" element={<SelfEmploymentRegister />} />
-          <Route path="/search" element={<Search />} />
-        </Route>
-        <Route path="recruiter-dashboard" element={<Recruiter />}>
-          <Route index element={<RecruiterDashboard />} />
-          <Route path="view-jobs" element={<ViewJobs />} />
-          <Route path="view-applications" element={<ViewApplications />} />
-          {/* <Route path="view-application" element={<ViewApplication />} /> */}
-          <Route path="post-job" element={<PostJob />} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
+    <SessionProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Main />}>
+            <Route index element={<Home />} />
+            <Route path="/donate" element={<Donate />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/search" element={<Search />} />
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/recruiter-login" element={<RecruiterLogin />} />
+            <Route path="/job-seeker-login" element={<JobSeekerLogin />} />
+            <Route
+              path="/self-employment-login"
+              element={<SelfEmployedLogin />}
+            />
+
+            <Route path="/register" element={<Register />} />
+            <Route path="/recruiter-register" element={<RecruiterRegister />} />
+            <Route
+              path="/job-seeker-register"
+              element={<JobSeekerRegister />}
+            />
+            <Route
+              path="/self-employment-register"
+              element={<SelfEmploymentRegister />}
+            />
+          </Route>
+          
+          <Route path="recruiter-dashboard" element={<Recruiter />}>
+            <Route index element={<RecruiterDashboard />} />
+            <Route path="view-jobs" element={<ViewJobs />} />
+            <Route path="post-job" element={<PostJob />} />
+          </Route>
+
+          <Route path="job-seeker-dashboard" element={<Recruiter />}>
+            <Route index element={<JobSeekerDashboard />} />
+          </Route>
+
+          <Route path="self-employed-dashboard" element={<Recruiter />}>
+            <Route index element={<SelfEmployedDashboard />} />
+          </Route>
+          
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+    </SessionProvider>
   );
 };
 

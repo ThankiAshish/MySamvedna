@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { SessionState } from "../../../context/SessionProvider";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import checkRecruiterSession from "../../helpers/CheckSession";
-
 import Logo from "../../assets/images/Logo.png";
 
-const Header = () => {
+const RecruiterHeader = () => {
   const navigate = useNavigate();
+  const { logout } = SessionState();
   const [icon, setIcon] = useState("bars");
 
   useEffect(() => {
@@ -50,12 +52,38 @@ const Header = () => {
     };
   }, []);
 
-  const handleLinkNavigation = (event) => {
+  const handleLinkNavigation = async (event) => {
     event.preventDefault();
     const link = event.currentTarget;
+
+    if (link.getAttribute("href") === "/logout") {
+      const response = await fetch(
+        "http://localhost/MySamvedna/api/controllers/jobSeekerLogout.php",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+
+      if (responseData.success) {
+        toast.success(responseData.message);
+        logout();
+        navigate("/job-seeker-login");
+      } else {
+        console.log(responseData.message);
+        toast.error(responseData.message);
+      }
+      return;
+    }
+
     navigate(link.getAttribute("href"));
   };
-
   return (
     <div className="container">
       <header>
@@ -70,90 +98,29 @@ const Header = () => {
           </li>
           <li>
             <Link
+              to="/job-seeker-dashboard"
               className="nav-link"
-              to="/donate"
               onClick={handleLinkNavigation}
             >
-              Donate
+              Dashboard
             </Link>
           </li>
-          <li>
+          <div className="btn-container">
             <Link
-              className="nav-link"
-              to="/gallery"
+              className="btn"
+              to="/job-seeker-profile"
               onClick={handleLinkNavigation}
             >
-              Gallery
+              Post a Job
             </Link>
-          </li>
-          <li>
             <Link
-              className="nav-link"
-              to="/about"
+              className="btn btn-outline"
+              to="/logout"
               onClick={handleLinkNavigation}
             >
-              About Us
+              Logout
             </Link>
-          </li>
-          <li>
-            <Link
-              className="nav-link"
-              to="/contact"
-              onClick={handleLinkNavigation}
-            >
-              Contact
-            </Link>
-          </li>
-          {checkRecruiterSession().isLoggedIn ? (
-            <>
-              <li>
-                <Link
-                  className="nav-link"
-                  to="/recruiter-dashboard"
-                  onClick={handleLinkNavigation}
-                >
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="nav-link"
-                  to="/search"
-                  onClick={handleLinkNavigation}
-                >
-                  <FontAwesomeIcon icon="search" className="fa-search" />
-                </Link>
-              </li>
-            </>
-          ) : (
-            <>
-              <li>
-                <Link
-                  className="nav-link"
-                  to="/search"
-                  onClick={handleLinkNavigation}
-                >
-                  <FontAwesomeIcon icon="search" className="fa-search" />
-                </Link>
-              </li>
-              <div className="btn-container">
-                <Link
-                  className="btn btn-outline"
-                  to="/register"
-                  onClick={handleLinkNavigation}
-                >
-                  Register
-                </Link>
-                <Link
-                  className="btn"
-                  to="/login"
-                  onClick={handleLinkNavigation}
-                >
-                  Login
-                </Link>
-              </div>
-            </>
-          )}
+          </div>
         </ul>
         <FontAwesomeIcon
           icon={icon}
@@ -168,4 +135,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default RecruiterHeader;

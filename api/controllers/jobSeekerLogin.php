@@ -4,7 +4,7 @@ include '../includes/config.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  if (isset($_SESSION['recruiters_id'])) {
+  if (isset($_SESSION['job_seekers_id'])) {
     $response = array(
       'success' => false,
       'message' => 'Already logged in!',
@@ -15,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } else {
     $email = $_POST['email'];
     $password = $_POST['password'];
-
-    $stmt = $conn->prepare("SELECT * FROM recruiters WHERE email = ?");
+    
+    $stmt = $conn->prepare("SELECT * FROM job_seeker WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
 
@@ -25,12 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $recruiter = $result->fetch_assoc();
       if ($password === $recruiter['password']) {
 
-        $_SESSION['recruiters_id'] = $recruiter['recruiters_id'];
+        $_SESSION['job_seeker_id'] = $recruiter['job_seeker_id'];
 
         $response = array(
           'success' => true,
           'message' => 'Login Successful!',
-          "recruiters_id" => $recruiter['recruiters_id'],
+          "job_seeker_id" => $recruiter['job_seeker_id'],
         );
       } else {
         $response = array(

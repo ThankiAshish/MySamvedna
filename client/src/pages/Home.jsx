@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-// import { Navigate } from "react-router-dom";
 
 import CustomCarousel from "./components/CustomCarousel";
 

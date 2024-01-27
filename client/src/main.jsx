@@ -18,24 +18,20 @@ import App from "./App.jsx";
 import "./assets/styles/style.css";
 import "./assets/styles/queries.css";
 
-import SessionProvider from "./context/SessionProvider.jsx";
-
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<SessionProvider>
-			<ToastContainer
-				position="top-center"
-				autoClose={5000}
-				hideProgressBar={false}
-				newestOnTop={false}
-				closeOnClick={true}
-				rtl={false}
-				pauseOnFocusLoss={true}
-				draggable={true}
-				pauseOnHover={true}
-				theme="light"
-			/>
-			<App />
-		</SessionProvider>
+		<ToastContainer
+			position="top-center"
+			autoClose={5000}
+			hideProgressBar={false}
+			newestOnTop={false}
+			closeOnClick={true}
+			rtl={false}
+			pauseOnFocusLoss={true}
+			draggable={true}
+			pauseOnHover={true}
+			theme="light"
+		/>
+		<App />
 	</React.StrictMode>
 );

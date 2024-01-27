@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import RecruiterHeader from "../pages/components/RecruiterHeader";
+import RecruiterHeader from "../pages/components/headers/RecruiterHeader";
 import Footer from "../pages/components/Footer";
 
 const Recruiter = () => {
