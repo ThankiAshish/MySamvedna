@@ -16,21 +16,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
     
-    $stmt = $conn->prepare("SELECT * FROM job_seeker WHERE email = ?");
+    $stmt = $conn->prepare("SELECT * FROM job_seekers WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
 
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
-      $recruiter = $result->fetch_assoc();
-      if ($password === $recruiter['password']) {
+      $job_seeker = $result->fetch_assoc();
+      if ($password === $job_seeker['password']) {
 
-        $_SESSION['job_seeker_id'] = $recruiter['job_seeker_id'];
+        $_SESSION['job_seeker_id'] = $job_seeker['job_seeker_id'];
 
         $response = array(
           'success' => true,
           'message' => 'Login Successful!',
-          "job_seeker_id" => $recruiter['job_seeker_id'],
+          "job_seeker_id" => $job_seeker['job_seeker_id'],
         );
       } else {
         $response = array(

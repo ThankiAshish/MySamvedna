@@ -4,7 +4,7 @@ include '../includes/config.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_SESSION['job_seekers_id'])) {
+    if (isset($_SESSION['job_seeker_id'])) {
         session_destroy();
         $response = array(
             'success' => true,

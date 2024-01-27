@@ -6,7 +6,7 @@ import { SessionState } from "../../../context/SessionProvider";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Logo from "../../assets/images/Logo.png";
+import Logo from "../../../assets/images/logo.png";
 
 const RecruiterHeader = () => {
   const navigate = useNavigate();
@@ -108,10 +108,10 @@ const RecruiterHeader = () => {
           <div className="btn-container">
             <Link
               className="btn"
-              to="/job-seeker-profile"
+              to="/view-jobs"
               onClick={handleLinkNavigation}
             >
-              Post a Job
+              View Jobs
             </Link>
             <Link
               className="btn btn-outline"

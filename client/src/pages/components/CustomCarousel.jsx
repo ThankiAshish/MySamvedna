@@ -37,24 +37,9 @@ const CustomCarousel = () => {
           <section className="register-type-container self-employed slider-2">
             <div className="register-type">
               <h1>Are you Self-Employed?</h1>
-              <div
-                className="btn-container"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "1rem",
-                }}
-              >
-                <Link to="/self-employment-register">
-                  <button className="btn">Self Employed Register</button>
-                </Link>
-                <Link to="/self-employment-login">
-                  <button className="btn btn-outline">
-                    Self Employed Login
-                  </button>
-                </Link>
-              </div>
+              <Link to="/self-employment-register">
+                <button className="btn">Self Employed Register</button>
+              </Link>
             </div>
           </section>
         </Slide>

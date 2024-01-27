@@ -4,6 +4,7 @@ import SessionProvider from "./context/SessionProvider";
 
 import Main from "./layouts/Main";
 import Recruiter from "./layouts/Recruiter";
+import JobSeeker from "./layouts/JobSeeker";
 
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
@@ -15,7 +16,6 @@ import Search from "./pages/Search";
 import Login from "./pages/Login";
 import RecruiterLogin from "./pages/logins/RecruiterLogin";
 import JobSeekerLogin from "./pages/logins/JobSeekerLogin";
-import SelfEmployedLogin from "./pages/logins/SelfEmployedLogin";
 
 import Register from "./pages/Register";
 import RecruiterRegister from "./pages/registers/RecruiterRegister";
@@ -47,10 +47,6 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/recruiter-login" element={<RecruiterLogin />} />
             <Route path="/job-seeker-login" element={<JobSeekerLogin />} />
-            <Route
-              path="/self-employment-login"
-              element={<SelfEmployedLogin />}
-            />
 
             <Route path="/register" element={<Register />} />
             <Route path="/recruiter-register" element={<RecruiterRegister />} />
@@ -70,7 +66,7 @@ const App = () => {
             <Route path="post-job" element={<PostJob />} />
           </Route>
 
-          <Route path="job-seeker-dashboard" element={<Recruiter />}>
+          <Route path="job-seeker-dashboard" element={<JobSeeker />}>
             <Route index element={<JobSeekerDashboard />} />
           </Route>
 
