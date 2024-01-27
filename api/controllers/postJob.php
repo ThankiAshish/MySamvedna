@@ -1,115 +1,193 @@
 <?php
+header('Content-Type: application/json');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 include '../includes/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $conn->prepare("SELECT * FROM recruiters where recruiters_id = ?");
     $stmt->bind_param("s", $_POST['recruiter_id']);
     $stmt->execute();
-    
+
     $result = $stmt->get_result();
-    
+
     if ($result->num_rows < 1) {
         $message = 'Recruiter does not exist';
         $response = array(
             'success' => false,
             'message' => $message,
         );
-        
+
         header('Content-Type: application/json');
         $jsonResponse = json_encode($response);
         echo $jsonResponse;
         exit();
     }
-    
-    $query = "INSERT INTO job (
-        `recruiters_id`, `companyName`, `website`, `natureOfBusiness`, 
-        `address`, `fax`, `areaCode`, `landline`, `mobile`, 
-        `email`, `employerName`, `companyDescription`, `jobDesignation`, `jobType`, 
-        `dutyDescription`, `essentialQualificationEssential`, `essentialQualificationDesirable`, `ageLimit`, `womenEligible`, 
-        `workingHoursFrom`, `workingHoursTo`, `vacanciesRegular`, `vacanciesTemporary`, `payAndAllowances`, 
-        `placeOfWork`, `resumesToBeSent`, `resumeEmail`, `interviewDetailsDate`, `interviewDetailsTime`, 
-        `interviewDetailsAptitudeTest`, `interviewDetailsTechnicalTest`, `interviewDetailsGroupDiscussion`, `interviewDetailsPersonalInterview`, `interviewDetailsTopics`, 
-        `interviewDetailsContactPerson`, `disabilityInfoType`, `disabilityInfoPercentage`, `disabilityInfoAidOrAppliance`, `ownVehiclePreferred`, 
-        `conveyanceProvided`, `conveyanceType`, `otherInformation`) 
-        VALUES (
-            ?,?,?,?,
-            ?,?,?,?,?,
-            ?,?,?,?,?,
-            ?,?,?,?,?,
-            ?,?,?,?,?,
-            ?,?,?,?,?,
-            ?,?,?,?,?,
-            ?,?,?,?,?,
-            ?,?,?)";
 
-    print_r($stmt = $conn->prepare($query));
-    die();
+    try {
+        $companyName = $_POST['companyName'];
+        $website = $_POST['website'];
+        $natureOfBusiness = $_POST['natureOfBusiness'];
+        $address = $_POST['address'];
+        $fax = $_POST['fax'];
+        $areaCode = $_POST['areaCode'];
+        $landline = $_POST['landline'];
+        $mobile = $_POST['mobile'];
+        $email = $_POST['email'];
+        $employerName = $_POST['employerName'];
+        $companyDescription = $_POST['companyDescription'];
+        $jobDesignation = $_POST['jobDesignation'];
+        $jobType = $_POST['jobType'];
+        $dutyDescription = $_POST['dutyDescription'];
+        $essentialQualificationEssential = $_POST['essentialQualificationEssential'];
+        $essentialQualificationDesirable = $_POST['essentialQualificationDesirable'];
+        $ageLimit = $_POST['ageLimit'];
+        $womenEligible = boolval($_POST['womenEligible']);
+        $workingHoursFrom = $_POST['workingHoursFrom'];
+        $workingHoursTo = $_POST['workingHoursTo'];
+        $vacanciesRegular = $_POST['vacanciesRegular'];
+        $vacanciesTemporary = $_POST['vacanciesTemporary'];
+        $payAndAllowances = $_POST['payAndAllowances'];
+        $placeOfWork = $_POST['placeOfWork'];
+        $resumesToBeSent = $_POST['resumesToBeSent'];
+        $resumeEmail = $_POST['resumeEmail'];
+        $interviewDetailsDate = $_POST['interviewDetailsDate'];
+        $interviewDetailsTime = $_POST['interviewDetailsTime'];
+        $interviewDetailsAptitudeTest = $_POST['interviewDetailsAptitudeTest'];
+        $interviewDetailsTechnicalTest = $_POST['interviewDetailsTechnicalTest'];
+        $interviewDetailsGroupDiscussion = $_POST['interviewDetailsGroupDiscussion'];
+        $interviewDetailsPersonalInterview = $_POST['interviewDetailsPersonalInterview'];
+        $interviewDetailsTopics = $_POST['interviewDetailsTopics'];
+        $interviewDetailsContactPerson = $_POST['interviewDetailsContactPerson'];
+        $disabilityInfoType = $_POST['disabilityInfoType'];
+        $disabilityInfoPercentage = $_POST['disabilityInfoPercentage'];
+        $disabilityInfoAidOrAppliance = $_POST['disabilityInfoAidOrAppliance'];
+        $ownVehiclePreferred = $_POST['ownVehiclePreferred'];
+        $conveyanceProvided = $_POST['conveyanceProvided'];
+        $conveyanceType = $_POST['conveyanceType'];
+        $otherInformation = $_POST['otherInformation'];
 
-    $stmt->bind_param(
-        "ssss
-         sssss
-         sssss
-         sssss
-         sssss
-         sssss
-         sssss
-         sssss
-         sss",
-        $_POST['recruiters_id'],
-        $_POST['companyName'],
-        $_POST['website'],
-        $_POST['natureOfBusiness'],
-        $_POST['address'],
-        $_POST['fax'],
-        $_POST['areaCode'],
-        $_POST['landline'],
-        $_POST['mobile'],
-        $_POST['email'],
-        $_POST['employerName'],
-        $_POST['companyDescription'],
-        $_POST['jobDesignation'],
-        $_POST['jobType'],
-        $_POST['dutyDescription'],
-        $_POST['essentialQualificationEssential'],
-        $_POST['essentialQualificationDesirable'],
-        $_POST['ageLimit'],
-        $_POST['womenEligible'],
-        $_POST['workingHoursFrom'],
-        $_POST['workingHoursTo'],
-        $_POST['vacanciesRegular'],
-        $_POST['vacanciesTemporary'],
-        $_POST['payAndAllowances'],
-        $_POST['placeOfWork'],
-        $_POST['resumesToBeSent'],
-        $_POST['resumeEmail'],
-        $_POST['interviewDetailsDate'],
-        $_POST['interviewDetailsTime'],
-        $_POST['interviewDetailsAptitudeTest'],
-        $_POST['interviewDetailsTechnicalTest'],
-        $_POST['interviewDetailsGroupDiscussion'],
-        $_POST['interviewDetailsPersonalInterview'],
-        $_POST['interviewDetailsTopics'],
-        $_POST['interviewDetailsContactPerson'],
-        $_POST['disabilityInfoType'],
-        $_POST['disabilityInfoPercentage'],
-        $_POST['disabilityInfoAidOrAppliance'],
-        $_POST['ownVehiclePreferred'],
-        $_POST['conveyanceProvided'],
-        $_POST['conveyanceType'],
-        $_POST['otherInformation']
-    );
 
-    $stmt->execute();
+        $query = "INSERT INTO job (
+            `recruiters_id`, `companyName`, `website`, `natureOfBusiness`, `address`,
+            `fax`, `areaCode`, `landline`, `mobile`, `email`,
+            `employerName`, `companyDescription`, `jobDesignation`, `jobType`, `dutyDescription`,
+            `essentialQualificationEssential`, `essentialQualificationDesirable`, `ageLimit`, `womenEligible`, `workingHoursFrom`,
+            `workingHoursTo`, `vacanciesRegular`, `vacanciesTemporary`, `payAndAllowances`, `placeOfWork`,
+            `resumesToBeSent`, `resumeEmail`, `interviewDetailsDate`, `interviewDetailsTime`, `interviewDetailsAptitudeTest`,
+            `interviewDetailsTechnicalTest`, `interviewDetailsGroupDiscussion`, `interviewDetailsPersonalInterview`, `interviewDetailsTopics`, `interviewDetailsContactPerson`,
+            `disabilityInfoType`, `disabilityInfoPercentage`, `disabilityInfoAidOrAppliance`, `ownVehiclePreferred`, `conveyanceProvided`,
+            `conveyanceType`, `otherInformation`
+            ) VALUES (
+                ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?,
+                ?, ?
+            )";
+        $stmt2 = $conn->prepare($query);
 
-    $message = 'Job posted successfully';
-    $response = array(
-        'success' => true,
-        'message' => $message,
-    );
+        if ($stmt2 === false) {
+            die('prepare() failed: ' . htmlspecialchars($conn->error));
+        }
 
-    header('Content-Type: application/json');
-    $jsonResponse = json_encode($response);
-    echo $jsonResponse;
+        $bind_result = $stmt2->bind_param(
+            "sssss
+             sssss
+             sssss
+             sssis
+             sssss
+             sssss
+             sssss
+             sssss
+             ss",
+            $_POST['recruiter_id'],
+            $companyName,
+            $website,
+            $natureOfBusiness,
+            $address,
+            $fax,
+            $areaCode,
+            $landline,
+            $mobile,
+            $email,
+            $employerName,
+            $companyDescription,
+            $jobDesignation,
+            $jobType,
+            $dutyDescription,
+            $essentialQualificationEssential,
+            $essentialQualificationDesirable,
+            $ageLimit,
+            $womenEligible,
+            $workingHoursFrom,
+            $workingHoursTo,
+            $vacanciesRegular,
+            $vacanciesTemporary,
+            $payAndAllowances,
+            $placeOfWork,
+            $resumesToBeSent,
+            $resumeEmail,
+            $interviewDetailsDate,
+            $interviewDetailsTime,
+            $interviewDetailsAptitudeTest,
+            $interviewDetailsTechnicalTest,
+            $interviewDetailsGroupDiscussion,
+            $interviewDetailsPersonalInterview,
+            $interviewDetailsTopics,
+            $interviewDetailsContactPerson,
+            $disabilityInfoType,
+            $disabilityInfoPercentage,
+            $disabilityInfoAidOrAppliance,
+            $ownVehiclePreferred,
+            $conveyanceProvided,
+            $conveyanceType,
+            $otherInformation
+        );
+
+        if ($bind_result === false) {
+            die('bind_param() failed: ' . htmlspecialchars($stmt2->error));
+        }
+
+        $execute_result = $stmt2->execute();
+        if ($execute_result === false) {
+            die('execute() failed: ' . htmlspecialchars($stmt2->error));
+        }
+
+        $message = "Job posted successfully";
+        $response = array(
+            'success' => true,
+            'message' => $message,
+        );
+
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    } catch (Exception $e) {
+        $message = 'Error: ' . $e->getMessage();
+        $response = array(
+            'success' => false,
+            'message' => $message,
+        );
+
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    } finally {
+        if (!isset($response)) {
+            $message = 'Unknown error';
+            $response = array(
+                'success' => false,
+                'message' => $message,
+            );
+
+            header('Content-Type: application/json');
+            echo json_encode($response);
+        }
+    }
 } else {
     $message = 'Invalid request method';
     $response = array(

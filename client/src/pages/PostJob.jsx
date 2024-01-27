@@ -167,7 +167,7 @@ const PostJob = () => {
     const flattenedData = flattenData(formData);
 
     const data = new FormData();
-    data.append("recruiter_id", parseInt(recruiterId));
+    data.append("recruiter_id", recruiterId);
 
     for (const key in flattenedData) {
       data.append(key, flattenedData[key]);
@@ -178,23 +178,15 @@ const PostJob = () => {
       body: data,
       credentials: "include",
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
+      .then((res) => {
+        return res.json();
       })
       .then((data) => {
         console.log(data);
-        if (data.success) {
-          //   toast.success(data.message);
-        } else {
-          toast.error(data.message);
-        }
       })
-      .catch((error) => {
-        console.error(error);
-        toast.error("An error occurred: " + error.message);
+      .catch((err) => {
+        console.log(err);
+        toast.error("Something went wrong");
       });
   };
 

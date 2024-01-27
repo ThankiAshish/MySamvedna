@@ -13,8 +13,6 @@ const Header = () => {
   const { isLoggedIn, recruiterId, jobSeekerId, selfEmployedId } =
     SessionState();
 
-  console.log(recruiterId, jobSeekerId, selfEmployedId, isLoggedIn);
-
   useEffect(() => {
     window.addEventListener("resize", () => {
       if (window.innerWidth > 920) {
