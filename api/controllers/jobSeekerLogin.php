@@ -1,8 +1,6 @@
 <?php
 include '../includes/config.php';
 
-session_start();
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_SESSION['job_seekers_id'])) {
     $response = array(

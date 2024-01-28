@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
-import Cookies from "js-cookie";
 
 const SessionContext = createContext();
 
@@ -35,10 +34,6 @@ const SessionProvider = ({ children }) => {
         setRecruiterId(null);
         setJobSeekerId(null);
         setSelfEmployedId(null);
-        Cookies.remove("isLoggedIn");
-        Cookies.remove("recruiterId");
-        Cookies.remove("jobSeekerId");
-        Cookies.remove("selfEmployedId");
         return data.success;
       } else {
         console.log(data.message);
@@ -71,10 +66,10 @@ const SessionProvider = ({ children }) => {
         setJobSeekerId(null);
         setSelfEmployedId(null);
       }
-      setIsLoading(false); // Set isLoading to false after checkLogin has completed
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
-      setIsLoading(false); // Also set isLoading to false in case of error
+      setIsLoading(false);
     }
   };
 
@@ -85,7 +80,7 @@ const SessionProvider = ({ children }) => {
   return (
     <SessionContext.Provider
       value={{
-        isLoading, // Add isLoading to context
+        isLoading,
         isLoggedIn,
         setIsLoggedIn,
         recruiterId,
@@ -95,6 +90,7 @@ const SessionProvider = ({ children }) => {
         selfEmployedId,
         setSelfEmployedId,
         logout,
+        checkLogin
       }}
     >
       {children}

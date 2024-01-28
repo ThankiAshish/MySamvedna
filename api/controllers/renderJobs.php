@@ -1,6 +1,5 @@
 <?php
 include "../includes/config.php";
-session_start();
 
 function handleError($message)
 {

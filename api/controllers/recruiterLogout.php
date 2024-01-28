@@ -1,8 +1,6 @@
 <?php
 include '../includes/config.php';
 
-session_start();
-
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_SESSION['recruiters_id'])) {
         session_unset();

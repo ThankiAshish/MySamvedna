@@ -2,14 +2,15 @@
 include '../includes/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $stmt = $conn->prepare("SELECT * FROM job_seekers where email = ?");
-    $stmt->bind_param("s", $_POST['email']);
+
+    $stmt = $conn->prepare("SELECT * FROM job_seekers where job_seeker_id = ?");
+    $stmt->bind_param("s", $_POST['job_seeker_id']);
     $stmt->execute();
 
     $result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-        $message = 'Email already exists';
+    if ($result->num_rows < 1) {
+        $message = 'Job Seeker does not exist';
         $response = array(
             'success' => false,
             'message' => $message,
@@ -20,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo $jsonResponse;
         exit();
     }
+
 
     $email = $_POST['email'];
     $username = $_POST['username'];
@@ -47,22 +49,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $threeWheeler = $_POST['threeWheeler'];
     $car = $_POST['car'];
     $specializationInDisability =  $_POST['specializationInDisability'];
+    $jobSeekerId = $_POST['job_seeker_id'];
 
-    $sql = "INSERT INTO `job_seeker`(`email`, `username`, `password`, `name`,`lastName`,
-     `dob`, `gender`, `permanentAddress`, `currentAddress`,`city`,
-      `state`, `postalCode`, `country`, `contactNumber`,`whatsappNumber`,
-       `jobAlerts`, `homePhone`, `addHomePhone`, `qualification`,`educationSpecialization`,
-        `experienceAndAppliance`, `yesNoQuestion`, `twoWheeler`, `threeWheeler`, `car`, `specializationInDisability`) VALUES
-         (?,?,?,?,?,?
-         ,?,?,?,?,?,?
-         ,?,?,?,?,?,?,
-         ?,?,?,?,?,?,
-         ?,?)";
+    $sql = "UPDATE `job_seekers` SET 
+    `email`= ?,
+    `username`= ?,
+    `password`= ?,
+    `name`= ?,
+    `lastName`= ?,
+    `dob`= ?,
+    `gender`= ?,
+    `permanentAddress`= ?,
+    `currentAddress`= ?,
+    `city`= ?,
+    `state`= ?,
+    `postalCode`= ?,
+    `country`= ?,
+    `contactNumber`= ?,
+    `whatsappNumber`= ?,
+    `jobAlerts`= ?,
+    `homePhone`= ?,
+    `addHomePhone`= ?,
+    `qualification`= ?,
+    `educationSpecialization`= ?,
+    `experienceAndAppliance`= ?,
+    `yesNoQuestion`= ?,
+    `twoWheeler`= ?,
+    `threeWheeler`= ?,
+    `car`= ?,
+    `specializationInDisability`= ? 
+    WHERE 
+    job_seeker_id = ?";
 
     $stmt = $conn->prepare($sql);
 
     $stmt->bind_param(
-        "ssssssssssssssssssssssssss",
+        "sssssssssssssssssssssssssss",
         $email,
         $username,
         $password,
@@ -88,22 +110,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $twoWheeler,
         $threeWheeler,
         $car,
-        $specializationInDisability
+        $specializationInDisability,
+        $jobSeekerId
     );
 
-
-    if (!$stmt->execute()) {
-        die('Error in execute statement: ' . $stmt->error);
-    } else {
-        $message = 'Registration Successful!';
+    if ($stmt->execute()) {
+        $message = "Job Seeker Data Updated successfully";
         $response = array(
             'success' => true,
             'message' => $message,
         );
 
         header('Content-Type: application/json');
-        $jsonResponse = json_encode($response);
-        echo $jsonResponse;
+        echo json_encode($response);
+        exit();
+    } else {
+        $message = "Job Seeker Data could not be updated";
+        $response = array(
+            'success' => false,
+            'message' => $message,
+        );
+
+        header('Content-Type: application/json');
+        echo json_encode($response);
+        exit();
     }
 
     $stmt->close();

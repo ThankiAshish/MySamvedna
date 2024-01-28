@@ -9,9 +9,10 @@ function handleError($message)
 }
 
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
-    $query = "SELECT * FROM `job` WHERE `job_id` = ?";
+    $query = "SELECT * FROM `job_seekers` WHERE `job_seeker_id` = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("s", $_GET['job_id']);
+    $stmt->bind_param("s", $_SESSION['job_seeker_id']);
+
 
     try {
         $stmt->execute();
@@ -21,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 
         $response = array(
             'success' => true,
-            'message' => 'Jobs found!',
-            'job' => $rows,
+            'message' => 'User Found!',
+            'jobSeeker' => $rows,
         );
 
         header('Content-Type: application/json');

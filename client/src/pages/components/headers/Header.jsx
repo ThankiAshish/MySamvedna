@@ -10,10 +10,12 @@ import Logo from "../../../assets/images/Logo.png";
 const Header = () => {
   const navigate = useNavigate();
   const [icon, setIcon] = useState("bars");
-  const { isLoggedIn, recruiterId, jobSeekerId, selfEmployedId } =
+  const { isLoggedIn, recruiterId, jobSeekerId, selfEmployedId, checkLogin } =
     SessionState();
 
   useEffect(() => {
+    checkLogin();
+
     window.addEventListener("resize", () => {
       if (window.innerWidth > 920) {
         document.querySelector(".nav-links").classList.remove("active");
