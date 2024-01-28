@@ -5,10 +5,38 @@ import { toast } from "react-toastify";
 import { SessionState } from "../context/SessionProvider";
 
 const ViewJobs = () => {
-  const { isLoggedIn } = SessionState();
+  const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } =
+    SessionState();
   const [jobs, setJobs] = useState([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (data.is_logged_in) {
+          setIsLoggedIn(true);
+          setRecruiterId(data.recruiters_id);
+        } else {
+          setIsLoggedIn(false);
+          setRecruiterId(null);
+          navigate("/recruiter-login");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId, navigate]);
 
   useEffect(() => {
     fetch("http://localhost/MySamvedna/api/controllers/renderJobs.php", {

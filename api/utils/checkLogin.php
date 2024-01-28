@@ -9,16 +9,21 @@ session_start();
 function checkSession($sessionKey)
 {
     if (isset($_SESSION[$sessionKey])) {
-        return array('is_logged_in' => true, $sessionKey => $_SESSION[$sessionKey]);
+        return $_SESSION[$sessionKey];
     } else {
-        return array('is_logged_in' => false, $sessionKey => null);
+        return null;
     }
 }
 
-$response = array_merge(
-    checkSession('self_employed_id'),
-    checkSession('job_seekers_id'),
-    checkSession('recruiters_id')
+$response = array(
+    'is_logged_in' => false,  // Initially set to false
+    'self_employed_id' => checkSession('self_employed_id'),
+    'job_seekers_id' => checkSession('job_seekers_id'),
+    'recruiters_id' => checkSession('recruiters_id')
 );
+
+if (!empty($response['self_employed_id']) || !empty($response['job_seekers_id']) || !empty($response['recruiters_id'])) {
+    $response['is_logged_in'] = true;
+}
 
 echo json_encode($response);

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { SessionState } from "../../context/SessionProvider";
 
 const JobSeekerDashboard = () => {
-  const { isLoggedIn, jobSeekerId, isLoading } = SessionState();
+  const { isLoggedIn, setIsLoggedIn, setJobSeekerId } = SessionState();
   const [jobSeeker, setJobSeeker] = useState({});
 
   const [countries, setCountries] = useState([]);
@@ -13,6 +13,33 @@ const JobSeekerDashboard = () => {
   const [cities, setCities] = useState([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (data.is_logged_in) {
+          setIsLoggedIn(true);
+          setJobSeekerId(data.job_seekers_id);
+        } else {
+          setIsLoggedIn(false);
+          setJobSeekerId(null);
+          navigate("/job-seeker-login");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [isLoggedIn, setIsLoggedIn, setJobSeekerId, navigate]);
 
   useEffect(() => {
     fetch(
@@ -29,6 +56,7 @@ const JobSeekerDashboard = () => {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         if (data.success) {
           setJobSeeker(data.jobSeeker[0]);
         } else {
@@ -51,7 +79,7 @@ const JobSeekerDashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (jobSeeker.country) {
+    if (jobSeeker && jobSeeker.country) {
       fetch(
         `http://localhost/MySamvedna/api/controllers/getState.php?country_id=${jobSeeker.country}`
       )
@@ -62,10 +90,10 @@ const JobSeekerDashboard = () => {
         })
         .catch((error) => console.error(error));
     }
-  }, [jobSeeker.country]);
+  }, [jobSeeker]);
 
   useEffect(() => {
-    if (jobSeeker.state) {
+    if (jobSeeker && jobSeeker.state) {
       fetch(
         `http://localhost/MySamvedna/api/controllers/getCity.php?state_id=${jobSeeker.state}`
       )
@@ -76,7 +104,7 @@ const JobSeekerDashboard = () => {
         })
         .catch((error) => console.error(error));
     }
-  }, [jobSeeker.state]);
+  }, [jobSeeker]);
 
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -97,6 +125,7 @@ const JobSeekerDashboard = () => {
     for (const key in jobSeeker) {
       data.append(key, jobSeeker[key]);
     }
+
 
     fetch(
       "http://localhost/MySamvedna/api/controllers/editJobSeekerData.php",
@@ -136,15 +165,8 @@ const JobSeekerDashboard = () => {
     }));
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
-      {!isLoggedIn || jobSeekerId === null ? (
-        <Navigate to="/job-seeker-login" />
-      ) : null}
       <div>
         <div className="container">
           <section className="job-seeker-register">
@@ -165,7 +187,7 @@ const JobSeekerDashboard = () => {
                   id="email"
                   name="email"
                   placeholder="Enter Email Address"
-                  value={jobSeeker.email}
+                  value={jobSeeker && jobSeeker.email}
                   onChange={handleInputChange}
                   required
                 />
@@ -175,7 +197,7 @@ const JobSeekerDashboard = () => {
                   id="username"
                   name="username"
                   placeholder="Enter Desired Username/ID"
-                  value={jobSeeker.username}
+                  value={jobSeeker && jobSeeker.username}
                   onChange={handleInputChange}
                   required
                 />
@@ -185,7 +207,7 @@ const JobSeekerDashboard = () => {
                   id="password"
                   name="password"
                   placeholder="Enter Password"
-                  value={jobSeeker.password}
+                  value={jobSeeker && jobSeeker.password}
                   onChange={handleInputChange}
                   required
                 />
@@ -199,7 +221,7 @@ const JobSeekerDashboard = () => {
                   id="name"
                   name="name"
                   placeholder="Name"
-                  value={jobSeeker.name}
+                  value={jobSeeker && jobSeeker.name}
                   onChange={handleInputChange}
                   required
                 />
@@ -209,7 +231,7 @@ const JobSeekerDashboard = () => {
                   id="lastName"
                   name="lastName"
                   placeholder="Last name"
-                  value={jobSeeker.lastName}
+                  value={jobSeeker && jobSeeker.lastName}
                   onChange={handleInputChange}
                   required
                 />
@@ -219,7 +241,7 @@ const JobSeekerDashboard = () => {
                   id="dob"
                   name="dob"
                   placeholder="Date of birth"
-                  value={jobSeeker.dob}
+                  value={jobSeeker && jobSeeker.dob}
                   onChange={handleInputChange}
                   required
                 />
@@ -252,24 +274,24 @@ const JobSeekerDashboard = () => {
                   name="permanentAddress"
                   placeholder="Permanent Address"
                   onChange={handleInputChange}
-                  value={jobSeeker.permanentAddress}
+                  value={jobSeeker && jobSeeker.permanentAddress}
                   required
                 >{
-                  jobSeeker.permanentAddress
+                  jobSeeker && jobSeeker.permanentAddress
                 }</textarea>
 
                 <textarea
                   id="currentAddress"
                   name="currentAddress"
                   placeholder="Current Address"
-                  value={jobSeeker.currentAddress}
+                  value={jobSeeker && jobSeeker.currentAddress}
                   onChange={handleInputChange}
                   required
                 ></textarea>
 
                 <select
                   name="country"
-                  value={jobSeeker.country}
+                  value={jobSeeker && jobSeeker.country}
                   onChange={handleInputChange}
                 >
                   {countries.map((country, index) => (
@@ -283,7 +305,7 @@ const JobSeekerDashboard = () => {
                 </select>
                 <select
                   name="state"
-                  value={jobSeeker.state}
+                  value={jobSeeker && jobSeeker.state}
                   onChange={handleInputChange}
                 >
                   {states.map((state, index) => (
@@ -294,7 +316,7 @@ const JobSeekerDashboard = () => {
                 </select>
                 <select
                   name="city"
-                  value={jobSeeker.city}
+                  value={jobSeeker && jobSeeker.city}
                   onChange={handleInputChange}
                 >
                   {cities.map((city, index) => (
@@ -309,7 +331,7 @@ const JobSeekerDashboard = () => {
                   id="postalCode"
                   name="postalCode"
                   placeholder="Postal code"
-                  value={jobSeeker.postalCode}
+                  value={jobSeeker && jobSeeker.postalCode}
                   onChange={handleInputChange}
                   required
                 />
@@ -323,7 +345,7 @@ const JobSeekerDashboard = () => {
                   id="contactNumber"
                   name="contactNumber"
                   placeholder="Enter Contact Number"
-                  value={jobSeeker.contactNumber}
+                  value={jobSeeker && jobSeeker.contactNumber}
                   onChange={handleInputChange}
                   required
                 />
@@ -333,7 +355,7 @@ const JobSeekerDashboard = () => {
                   id="whatsappNumber"
                   name="whatsappNumber"
                   placeholder="Enter WhatsApp Number"
-                  value={jobSeeker.whatsappNumber}
+                  value={jobSeeker && jobSeeker.whatsappNumber}
                   onChange={handleInputChange}
                   required
                 />
@@ -355,7 +377,7 @@ const JobSeekerDashboard = () => {
                   id="homePhone"
                   name="homePhone"
                   placeholder="Home Phone"
-                  value={jobSeeker.homePhone}
+                  value={jobSeeker && jobSeeker.homePhone}
                   onChange={handleInputChange}
                   required
                 />
@@ -365,7 +387,7 @@ const JobSeekerDashboard = () => {
                   id="addHomePhone"
                   name="addHomePhone"
                   placeholder="Add another phone number"
-                  value={jobSeeker.addHomePhone}
+                  value={jobSeeker && jobSeeker.addHomePhone}
                   onChange={handleInputChange}
                   required
                 />
@@ -440,7 +462,7 @@ const JobSeekerDashboard = () => {
                   id="experienceAndAppliance"
                   name="experienceAndAppliance"
                   placeholder="Enter Experience and Appliance"
-                  value={jobSeeker.experienceAndAppliance}
+                  value={jobSeeker && jobSeeker.experienceAndAppliance}
                   onChange={handleInputChange}
                   required
                 ></textarea>
@@ -465,13 +487,13 @@ const JobSeekerDashboard = () => {
                     <option value="no">No</option>
                   </select>
                 </div>
-                {jobSeeker.yesNoQuestion === "yes" && (
+                {jobSeeker && jobSeeker.yesNoQuestion === "yes" && (
                   <div className="input-group">
                     <input
                       type="checkbox"
                       id="twoWheeler"
                       name="twoWheeler"
-                      checked={jobSeeker.twoWheeler}
+                      checked={jobSeeker && jobSeeker.twoWheeler}
                       onChange={handleInputChange}
                     />
                     <label htmlFor="twoWheeler">Two-Wheeler</label>
@@ -480,7 +502,7 @@ const JobSeekerDashboard = () => {
                       type="checkbox"
                       id="threeWheeler"
                       name="threeWheeler"
-                      checked={jobSeeker.threeWheeler}
+                      checked={jobSeeker && jobSeeker.threeWheeler}
                       onChange={handleInputChange}
                     />
                     <label htmlFor="threeWheeler">Three-Wheeler</label>
@@ -489,7 +511,7 @@ const JobSeekerDashboard = () => {
                       type="checkbox"
                       id="car"
                       name="car"
-                      checked={jobSeeker.car}
+                      checked={jobSeeker && jobSeeker.car}
                       onChange={handleInputChange}
                     />
                     <label htmlFor="car">Car</label>
@@ -517,7 +539,7 @@ const JobSeekerDashboard = () => {
                   id="specializationInDisability"
                   name="specializationInDisability"
                   placeholder="Enter Specialization in Disability Area"
-                  value={jobSeeker.specializationInDisability}
+                  value={jobSeeker && jobSeeker.specializationInDisability}
                   onChange={handleInputChange}
                   required
                 />

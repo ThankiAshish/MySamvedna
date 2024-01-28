@@ -10,11 +10,45 @@ import Logo from "../../../assets/images/Logo.png";
 const Header = () => {
   const navigate = useNavigate();
   const [icon, setIcon] = useState("bars");
-  const { isLoggedIn, recruiterId, jobSeekerId, selfEmployedId, checkLogin } =
-    SessionState();
+  const {
+    isLoggedIn,
+    setIsLoggedIn,
+    recruiterId,
+    setRecruiterId,
+    jobSeekerId,
+    setJobSeekerId,
+    selfEmployedId,
+    setSelfEmployedId,
+  } = SessionState();
 
   useEffect(() => {
-    checkLogin();
+    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (data.is_logged_in) {
+          setIsLoggedIn(true);
+          setRecruiterId(data.recruiters_id);
+          setJobSeekerId(data.job_seekers_id);
+          setSelfEmployedId(data.self_employed_id);
+        } else {
+          setIsLoggedIn(false);
+          setRecruiterId(null);
+          setJobSeekerId(null);
+          setSelfEmployedId(null);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
     window.addEventListener("resize", () => {
       if (window.innerWidth > 920) {

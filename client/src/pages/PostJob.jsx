@@ -1,12 +1,39 @@
-import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { SessionState } from "../context/SessionProvider";
 
 const PostJob = () => {
-  const { isLoggedIn, recruiterId } = SessionState();
+  const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } = SessionState();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (data.is_logged_in) {
+          setIsLoggedIn(true);
+          setRecruiterId(data.recruiters_id);
+        } else {
+          setIsLoggedIn(false);
+          setRecruiterId(null);
+          navigate("/recruiter-login")
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId, navigate]);
 
   const [formData, setFormData] = useState({
     companyName: "",
@@ -190,7 +217,6 @@ const PostJob = () => {
 
   return (
     <>
-      {!isLoggedIn && <Navigate to="/recruiter-login" />}
       <div className="container">
         <section className="post-jobs">
           <h1>

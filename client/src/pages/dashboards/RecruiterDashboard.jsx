@@ -1,18 +1,46 @@
-import { Link, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { SessionState } from "../../context/SessionProvider";
 
 const RecruiterDashboard = () => {
-  const { isLoggedIn, recruiterId, isLoading } = SessionState();
+  const navigate = useNavigate();
+  const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } =
+    SessionState();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data)
+        if (data.is_logged_in) {
+          setIsLoggedIn(true);
+          setRecruiterId(data.recruiters_id);
+        } else {
+          setIsLoggedIn(false);
+          setRecruiterId(null);
+          navigate("/recruiter-login")
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    if (!isLoggedIn) {
+      <Navigate to="/recruiter-login" />;
+    }
+  }, [isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId, navigate]);
 
   return (
     <>
-      {!isLoggedIn || recruiterId === null ? (
-        <Navigate to="/recruiter-login" />
-      ) : null}
       <div className="container">
         <section className="recruiter-dashboard">
           <h1>

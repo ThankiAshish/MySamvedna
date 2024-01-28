@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { SessionState } from "../../context/SessionProvider";
@@ -7,6 +7,34 @@ import { SessionState } from "../../context/SessionProvider";
 const RecruiterLogin = () => {
   const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn, setRecruiterId } = SessionState();
+
+  useEffect(() => {
+    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (data.is_logged_in) {
+          setIsLoggedIn(true);
+          setRecruiterId(data.recruiters_id);
+          navigate("/recruiter-dashboard");
+        } else {
+          setIsLoggedIn(false);
+          setRecruiterId(null);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [isLoggedIn, setIsLoggedIn, setRecruiterId, navigate]);
+
 
   const [formData, setFormData] = useState({
     email: "",
@@ -61,7 +89,6 @@ const RecruiterLogin = () => {
 
   return (
     <>
-      {isLoggedIn && <Navigate to="/recruiter-dashboard" />}
       <div className="container">
         <section className="recruiters-login">
           <h1>Recruiter&apos;s Login</h1>

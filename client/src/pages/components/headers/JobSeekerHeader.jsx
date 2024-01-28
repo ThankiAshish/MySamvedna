@@ -10,8 +10,34 @@ import Logo from "../../../assets/images/logo.png";
 
 const RecruiterHeader = () => {
   const navigate = useNavigate();
-  const { logout } = SessionState();
+  const { setIsLoggedIn, setJobSeekerId } = SessionState();
   const [icon, setIcon] = useState("bars");
+
+  useEffect(() => {
+    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (data.is_logged_in) {
+          setIsLoggedIn(true);
+          setJobSeekerId(data.job_seeker_id);
+        } else {
+          setIsLoggedIn(false);
+          setJobSeekerId(null);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [setIsLoggedIn, setJobSeekerId, navigate]);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -59,16 +85,32 @@ const RecruiterHeader = () => {
     navigate(link.getAttribute("href"));
   };
 
-  const handleLogout = async () => {
-    const success = await logout({ type: "jobSeeker" });
+  const handleLogout = () => {
+    fetch("http://localhost/MySamvedna/api/controllers/jobSeekerLogout.php", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-    if (success) {
-      toast.success("Logout successful!");
-      navigate("/job-seeker-login");
-    } else {
-      toast.error("Logout failed!");
-    }
-  }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          setIsLoggedIn(false);
+          setJobSeekerId(null);
+          toast.success(data.message);
+          navigate("/job-seeker-login");
+        } else {
+          toast.error(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <div className="container">
@@ -92,17 +134,7 @@ const RecruiterHeader = () => {
             </Link>
           </li>
           <div className="btn-container">
-            <Link
-              className="btn"
-              to="/view-jobs"
-              onClick={handleLinkNavigation}
-            >
-              View Jobs
-            </Link>
-            <Link
-              className="btn btn-outline"
-              onClick={handleLogout}
-            >
+            <Link className="btn" onClick={handleLogout}>
               Logout
             </Link>
           </div>

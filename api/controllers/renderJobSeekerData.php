@@ -11,8 +11,7 @@ function handleError($message)
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
     $query = "SELECT * FROM `job_seekers` WHERE `job_seeker_id` = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("s", $_SESSION['job_seeker_id']);
-
+    $stmt->bind_param("s", $_SESSION['job_seekers_id']);
 
     try {
         $stmt->execute();

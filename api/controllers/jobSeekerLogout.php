@@ -2,7 +2,7 @@
 include '../includes/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_SESSION['job_seeker_id'])) {
+    if (isset($_SESSION['job_seekers_id'])) {
         session_unset();
         session_destroy();
         $response = array(

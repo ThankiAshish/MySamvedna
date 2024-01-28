@@ -1,19 +1,41 @@
-import { useState } from "react";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { SessionState } from "../../context/SessionProvider";
 
 const JobSeekerLogin = () => {
   const navigate = useNavigate();
-  const {
-    isLoggedIn,
-    setIsLoggedIn,
-    recruiterId,
-    selfEmployedId,
-    jobSeekerId,
-    setJobSeekerId,
-  } = SessionState();
+  const { isLoggedIn, setIsLoggedIn, setJobSeekerId } = SessionState();
+
+  useEffect(() => {
+    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.is_logged_in) {
+          setIsLoggedIn(true);
+          setJobSeekerId(data.job_seekers_id);
+          navigate("/job-seeker-dashboard");
+        } else {
+          setIsLoggedIn(false);
+          setJobSeekerId(null);
+          navigate("/job-seeker-login");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [isLoggedIn, setIsLoggedIn, setJobSeekerId, navigate]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -47,7 +69,6 @@ const JobSeekerLogin = () => {
       }
 
       const responseData = await response.json();
-      console.log(responseData);
 
       if (responseData.success) {
         toast.success(responseData.message);
@@ -67,13 +88,6 @@ const JobSeekerLogin = () => {
 
   return (
     <>
-      {isLoggedIn ? (
-        <>
-          {recruiterId ? <Navigate to="/recruiter-dashboard" /> : null}
-          {jobSeekerId ? <Navigate to="/job-seeker-dashboard" /> : null}
-          {selfEmployedId ? <Navigate to="/self-employed-dashboard" /> : null}
-        </>
-      ) : null}
       <div className="container">
         <section className="job-seeker-login">
           <h1>Job Seeker&apos;s Login</h1>

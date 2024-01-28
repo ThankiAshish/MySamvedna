@@ -22,8 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result->num_rows > 0) {
       $job_seeker = $result->fetch_assoc();
       if ($password === $job_seeker['password']) {
-
-        $_SESSION['job_seeker_id'] = $job_seeker['job_seeker_id'];
+        $_SESSION['job_seekers_id'] = $job_seeker['job_seeker_id'];
 
         $response = array(
           'success' => true,

@@ -7,9 +7,37 @@ import { SessionState } from "../context/SessionProvider";
 const EditJob = () => {
   const [job, setJob] = useState({});
   const { id } = useParams();
-  const { isLoggedIn } = SessionState();
+  const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } = SessionState();
+
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (data.is_logged_in) {
+          setIsLoggedIn(true);
+          setRecruiterId(data.recruiters_id);
+        } else {
+          setIsLoggedIn(false);
+          setRecruiterId(null);
+          navigate("/recruiter-login")
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId, navigate]);
 
   useEffect(() => {
     const getJob = async () => {
