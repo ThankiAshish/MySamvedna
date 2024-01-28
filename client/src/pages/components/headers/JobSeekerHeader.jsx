@@ -56,34 +56,20 @@ const RecruiterHeader = () => {
     event.preventDefault();
     const link = event.currentTarget;
 
-    if (link.getAttribute("href") === "/logout") {
-      const response = await fetch(
-        "http://localhost/MySamvedna/api/controllers/jobSeekerLogout.php",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const responseData = await response.json();
-
-      if (responseData.success) {
-        toast.success(responseData.message);
-        logout();
-        navigate("/job-seeker-login");
-      } else {
-        console.log(responseData.message);
-        toast.error(responseData.message);
-      }
-      return;
-    }
-
     navigate(link.getAttribute("href"));
   };
+
+  const handleLogout = async () => {
+    const success = await logout({ type: "jobSeeker" });
+
+    if (success) {
+      toast.success("Logout successful!");
+      navigate("/job-seeker-login");
+    } else {
+      toast.error("Logout failed!");
+    }
+  }
+
   return (
     <div className="container">
       <header>
@@ -115,8 +101,7 @@ const RecruiterHeader = () => {
             </Link>
             <Link
               className="btn btn-outline"
-              to="/logout"
-              onClick={handleLinkNavigation}
+              onClick={handleLogout}
             >
               Logout
             </Link>

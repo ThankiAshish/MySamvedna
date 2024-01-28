@@ -21,30 +21,72 @@ const SessionProvider = ({ children }) => {
     return savedSelfEmployedId ? JSON.parse(savedSelfEmployedId) : null;
   });
 
-  const logout = () => {
-    setIsLoggedIn(false);
-    setRecruiterId(null);
-    setJobSeekerId(null);
-    setSelfEmployedId(null);
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("recruiterId");
-    localStorage.removeItem("jobSeekerId");
-    localStorage.removeItem("selfEmployedId");
+  const logout = async ({ type }) => {
+    try {
+      const response = await fetch(
+        `http://localhost/MySamvedna/api/controllers/${type}Logout.php`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        setIsLoggedIn(false);
+        setRecruiterId(null);
+        setJobSeekerId(null);
+        setSelfEmployedId(null);
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("recruiterId");
+        localStorage.removeItem("jobSeekerId");
+        localStorage.removeItem("selfEmployedId");
+        return data.success;
+      } else {
+        console.log(data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  const checkLogin = async () => {
+    const response = await fetch(
+      "http://localhost/MySamvedna/api/controllers/checkLogin.php",
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.success) {
+      setIsLoggedIn(true);
+      setRecruiterId(data.recruiterId);
+      setJobSeekerId(data.jobSeekerId);
+      setSelfEmployedId(data.selfEmployedId);
+      localStorage.setItem("isLoggedIn", true);
+      localStorage.setItem("recruiterId", data.recruiterId);
+      localStorage.setItem("jobSeekerId", data.jobSeekerId);
+      localStorage.setItem("selfEmployedId", data.selfEmployedId);
+    }
   };
 
   useEffect(() => {
-    localStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn));
-    localStorage.setItem("recruiterId", JSON.stringify(recruiterId));
-    localStorage.setItem("jobSeekerId", JSON.stringify(jobSeekerId));
-    localStorage.setItem("selfEmployedId", JSON.stringify(selfEmployedId));
-
-    const timeoutId = setTimeout(() => {
-      localStorage.clear();
-      logout();
-    }, 24 * 60 * 1000)
-
-    return () => clearTimeout(timeoutId);
-  }, [isLoggedIn, recruiterId, jobSeekerId, selfEmployedId]);
+    checkLogin();
+  }, []);
 
   return (
     <SessionContext.Provider

@@ -30,6 +30,7 @@ import ViewJobs from "./pages/ViewJobs";
 import PostJob from "./pages/PostJob";
 
 import NotFound from "./pages/404";
+import EditJob from "./pages/EditJob";
 
 const App = () => {
   return (
@@ -64,6 +65,7 @@ const App = () => {
             <Route index element={<RecruiterDashboard />} />
             <Route path="view-jobs" element={<ViewJobs />} />
             <Route path="post-job" element={<PostJob />} />
+            <Route path="edit-job/:id" element={<EditJob />} />
           </Route>
 
           <Route path="job-seeker-dashboard" element={<JobSeeker />}>
