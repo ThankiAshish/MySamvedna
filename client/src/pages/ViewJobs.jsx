@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
-import { Navigate, Link } from "react-router-dom";
+import { Navigate, Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { SessionState } from "../context/SessionProvider";
 
 const ViewJobs = () => {
   const { isLoggedIn } = SessionState();
   const [jobs, setJobs] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost/MySamvedna/api/controllers/renderJobs.php", {
@@ -29,6 +32,39 @@ const ViewJobs = () => {
         console.error(error);
       });
   }, []);
+
+  const deleteJob = (e) => (jobId) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("job_id", jobId);
+
+    fetch("http://localhost/MySamvedna/api/controllers/deleteJob.php", {
+      method: "POST",
+      credentials: "include",
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          toast.success(data.message);
+          setJobs((prevJobs) => {
+            return prevJobs.filter((job) => job.job_id !== jobId);
+          });
+          navigate("/recruiter-dashboard/view-jobs");
+        } else {
+          console.log(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <>
@@ -69,8 +105,18 @@ const ViewJobs = () => {
                         <td>{job.payAndAllowances}</td>
                         <td>{job.dutyDescription}</td>
                         <td className="controls">
-                          <Link to={`/recruiter-dashboard/edit-job/${job.job_id}`} className="btn btn-primary">Edit</Link >
-                          <button className="btn btn-delete">Delete</button >
+                          <Link
+                            to={`/recruiter-dashboard/edit-job/${job.job_id}`}
+                            className="btn btn-primary"
+                          >
+                            Edit
+                          </Link>
+                          <button
+                            className="btn btn-delete"
+                            onClick={(e) => deleteJob(e)(job.job_id)}
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     );

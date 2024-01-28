@@ -2,11 +2,15 @@ import { Link, Navigate } from "react-router-dom";
 import { SessionState } from "../../context/SessionProvider";
 
 const RecruiterDashboard = () => {
-  const { isLoggedIn, recruiterId } = SessionState();
+  const { isLoggedIn, recruiterId, isLoading } = SessionState();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
-      {!isLoggedIn && recruiterId === null ? (
+      {!isLoggedIn || recruiterId === null ? (
         <Navigate to="/recruiter-login" />
       ) : null}
       <div className="container">

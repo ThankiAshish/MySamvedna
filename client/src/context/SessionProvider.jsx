@@ -1,29 +1,28 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
+import Cookies from "js-cookie";
 
 const SessionContext = createContext();
 
+// Helper function to handle fetch operations
+const fetchData = async (url, options) => {
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return await response.json();
+};
+
 const SessionProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const savedIsLoggedIn = localStorage.getItem("isLoggedIn");
-    return savedIsLoggedIn ? JSON.parse(savedIsLoggedIn) : false;
-  });
-  const [recruiterId, setRecruiterId] = useState(() => {
-    const savedRecruiterId = localStorage.getItem("recruiterId");
-    return savedRecruiterId ? JSON.parse(savedRecruiterId) : null;
-  });
-  const [jobSeekerId, setJobSeekerId] = useState(() => {
-    const savedJobSeekerId = localStorage.getItem("jobSeekerId");
-    return savedJobSeekerId ? JSON.parse(savedJobSeekerId) : null;
-  });
-  const [selfEmployedId, setSelfEmployedId] = useState(() => {
-    const savedSelfEmployedId = localStorage.getItem("selfEmployedId");
-    return savedSelfEmployedId ? JSON.parse(savedSelfEmployedId) : null;
-  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [recruiterId, setRecruiterId] = useState(null);
+  const [jobSeekerId, setJobSeekerId] = useState(null);
+  const [selfEmployedId, setSelfEmployedId] = useState(null);
 
   const logout = async ({ type }) => {
     try {
-      const response = await fetch(
+      const data = await fetchData(
         `http://localhost/MySamvedna/api/controllers/${type}Logout.php`,
         {
           method: "GET",
@@ -31,21 +30,15 @@ const SessionProvider = ({ children }) => {
         }
       );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
       if (data.success) {
         setIsLoggedIn(false);
         setRecruiterId(null);
         setJobSeekerId(null);
         setSelfEmployedId(null);
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("recruiterId");
-        localStorage.removeItem("jobSeekerId");
-        localStorage.removeItem("selfEmployedId");
+        Cookies.remove("isLoggedIn");
+        Cookies.remove("recruiterId");
+        Cookies.remove("jobSeekerId");
+        Cookies.remove("selfEmployedId");
         return data.success;
       } else {
         console.log(data.message);
@@ -58,29 +51,30 @@ const SessionProvider = ({ children }) => {
   };
 
   const checkLogin = async () => {
-    const response = await fetch(
-      "http://localhost/MySamvedna/api/controllers/checkLogin.php",
-      {
-        method: "GET",
-        credentials: "include",
+    try {
+      const data = await fetchData(
+        "http://localhost/MySamvedna/api/utils/checkLogin.php",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+
+      if (data.success) {
+        setIsLoggedIn(true);
+        setRecruiterId(data.recruiterId);
+        setJobSeekerId(data.jobSeekerId);
+        setSelfEmployedId(data.selfEmployedId);
+      } else {
+        setIsLoggedIn(false);
+        setRecruiterId(null);
+        setJobSeekerId(null);
+        setSelfEmployedId(null);
       }
-    );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    if (data.success) {
-      setIsLoggedIn(true);
-      setRecruiterId(data.recruiterId);
-      setJobSeekerId(data.jobSeekerId);
-      setSelfEmployedId(data.selfEmployedId);
-      localStorage.setItem("isLoggedIn", true);
-      localStorage.setItem("recruiterId", data.recruiterId);
-      localStorage.setItem("jobSeekerId", data.jobSeekerId);
-      localStorage.setItem("selfEmployedId", data.selfEmployedId);
+      setIsLoading(false); // Set isLoading to false after checkLogin has completed
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false); // Also set isLoading to false in case of error
     }
   };
 
@@ -91,6 +85,7 @@ const SessionProvider = ({ children }) => {
   return (
     <SessionContext.Provider
       value={{
+        isLoading, // Add isLoading to context
         isLoggedIn,
         setIsLoggedIn,
         recruiterId,

@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { SessionState } from "../context/SessionProvider";
 
 const PostJob = () => {
   const { isLoggedIn, recruiterId } = SessionState();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     companyName: "",
     website: "",
@@ -173,7 +175,12 @@ const PostJob = () => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        if(data.success) {
+          toast.success(data.message);
+          navigate("/recruiter-dashboard/view-jobs")
+        } else {
+          toast.error(data.message);
+        }
       })
       .catch((err) => {
         console.log(err);
