@@ -1,17 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import Default from "../assets/images/Team/default.png";
-
 const Search = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     search: "",
     jobType: "",
     location: "",
     disabilityPercentage: "",
   });
+
+  const [results, setResults] = useState([]);
 
   const handleChange = (event) => {
     setFormData({
@@ -28,7 +26,7 @@ const Search = () => {
       data.append(key, formData[key]);
     }
 
-    fetch("http://localhost/MySamvedna/api/controllers/searchJob.php", {
+    fetch("http://localhost/MySamvedna/api/controllers/searchJobs.php", {
       method: "POST",
       body: data,
       credentials: "include",
@@ -41,8 +39,9 @@ const Search = () => {
       })
       .then((data) => {
         if (data.success) {
+          setResults(data.jobs);
           toast.success(data.message);
-          navigate("/job-seeker-login");
+          window.location.href = "#results";
         } else {
           toast.error(data.message);
         }
@@ -51,8 +50,6 @@ const Search = () => {
         console.error(error);
         toast.error("An error occurred: " + error.message);
       });
-
-    console.log(formData);
   };
 
   return (
@@ -81,7 +78,6 @@ const Search = () => {
               <option value="" disabled>
                 Select Job Type
               </option>
-              {/* Add your job types here */}
             </select>
           </div>
           <div className="form-group">
@@ -94,7 +90,6 @@ const Search = () => {
               <option value="" disabled>
                 Select Location
               </option>
-              {/* Add your locations here */}
             </select>
           </div>
           <div className="form-group">
@@ -107,7 +102,6 @@ const Search = () => {
               <option value="" disabled>
                 Select Disability Percentage
               </option>
-              {/* Add your disability percentages here */}
             </select>
           </div>
           <button type="submit" className="btn btn-primary">
@@ -116,55 +110,28 @@ const Search = () => {
         </form>
       </section>
 
-      <section className="results">
-        <h1>Results</h1>
-        <div className="persons">
-          <div className="person">
-            <img src={Default} alt="Tarulata Patel" />
-            <h3>Name</h3>
-            <div className="person-details">
-              <p>Job Type</p>
-              <p>Location</p>
-              <p>Disability Percentage</p>
-              <p>Salary</p>
-              <p>Job Description</p>
-            </div>
+      {results.length > 0 && (
+        <section className="results" id="results">
+          <h1>Results</h1>
+          <div className="persons" key={results}>
+            {results.map((job) => (
+              <div key={job.id} className="person">
+                <h3 key={job.jobDesignation}>{job.jobDesignation}</h3>
+                <div className="person-details" key={job.id}>
+                  <p key={job.jobType}>{job.jobType}</p>
+                  <p key={job.placeOfWork}>{job.placeOfWork}</p>
+                  <p key={job.disabilityPercentage}>
+                    {job.disabilityPercentage}
+                  </p>
+                  <p key={job.payAndAllowances}>{job.payAndAllowances}</p>
+                  <p key={job.dutyDescription}>{job.dutyDescription}</p>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="person">
-            <img src={Default} alt="Tarulata Patel" />
-            <h3>Name</h3>
-            <div className="person-details">
-              <p>Job Type</p>
-              <p>Location</p>
-              <p>Disability Percentage</p>
-              <p>Salary</p>
-              <p>Job Description</p>
-            </div>
-          </div>
-          <div className="person">
-            <img src={Default} alt="Tarulata Patel" />
-            <h3>Name</h3>
-            <div className="person-details">
-              <p>Job Type</p>
-              <p>Location</p>
-              <p>Disability Percentage</p>
-              <p>Salary</p>
-              <p>Job Description</p>
-            </div>
-          </div>
-          <div className="person">
-            <img src={Default} alt="Tarulata Patel" />
-            <h3>Name</h3>
-            <div className="person-details">
-              <p>Job Type</p>
-              <p>Location</p>
-              <p>Disability Percentage</p>
-              <p>Salary</p>
-              <p>Job Description</p>
-            </div>
-          </div>
-        </div>
-      </section>
+          {results.length === 0 && <p>No results found.</p>}
+        </section>
+      )}
     </div>
   );
 };

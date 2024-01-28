@@ -1,22 +1,44 @@
 <?php
-include '../includes/config.php';
+include "../includes/config.php";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $search = $_POST['search'];
-    $disabilityPercentage = $_POST['disabilityPercentage'];
-    $placeOfWork = $_POST['location'];
-    $jobType = $_POST['jobType'];
+function handleError($message)
+{
+    http_response_code(500);
+    echo json_encode(array('success' => false, 'message' => $message));
+    exit();
+}
 
-    $query = "SELECT * FROM `job` WHERE `jobDesignaion` LIKE '%$search%' OR `jobType` = ? OR `placeOfWork` = ? OR `disabilityInfoPercentage` = ?";
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+
+    $search = isset($_POST['search']) ? trim($_POST['search']) : "";
+    $disabilityPercentage = isset($_POST['disabilityPercentage']) ? trim($_POST['disabilityPercentage']) : "";
+    $placeOfWork = isset($_POST['location']) ? trim($_POST['location']) : "";
+    $jobType = isset($_POST['jobType']) ? trim($_POST['jobType']) : "";
+    $searchLike = "%$search%";
+
+    $query = "SELECT * FROM `job` WHERE `jobDesignation` LIKE ? OR `jobType` = ? OR `placeOfWork` = ? OR `disabilityInfoPercentage` = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("sss", $disabilityPercentage, $placeOfWork, $jobType);
-    $stmt->execute();
 
-    while ($datarow = mysqli_fetch_array($data)) {
-        $rows[] = $datarow;
+    $stmt->bind_param("ssss", $searchLike, $jobType, $placeOfWork, $disabilityPercentage);
+
+    try {
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+        
+        $response = array(
+            'success' => true,
+            'message' => 'Jobs found!',
+            'jobs' => $rows,
+        );
+
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    } catch (Exception $e) {
+        handleError("Database error: " . $e->getMessage());
+    } finally {
+        $stmt->close();
+        $conn->close();
     }
-
-    header('Content-Type: application/json');
-    $json = json_encode($rows);
-    echo $json;
 }
