@@ -150,7 +150,7 @@ const RecruiterRegister = () => {
               onChange={handleInputChange}
               required
             />
-            <label htmlFor="profilePicture">Profile Picture</label>
+            <label htmlFor="profilePicture">Company Logo</label>
             <input
               type="file"
               name="profilePicture"

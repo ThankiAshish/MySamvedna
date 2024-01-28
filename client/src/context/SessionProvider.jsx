@@ -20,6 +20,7 @@ const SessionProvider = ({ children }) => {
     const savedSelfEmployedId = localStorage.getItem("selfEmployedId");
     return savedSelfEmployedId ? JSON.parse(savedSelfEmployedId) : null;
   });
+
   const logout = () => {
     setIsLoggedIn(false);
     setRecruiterId(null);
@@ -36,6 +37,13 @@ const SessionProvider = ({ children }) => {
     localStorage.setItem("recruiterId", JSON.stringify(recruiterId));
     localStorage.setItem("jobSeekerId", JSON.stringify(jobSeekerId));
     localStorage.setItem("selfEmployedId", JSON.stringify(selfEmployedId));
+
+    const timeoutId = setTimeout(() => {
+      localStorage.clear();
+      logout();
+    }, 24 * 60 * 1000)
+
+    return () => clearTimeout(timeoutId);
   }, [isLoggedIn, recruiterId, jobSeekerId, selfEmployedId]);
 
   return (
