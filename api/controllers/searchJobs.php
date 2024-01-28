@@ -9,7 +9,6 @@ function handleError($message)
 }
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-
     $search = isset($_POST['search']) ? trim($_POST['search']) : "";
     $disabilityPercentage = isset($_POST['disabilityPercentage']) ? trim($_POST['disabilityPercentage']) : "";
     $placeOfWork = isset($_POST['location']) ? trim($_POST['location']) : "";
@@ -26,12 +25,19 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         $result = $stmt->get_result();
         $rows = $result->fetch_all(MYSQLI_ASSOC);
-        
-        $response = array(
-            'success' => true,
-            'message' => 'Jobs found!',
-            'jobs' => $rows,
-        );
+
+        if(count($rows) == 0) {
+            $response = array(
+                'success' => false,
+                'message' => 'No jobs found!',
+            );
+        } else {
+            $response = array(
+                'success' => true,
+                'message' => 'Jobs Found!',
+                'jobs' => $rows,
+            );
+        }
 
         header('Content-Type: application/json');
         echo json_encode($response);
