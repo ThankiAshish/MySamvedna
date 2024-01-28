@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
+        $recruiterId = $_POST['recruiter_id'];
         $companyName = $_POST['companyName'];
         $website = $_POST['website'];
         $natureOfBusiness = $_POST['natureOfBusiness'];
@@ -42,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $essentialQualificationEssential = $_POST['essentialQualificationEssential'];
         $essentialQualificationDesirable = $_POST['essentialQualificationDesirable'];
         $ageLimit = $_POST['ageLimit'];
-        $womenEligible = boolval($_POST['womenEligible']);
+        $womenEligible = $_POST['womenEligible'];
         $workingHoursFrom = $_POST['workingHoursFrom'];
         $workingHoursTo = $_POST['workingHoursTo'];
         $vacanciesRegular = $_POST['vacanciesRegular'];
@@ -67,40 +68,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conveyanceType = $_POST['conveyanceType'];
         $otherInformation = $_POST['otherInformation'];
 
+        echo json_encode($_POST);
+        die();
+
         $query = "INSERT INTO job (
-            `recruiters_id`, `companyName`, `website`, `natureOfBusiness`, `address`,
-            `fax`, `areaCode`, `landline`, `mobile`, `email`,
-            `employerName`, `companyDescription`, `jobDesignation`, `jobType`, `dutyDescription`,
-            `essentialQualificationEssential`, `essentialQualificationDesirable`, `ageLimit`, `womenEligible`, `workingHoursFrom`,
-            `workingHoursTo`, `vacanciesRegular`, `vacanciesTemporary`, `payAndAllowances`, `placeOfWork`,
-            `resumesToBeSent`, `resumeEmail`, `interviewDetailsDate`, `interviewDetailsTime`, `interviewDetailsAptitudeTest`,
-            `interviewDetailsTechnicalTest`, `interviewDetailsGroupDiscussion`, `interviewDetailsPersonalInterview`, `interviewDetailsTopics`, `interviewDetailsContactPerson`,
-            `disabilityInfoType`, `disabilityInfoPercentage`, `disabilityInfoAidOrAppliance`, `ownVehiclePreferred`, `conveyanceProvided`,
-            `conveyanceType`, `otherInformation`
-            ) VALUES (
-                ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?,
-                ?, ?
-            )";
-        $conn->prepare($query);
+            recruiters_id, companyName, website, natureOfBusiness, address, 
+            fax, areaCode, landline, mobile, email, 
+            employerName, companyDescription, jobDesignation, jobType, dutyDescription, 
+            essentialQualificationEssential, essentialQualificationDesirable, ageLimit, womenEligible, workingHoursFrom, 
+            workingHoursTo, vacanciesRegular, vacanciesTemporary, payAndAllowances, placeOfWork, 
+            resumesToBeSent, resumeEmail, interviewDetailsDate, interviewDetailsTime, interviewDetailsAptitudeTest, 
+            interviewDetailsTechnicalTest, interviewDetailsGroupDiscussion, interviewDetailsPersonalInterview, interviewDetailsTopics, interviewDetailsContactPerson, 
+            disabilityInfoType, disabilityInfoPercentage, disabilityInfoAidOrAppliance, ownVehiclePreferred, conveyanceProvided, 
+            conveyanceType, otherInformation) 
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+
+        $stmt2 = $conn->prepare($query);
 
         $stmt2->bind_param(
             "sssss
              sssss
              sssss
-             sssis
+             sssss
              sssss
              sssss
              sssss
              sssss
              ss",
-            $_POST['recruiter_id'],
+            $recruiterId,
             $companyName,
             $website,
             $natureOfBusiness,
@@ -143,6 +139,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $conveyanceType,
             $otherInformation
         );
+
+        $stmt2->execute();
 
         $message = "Job posted successfully";
         $response = array(

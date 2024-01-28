@@ -120,16 +120,6 @@ const PostJob = () => {
     }
 
     if (
-      formData.interviewDetails.aptitudeTest &&
-      formData.interviewDetails.technicalTest &&
-      formData.interviewDetails.groupDiscussion &&
-      formData.interviewDetails.personalInterview
-    ) {
-      toast.error("Atleast one of the interview/test should be selected");
-      return;
-    }
-
-    if (
       formData.interviewDetails.technicalTest &&
       formData.interviewDetails.topics === ""
     ) {
@@ -165,6 +155,7 @@ const PostJob = () => {
     }
 
     const flattenedData = flattenData(formData);
+    console.log(flattenedData)
 
     const data = new FormData();
     data.append("recruiter_id", recruiterId);

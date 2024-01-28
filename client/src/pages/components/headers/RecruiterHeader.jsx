@@ -108,7 +108,7 @@ const RecruiterHeader = () => {
           <div className="btn-container">
             <Link
               className="btn"
-              to="/recruiter-profile"
+              to="/recruiter-dashboard/post-job"
               onClick={handleLinkNavigation}
             >
               Post a Job
