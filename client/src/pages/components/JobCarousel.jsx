@@ -19,7 +19,7 @@ const JobCarousel = ({ jobData }) => {
     >
       {jobData.map((job) => (
         <div className="job" key={job.job_id}>
-          <img src={`http://localhost/MySamvedna/api/controllers/renderImages.php?image=${job.profilePicture}`} alt={job.profilePicture} />
+          <img src={`http://localhost/MySamvedna/api/uploads/profilePictures/${job.profilePicture}`} alt={job.profilePicture} />
           <h2>{job.jobDesignation}</h2>
           <div className="job-info">
             <h4>Job Type</h4>
