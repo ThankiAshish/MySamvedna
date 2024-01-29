@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Home = () => {
   const [count, setCount] = useState({ state: 0, people: 0, jobs: 0 });
+  const [jobData, setJobData] = useState([]);
   const counterRef = useRef(null);
 
   const incrementCounter = (counter, target) => {
@@ -20,6 +21,32 @@ const Home = () => {
       }
     }, 10);
   };
+
+  useEffect(() => {
+    fetch(
+      "http://localhost/MySamvedna/api/controllers/renderLatestJobs.php",
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          setJobData(data.jobs);
+        } else {
+          console.log(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -288,7 +315,7 @@ const Home = () => {
           <h1>
             Latest <span className="highlight-text">Jobs</span>
           </h1>
-          <JobCarousel />
+          <JobCarousel jobData={jobData} />
         </section>
       </div>
 
