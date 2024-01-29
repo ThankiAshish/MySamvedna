@@ -31,6 +31,7 @@ import PostJob from "./pages/PostJob";
 
 import NotFound from "./pages/404";
 import EditJob from "./pages/EditJob";
+import SearchResults from "./pages/SearchResults";
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/search-results" element={<SearchResults />} />
 
             <Route path="/login" element={<Login />} />
             <Route path="/recruiter-login" element={<RecruiterLogin />} />

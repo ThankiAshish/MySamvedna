@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Search = () => {
@@ -9,7 +10,7 @@ const Search = () => {
     disabilityPercentage: "",
   });
 
-  const [results, setResults] = useState([]);
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     setFormData({
@@ -38,11 +39,9 @@ const Search = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         if (data.success) {
-          setResults(data.jobs);
           toast.success(data.message);
-          window.location.href = "#results";
+          navigate("/search-results", { state: { results: data.jobs } });
         } else {
           toast.error(data.message);
         }
@@ -110,29 +109,6 @@ const Search = () => {
           </button>
         </form>
       </section>
-
-      {results.length > 0 && (
-        <section className="results" id="results">
-          <h1>Results</h1>
-          <div className="persons" key={results}>
-            {results.map((job) => (
-              <div key={job.id} className="person">
-                <h3 key={job.jobDesignation}>{job.jobDesignation}</h3>
-                <div className="person-details" key={job.id}>
-                  <p key={job.jobType}>{job.jobType}</p>
-                  <p key={job.placeOfWork}>{job.placeOfWork}</p>
-                  <p key={job.disabilityPercentage}>
-                    {job.disabilityPercentage}
-                  </p>
-                  <p key={job.payAndAllowances}>{job.payAndAllowances}</p>
-                  <p key={job.dutyDescription}>{job.dutyDescription}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          {results.length === 0 && <p>No results found.</p>}
-        </section>
-      )}
     </div>
   );
 };

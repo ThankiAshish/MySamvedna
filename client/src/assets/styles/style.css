@@ -1683,37 +1683,16 @@ table td:last-child {
 }
 
 .results .persons {
-  height: 100%;
-  width: 100%;
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  width: 100%;
   place-content: center;
   place-items: center;
-  padding-block: 2rem;
 }
 
-.results .persons .person {
-  width: 100%;
-  max-width: 275px;
-  height: 350px;
-  padding: 1rem;
-  border-radius: 0.25rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.results .persons .person img {
-  width: 50%;
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.results .persons .person .person-details {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+.results .persons .job {
+  width: 100% !important;
 }
 
 /* Pages > 404 */

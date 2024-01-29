@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Carousel from "nuka-carousel";
+import { toast } from "react-toastify";
 
 const CustomCarousel = () => {
   const [search, setSearch] = useState("");
@@ -8,9 +9,39 @@ const CustomCarousel = () => {
   const [location, setLocation] = useState("");
   const [disabilityPercentage, setDisabilityPercentage] = useState("");
 
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(search, jobType, location, disabilityPercentage);
+
+    const data = new FormData();
+    data.append("search", search);
+    data.append("jobType", jobType);
+    data.append("location", location);
+    data.append("disabilityPercentage", disabilityPercentage);
+    
+    fetch("http://localhost/MySamvedna/api/controllers/searchJobs.php", {
+      method: "POST",
+      body: data,
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          navigate("/search-results", { state: { results: data.jobs } })
+        } else {
+          toast.error(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("An error occurred: " + error.message);
+      });
   };
   return (
     <Carousel
@@ -67,30 +98,24 @@ const CustomCarousel = () => {
               id="jobType"
               value={jobType}
               onChange={(e) => setJobType(e.target.value)}
-              required
             >
               <option value="">Job Type</option>
-              {/* Add your job types here */}
             </select>
             <select
               className="form-control"
               id="location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              required
             >
               <option value="">Location</option>
-              {/* Add your locations here */}
             </select>
             <select
               className="form-control"
               id="disabilityPercentage"
               value={disabilityPercentage}
               onChange={(e) => setDisabilityPercentage(e.target.value)}
-              required
             >
               <option value="">Disability Percentage</option>
-              {/* Add your disability percentages here */}
             </select>
           </div>
           <button type="submit" className="btn btn-primary">
