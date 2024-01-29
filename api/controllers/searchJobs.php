@@ -15,7 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $jobType = isset($_POST['jobType']) ? trim($_POST['jobType']) : "";
     $searchLike = "%$search%";
 
-    $query = "SELECT * FROM `job` WHERE `jobDesignation` LIKE ? OR `jobType` = ? OR `placeOfWork` = ? OR `disabilityInfoPercentage` = ?";
+    $query = "SELECT job.*, recruiters.profilePicture 
+    FROM job 
+    JOIN recruiters ON job.recruiters_id = recruiters.recruiters_id 
+    WHERE job.jobDesignation LIKE ? OR job.jobType = ? OR job.placeOfWork = ? OR job.disabilityInfoPercentage = ?";
     $stmt = $conn->prepare($query);
 
     $stmt->bind_param("ssss", $searchLike, $jobType, $placeOfWork, $disabilityPercentage);
@@ -26,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $result = $stmt->get_result();
         $rows = $result->fetch_all(MYSQLI_ASSOC);
 
-        if(count($rows) == 0) {
+        if (count($rows) == 0) {
             $response = array(
                 'success' => false,
                 'message' => 'No jobs found!',
