@@ -20,7 +20,6 @@ const RecruiterDashboard = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data)
         if (data.is_logged_in) {
           setIsLoggedIn(true);
           setRecruiterId(data.recruiters_id);

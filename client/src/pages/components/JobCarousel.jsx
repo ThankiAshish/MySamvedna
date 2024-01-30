@@ -1,14 +1,11 @@
 import Carousel from "nuka-carousel";
-import { useMediaQuery } from "react-responsive";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const JobCarousel = ({ jobData }) => {
-  const isMobile = useMediaQuery({ maxWidth: 768 }); // Adjust breakpoint as needed
-
-  const slidesToShow = isMobile ? 1 : 3;
   return (
     <Carousel
-      slidesToShow={slidesToShow}
+      slidesToShow={1}
       withoutControls={true}
       slidesToScroll={1}
       autoplay={true}
@@ -17,28 +14,34 @@ const JobCarousel = ({ jobData }) => {
       renderArrows={false}
       className="job-slider"
     >
-      {jobData.map((job) => (
-        <div className="job" key={job.job_id}>
-          <img src={`http://localhost/MySamvedna/api/uploads/profilePictures/${job.profilePicture}`} alt={job.profilePicture} />
-          <h2>{job.jobDesignation}</h2>
-          <div className="job-info">
-            <h4>Job Type</h4>
-            <p>{job.jobType}</p>
-            <h4>Location</h4>
-            <p>{job.placeOfWork}</p>
-            <h4>Disability Percentage</h4>
-            <p>{job.disabilityInfoPercentage}</p>
+      {jobData &&
+        jobData.map((job) => (
+          <div className="job" key={job.job_id}>
+            <Link to="/view-job" state={{ jobId: job.job_id }}>
+              <img
+                src={`http://localhost/MySamvedna/api/uploads/profilePictures/${job.profilePicture}`}
+                alt={job.profilePicture}
+              />
+              <h2>{job.jobDesignation}</h2>
+              <div className="job-info">
+                <h4>Job Type</h4>
+                <p>{job.jobType}</p>
+                <h4>Location</h4>
+                <p>{job.placeOfWork}</p>
+                <h4>Disability Percentage</h4>
+                <p>{job.disabilityInfoPercentage}</p>
+              </div>
+              <div className="job-description">
+                <h4>Job Description</h4>
+                <p>
+                  {job.dutyDescription.length > 100
+                    ? `${job.dutyDescription.substring(0, 100)}...`
+                    : job.dutyDescription}
+                </p>
+              </div>
+            </Link>
           </div>
-          <div className="job-description">
-            <h4>Job Description</h4>
-            <p>
-              {job.dutyDescription.length > 100
-                ? `${job.dutyDescription.substring(0, 100)}...`
-                : job.dutyDescription}
-            </p>
-          </div>
-        </div>
-      ))}
+        ))}
     </Carousel>
   );
 };

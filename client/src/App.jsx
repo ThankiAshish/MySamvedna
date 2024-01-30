@@ -27,6 +27,7 @@ import JobSeekerDashboard from "./pages/dashboards/JobSeekerDashboard";
 import SelfEmployedDashboard from "./pages/dashboards/SelfEmployedDashboard";
 
 import ViewJobs from "./pages/ViewJobs";
+import ViewJob from "./pages/ViewJob";
 import PostJob from "./pages/PostJob";
 
 import NotFound from "./pages/404";
@@ -46,6 +47,7 @@ const App = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/search" element={<Search />} />
             <Route path="/search-results" element={<SearchResults />} />
+            <Route path="/view-job" element={<ViewJob />} />
 
             <Route path="/login" element={<Login />} />
             <Route path="/recruiter-login" element={<RecruiterLogin />} />
@@ -62,7 +64,7 @@ const App = () => {
               element={<SelfEmploymentRegister />}
             />
           </Route>
-          
+
           <Route path="recruiter-dashboard" element={<Recruiter />}>
             <Route index element={<RecruiterDashboard />} />
             <Route path="view-jobs" element={<ViewJobs />} />
@@ -77,7 +79,7 @@ const App = () => {
           <Route path="self-employed-dashboard" element={<Recruiter />}>
             <Route index element={<SelfEmployedDashboard />} />
           </Route>
-          
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

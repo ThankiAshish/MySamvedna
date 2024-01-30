@@ -6,7 +6,7 @@ import { SessionState } from "../../../context/SessionProvider";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Logo from "../../../assets/images/logo.png";
+import Logo from "../../../assets/images/Logo.png";
 
 const RecruiterHeader = () => {
   const navigate = useNavigate();

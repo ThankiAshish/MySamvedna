@@ -9,7 +9,10 @@ function handleError($message)
 }
 
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
-    $query = "SELECT * FROM `job` WHERE `job_id` = ?";
+    $query = "SELECT job.*, recruiters.profilePicture 
+    FROM job 
+    JOIN recruiters ON job.recruiters_id = recruiters.recruiters_id 
+    WHERE job.job_id = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $_GET['job_id']);
 
@@ -18,6 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 
         $result = $stmt->get_result();
         $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        foreach ($rows as $index => $row) {
+            $rows[$index]['conveyanceProvided'] = $row['conveyanceProvided'] === 'true' ? true : false;
+            $rows[$index]['ownVehiclePreferred'] = $row['ownVehiclePreferred'] === 'true' ? true : false;
+            $rows[$index]['interviewDetailsPersonalInterview'] = $row['interviewDetailsPersonalInterview'] === 'true' ? true : false;
+            $rows[$index]['interviewDetailsGroupDiscussion'] = $row['interviewDetailsGroupDiscussion'] === 'true' ? true : false;
+            $rows[$index]['interviewDetailsTechnicalTest'] = $row['interviewDetailsTechnicalTest'] === 'true' ? true : false;
+            $rows[$index]['interviewDetailsAptitudeTest'] = $row['interviewDetailsAptitudeTest'] === 'true' ? true : false;
+            $rows[$index]['womenEligible'] = $row['womenEligible'] === 'true' ? true : false;
+        }
 
         $response = array(
             'success' => true,

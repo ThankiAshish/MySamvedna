@@ -415,7 +415,7 @@ const EditJob = () => {
                   format=""
                   name="interviewDetailsTime"
                   placeholder="Time"
-                  value={job.interviewDetailTime}
+                  value={job.interviewDetailsTime}
                   onChange={handleInputChange}
                   required
                 />

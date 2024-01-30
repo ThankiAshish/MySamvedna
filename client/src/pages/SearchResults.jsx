@@ -8,7 +8,7 @@ const SearchResults = () => {
     <div className="container">
       <section className="results" id="results">
         <h1>Results</h1>
-        <div className="persons" key={results}>
+        <div className="persons" key={results.length}>
           {results.map((job) => (
             <div className="job" key={job.job_id}>
               <img

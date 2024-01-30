@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { SessionState } from "../../context/SessionProvider";
 
 const RecruiterRegister = () => {
   const { isLoggedIn } = SessionState();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     profilePicture: [],
@@ -37,7 +38,6 @@ const RecruiterRegister = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Password validation
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match");
       return;
@@ -68,6 +68,7 @@ const RecruiterRegister = () => {
         console.log(data);
         if (data.success) {
           toast.success(data.message);
+          navigate("/recruiter-login");
         } else {
           toast.error(data.message);
         }
