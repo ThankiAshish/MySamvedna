@@ -395,57 +395,88 @@ footer p {
 
 /* Extra > Job Slider */
 .job-slider .slide {
+  height: 60%;
+}
+
+.job-slider .jobs-container {
   display: grid;
   place-content: center;
   place-items: center;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  height: 80%;
+  gap: 1rem;
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
 }
 
-.job {
+.job-slider .jobs-container .job {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: .75rem;
+  width: 300px;
+  border-radius: .25rem;
+  border: 1px solid var(--text);
+  text-align: center;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease-in-out;
+}
+
+.job-slider .jobs-container .job:hover {
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.5);
+}
+
+.job-slider .jobs-container .job img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: .25rem;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.25);
+}
+
+.job-slider .jobs-container .job .job-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
+}
+
+.job-slider .jobs-container .job .job-header h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.job-slider .jobs-container .job .icon {
+  font-size: .8rem;
+  color: var(--primary);
+}
+
+.job-slider .jobs-container .job .job-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.job-slider .jobs-container .job .job-body .job-description{
+  font-size: .9rem;
+  font-weight: 300;
   text-align: center;
-  padding: 15px;
-  margin: 10px;
+}
+
+.job-slider .jobs-container .job .job-body .job-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 80%;
-  color: var(--text);
-  transition: all 0.3s ease;
-  background: var(--background-transparent);
-  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.25);
-  border-radius: 0.25rem;
 }
 
-.job img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.job:hover {
-  transform: scale(1.02);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.job h3 {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.job p {
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-
-.job:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
+/* Pages > View Jobs */
 .view-jobs-container .table {
   width: 100%;
   margin-top: 1rem;

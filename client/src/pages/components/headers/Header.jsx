@@ -38,11 +38,11 @@ const Header = () => {
       .then((data) => {
         if (data.is_logged_in) {
           setIsLoggedIn(true);
-          if(data.recruiters_id) {
+          if (data.recruiters_id) {
             setRecruiterId(data.recruiters_id);
-          } else if(data.job_seekers_id) {
+          } else if (data.job_seekers_id) {
             setJobSeekerId(data.job_seekers_id);
-          } else if(data.self_employed_id) {
+          } else if (data.self_employed_id) {
             setSelfEmployedId(data.self_employed_id);
           }
         } else {
@@ -55,7 +55,9 @@ const Header = () => {
       .catch((error) => {
         console.error(error);
       });
+  }, [setIsLoggedIn, setRecruiterId, setJobSeekerId, setSelfEmployedId]);
 
+  useEffect(() => {
     window.addEventListener("resize", () => {
       if (window.innerWidth > 920) {
         document.querySelector(".nav-links").classList.remove("active");

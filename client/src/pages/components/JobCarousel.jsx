@@ -2,10 +2,14 @@ import Carousel from "nuka-carousel";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const API = import.meta.env.VITE_API_URL;
+
 const JobCarousel = ({ jobData }) => {
   return (
     <Carousel
-      slidesToShow={1}
+      slidesToShow={3}
       withoutControls={true}
       slidesToScroll={1}
       autoplay={true}
@@ -16,28 +20,37 @@ const JobCarousel = ({ jobData }) => {
     >
       {jobData &&
         jobData.map((job) => (
-          <div className="job" key={job.job_id}>
+          <div className="jobs-container" key={job.job_id}>
             <Link to="/view-job" state={{ jobId: job.job_id }}>
-              <img
-                src={`http://localhost/MySamvedna/api/uploads/profilePictures/${job.profilePicture}`}
-                alt={job.profilePicture}
-              />
-              <h2>{job.jobDesignation}</h2>
-              <div className="job-info">
-                <h4>Job Type</h4>
-                <p>{job.jobType}</p>
-                <h4>Location</h4>
-                <p>{job.placeOfWork}</p>
-                <h4>Disability Percentage</h4>
-                <p>{job.disabilityInfoPercentage}</p>
-              </div>
-              <div className="job-description">
-                <h4>Job Description</h4>
-                <p>
-                  {job.dutyDescription.length > 100
-                    ? `${job.dutyDescription.substring(0, 100)}...`
-                    : job.dutyDescription}
-                </p>
+              <div className="job">
+                <img
+                  src={`${API}/uploads/profilePictures/${job.profilePicture}`}
+                  alt={job.profilePicture}
+                />
+                <div className="job-header">
+                  <h2>{job.jobDesignation}</h2>
+                  <h3>{job.jobType}</h3>
+                  <h3><FontAwesomeIcon className="icon" icon='location-dot' />&nbsp;{job.placeOfWork}</h3>
+                </div>
+                <div className="job-body">
+                  <p className="job-description">
+                    {
+                      job.dutyDescription
+                        .split(" ")
+                        .slice(0, 10)
+                        .join(" ")
+                        .concat("...")
+                    }
+                  </p>
+                  <div className="job-details">
+                    <p><FontAwesomeIcon className="icon" icon="wheelchair"/>&nbsp;{job.disabilityInfoType}</p>
+                    <p>{job.disabilityInfoPercentage}&nbsp;<FontAwesomeIcon className="icon" icon="percent"/></p>
+                  </div>
+                </div>
+                <div className="job-footer">
+                  <p><strong>Job Posted By:</strong></p>
+                  <p>{job.companyName}</p>
+                </div>
               </div>
             </Link>
           </div>

@@ -63,7 +63,6 @@ const ViewJob = () => {
         } else {
           setIsLoggedIn(false);
           setRecruiterId(null);
-          navigate("/recruiter-login");
         }
       })
       .catch((error) => {

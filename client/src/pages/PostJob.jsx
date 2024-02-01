@@ -194,7 +194,7 @@ const PostJob = () => {
       data.append(key, flattenedData[key]);
     }
 
-    fetch(`${API}/api/controllers/postJob.php`, {
+    fetch(`${API}/controllers/postJob.php`, {
       method: "POST",
       body: data,
       credentials: "include",
@@ -203,6 +203,7 @@ const PostJob = () => {
         return res.json();
       })
       .then((data) => {
+        console.log(data);
         if(data.success) {
           toast.success(data.message);
           navigate("/recruiter-dashboard/view-jobs")

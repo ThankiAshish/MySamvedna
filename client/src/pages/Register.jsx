@@ -24,7 +24,7 @@ const Register = () => {
         return response.json();
       })
       .then((data) => {
-        if (data.isLoggedIn) {
+        if (data.is_logged_in) {
           setIsLoggedIn(true);
           if (data.recruiters_id) {
             setRecruiterId(data.recruiters_id);
