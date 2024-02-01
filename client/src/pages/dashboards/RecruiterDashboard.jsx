@@ -1,14 +1,15 @@
 import { useEffect } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SessionState } from "../../context/SessionProvider";
+
+const API = import.meta.env.VITE_API_URL;
 
 const RecruiterDashboard = () => {
   const navigate = useNavigate();
-  const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } =
-    SessionState();
+  const { setIsLoggedIn, setRecruiterId, setJobSeekerId } = SessionState();
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+    fetch(`${API}/utils/checkLogin.php`, {
       method: "GET",
       credentials: "include",
     })
@@ -22,21 +23,22 @@ const RecruiterDashboard = () => {
       .then((data) => {
         if (data.is_logged_in) {
           setIsLoggedIn(true);
-          setRecruiterId(data.recruiters_id);
+          if (data.recruiters_id) {
+            setRecruiterId(data.recruiters_id);
+          } else if (data.job_seekers_id) {
+            setJobSeekerId(data.job_seekers_id);
+            navigate("/job-seeker-dashboard");
+          }
         } else {
           setIsLoggedIn(false);
           setRecruiterId(null);
-          navigate("/recruiter-login")
+          navigate("/recruiter-login");
         }
       })
       .catch((error) => {
         console.error(error);
       });
-
-    if (!isLoggedIn) {
-      <Navigate to="/recruiter-login" />;
-    }
-  }, [isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId, navigate]);
+  }, [setIsLoggedIn, setRecruiterId, setJobSeekerId, navigate]);
 
   return (
     <>

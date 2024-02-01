@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Logo from "../../../assets/images/Logo.png";
 
+const API = import.meta.env.VITE_API_URL;
+
 const Header = () => {
   const navigate = useNavigate();
   const [icon, setIcon] = useState("bars");
@@ -22,7 +24,7 @@ const Header = () => {
   } = SessionState();
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+    fetch(`${API}/utils/checkLogin.php`, {
       method: "GET",
       credentials: "include",
     })
@@ -36,9 +38,13 @@ const Header = () => {
       .then((data) => {
         if (data.is_logged_in) {
           setIsLoggedIn(true);
-          setRecruiterId(data.recruiters_id);
-          setJobSeekerId(data.job_seekers_id);
-          setSelfEmployedId(data.self_employed_id);
+          if(data.recruiters_id) {
+            setRecruiterId(data.recruiters_id);
+          } else if(data.job_seekers_id) {
+            setJobSeekerId(data.job_seekers_id);
+          } else if(data.self_employed_id) {
+            setSelfEmployedId(data.self_employed_id);
+          }
         } else {
           setIsLoggedIn(false);
           setRecruiterId(null);

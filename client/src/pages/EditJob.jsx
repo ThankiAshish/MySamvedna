@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams, Navigate, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { SessionState } from "../context/SessionProvider";
+
+const API = import.meta.env.VITE_API_URL;
 
 const EditJob = () => {
   const [job, setJob] = useState({});
@@ -13,7 +15,7 @@ const EditJob = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+    fetch(`${API}/utils/checkLogin.php`, {
       method: "GET",
       credentials: "include",
     })
@@ -43,7 +45,7 @@ const EditJob = () => {
     const getJob = async () => {
       try {
         const response = await fetch(
-          `http://localhost/MySamvedna/api/controllers/getJob.php?job_id=${id}`,
+          `${API}/controllers/getJob.php?job_id=${id}`,
           {
             method: "GET",
             credentials: "include",
@@ -68,7 +70,7 @@ const EditJob = () => {
     };
 
     getJob();
-  }, []);
+  }, [id, job]);
 
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -95,7 +97,7 @@ const EditJob = () => {
 
     try {
       const response = await fetch(
-        `http://localhost/MySamvedna/api/controllers/editJob.php`,
+        `${API}/controllers/editJob.php`,
         {
           method: "POST",
           credentials: "include",
@@ -123,7 +125,6 @@ const EditJob = () => {
 
   return (
     <>
-      {!isLoggedIn && <Navigate to="/recruiter-login" />}
       <div className="container">
         <section className="post-jobs">
           <h1>

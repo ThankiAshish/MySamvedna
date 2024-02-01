@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
-import { Navigate, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { SessionState } from "../context/SessionProvider";
 
+const API = import.meta.env.VITE_API_URL;
+
 const ViewJobs = () => {
-  const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } =
+  const { setIsLoggedIn, setRecruiterId } =
     SessionState();
   const [jobs, setJobs] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+    fetch(`${API}/utils/checkLogin.php`, {
       method: "GET",
       credentials: "include",
     })
@@ -36,10 +38,10 @@ const ViewJobs = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, [isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId, navigate]);
+  }, [setIsLoggedIn, setRecruiterId, navigate]);
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/controllers/renderJobs.php", {
+    fetch(`${API}/controllers/renderJobs.php`, {
       method: "GET",
       credentials: "include",
     })
@@ -67,7 +69,7 @@ const ViewJobs = () => {
     const formData = new FormData();
     formData.append("job_id", jobId);
 
-    fetch("http://localhost/MySamvedna/api/controllers/deleteJob.php", {
+    fetch(`${API}/controllers/deleteJob.php`, {
       method: "POST",
       credentials: "include",
       body: formData,
@@ -96,7 +98,6 @@ const ViewJobs = () => {
 
   return (
     <>
-      {isLoggedIn ? null : <Navigate to="/recruiter-login" />}
       <div className="container">
         <section className="view-jobs">
           <h1>

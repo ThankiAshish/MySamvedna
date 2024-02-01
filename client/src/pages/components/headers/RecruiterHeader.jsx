@@ -8,11 +8,39 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Logo from "../../../assets/images/Logo.png";
 
+const API = import.meta.env.VITE_API_URL;
+
 const RecruiterHeader = () => {
   const navigate = useNavigate();
   const { setIsLoggedIn, setRecruiterId } = SessionState();
 
   const [icon, setIcon] = useState("bars");
+
+  useEffect(() => {
+    fetch(`${API}/utils/checkLogin.php`, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (data.is_logged_in) {
+          setIsLoggedIn(true);
+          setRecruiterId(data.recruiters_id);
+        } else {
+          setIsLoggedIn(false);
+          setRecruiterId(null);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [setIsLoggedIn, setRecruiterId]);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -61,7 +89,7 @@ const RecruiterHeader = () => {
   };
 
   const handleLogout = () => {
-    fetch("http://localhost/MySamvedna/api/controllers/recruiterLogout.php", {
+    fetch(`${API}/controllers/recruiterLogout.php`, {
       method: "GET",
       credentials: "include",
     })

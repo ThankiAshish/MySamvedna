@@ -4,12 +4,14 @@ import { toast } from "react-toastify";
 
 import { SessionState } from "../../context/SessionProvider";
 
+const API = import.meta.env.VITE_API_URL;
+
 const RecruiterLogin = () => {
   const navigate = useNavigate();
-  const { isLoggedIn, setIsLoggedIn, setRecruiterId } = SessionState();
+  const { setIsLoggedIn, setRecruiterId, setJobSeekerId } = SessionState();
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+    fetch(`${API}/utils/checkLogin.php`, {
       method: "GET",
       credentials: "include",
     })
@@ -23,8 +25,11 @@ const RecruiterLogin = () => {
       .then((data) => {
         if (data.is_logged_in) {
           setIsLoggedIn(true);
-          setRecruiterId(data.recruiters_id);
+          if (data.recruiters_id) setRecruiterId(data.recruiters_id);
           navigate("/recruiter-dashboard");
+        } else if (data.job_seekers_id) {
+          setJobSeekerId(data.job_seekers_id);
+          navigate("/job-seeker-dashboard");
         } else {
           setIsLoggedIn(false);
           setRecruiterId(null);
@@ -33,8 +38,7 @@ const RecruiterLogin = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, [isLoggedIn, setIsLoggedIn, setRecruiterId, navigate]);
-
+  }, [setIsLoggedIn, setRecruiterId, setJobSeekerId,navigate]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -57,7 +61,7 @@ const RecruiterLogin = () => {
 
     try {
       const response = await fetch(
-        "http://localhost/MySamvedna/api/controllers/recruiterLogin.php",
+        `${API}/controllers/recruiterLogin.php`,
         {
           method: "POST",
           body: data,

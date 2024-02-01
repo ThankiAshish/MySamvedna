@@ -1,20 +1,29 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { SessionState } from "../context/SessionProvider";
+
+const API = import.meta.env.VITE_API_URL;
 
 const ViewJob = () => {
+  const navigate = useNavigate();
   const location = useLocation();
+
+  if (!location.state) {
+    navigate("/");
+  }
+
   const jobId = location.state.jobId;
 
   const [job, setJob] = useState({});
 
+  const { setIsLoggedIn, setRecruiterId } = SessionState();
+
   useEffect(() => {
-    fetch(
-      `http://localhost/MySamvedna/api/controllers/getJob.php?job_id=${jobId}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    )
+    fetch(`${API}/controllers/getJob.php?job_id=${jobId}`, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -33,6 +42,35 @@ const ViewJob = () => {
       });
   }, [jobId]);
 
+  useEffect(() => {
+    fetch(`${API}/utils/checkLogin.php`, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (data.isLoggedIn) {
+          setIsLoggedIn(true);
+          if (data.recruiters_id) {
+            setRecruiterId(data.recruiters_id);
+          }
+        } else {
+          setIsLoggedIn(false);
+          setRecruiterId(null);
+          navigate("/recruiter-login");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [setIsLoggedIn, setRecruiterId, navigate]);
+
   return (
     <div className="container">
       <section className="view-job">
@@ -41,7 +79,7 @@ const ViewJob = () => {
         </h1>
         <div className="job">
           <img
-            src={`http://localhost/MySamvedna/api/uploads/profilePictures/${job.profilePicture}`}
+            src={`${API}/uploads/profilePictures/${job.profilePicture}`}
             alt={job.profilePicture}
           />
           <h2>{job.jobDesignation}</h2>

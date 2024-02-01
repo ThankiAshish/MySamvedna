@@ -5,6 +5,8 @@ import JobCarousel from "./components/JobCarousel";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+const API = import.meta.env.VITE_API_URL;
+
 const Home = () => {
   const [count, setCount] = useState({ state: 0, people: 0, jobs: 0 });
   const [jobData, setJobData] = useState([]);
@@ -24,7 +26,7 @@ const Home = () => {
 
   useEffect(() => {
     fetch(
-      "http://localhost/MySamvedna/api/controllers/renderLatestJobs.php",
+      `${API}/controllers/renderLatestJobs.php`,
       {
         method: "GET",
         credentials: "include",

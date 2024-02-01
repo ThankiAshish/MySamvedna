@@ -8,13 +8,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Logo from "../../../assets/images/Logo.png";
 
+const API = import.meta.env.VITE_API_URL;
+
 const RecruiterHeader = () => {
   const navigate = useNavigate();
   const { setIsLoggedIn, setJobSeekerId } = SessionState();
   const [icon, setIcon] = useState("bars");
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+    fetch(`${API}/utils/checkLogin.php`, {
       method: "GET",
       credentials: "include",
     })
@@ -37,7 +39,7 @@ const RecruiterHeader = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, [setIsLoggedIn, setJobSeekerId, navigate]);
+  }, [setIsLoggedIn, setJobSeekerId]);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -86,7 +88,7 @@ const RecruiterHeader = () => {
   };
 
   const handleLogout = () => {
-    fetch("http://localhost/MySamvedna/api/controllers/jobSeekerLogout.php", {
+    fetch(`${API}/controllers/jobSeekerLogout.php`, {
       method: "GET",
       credentials: "include",
     })

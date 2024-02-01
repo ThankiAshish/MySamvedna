@@ -4,12 +4,14 @@ import { toast } from "react-toastify";
 
 import { SessionState } from "../context/SessionProvider";
 
+const API = import.meta.env.VITE_API_URL;
+
 const PostJob = () => {
   const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } = SessionState();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+    fetch(`${API}/api/utils/checkLogin.php`, {
       method: "GET",
       credentials: "include",
     })
@@ -184,7 +186,6 @@ const PostJob = () => {
     }
 
     const flattenedData = flattenData(formData);
-    console.log(flattenedData)
 
     const data = new FormData();
     data.append("recruiter_id", recruiterId);
@@ -193,7 +194,7 @@ const PostJob = () => {
       data.append(key, flattenedData[key]);
     }
 
-    fetch("http://localhost/MySamvedna/api/controllers/postJob.php", {
+    fetch(`${API}/api/controllers/postJob.php`, {
       method: "POST",
       body: data,
       credentials: "include",
