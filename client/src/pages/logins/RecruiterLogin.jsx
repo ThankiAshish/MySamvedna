@@ -25,8 +25,10 @@ const RecruiterLogin = () => {
       .then((data) => {
         if (data.is_logged_in) {
           setIsLoggedIn(true);
-          if (data.recruiters_id) setRecruiterId(data.recruiters_id);
-          navigate("/recruiter-dashboard");
+          if (data.recruiters_id) {
+            setRecruiterId(data.recruiters_id);
+            navigate("/recruiter-dashboard");
+          }
         } else if (data.job_seekers_id) {
           setJobSeekerId(data.job_seekers_id);
           navigate("/job-seeker-dashboard");
@@ -38,7 +40,7 @@ const RecruiterLogin = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, [setIsLoggedIn, setRecruiterId, setJobSeekerId,navigate]);
+  }, [setIsLoggedIn, setRecruiterId, setJobSeekerId, navigate]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -60,14 +62,11 @@ const RecruiterLogin = () => {
     data.append("password", formData.password);
 
     try {
-      const response = await fetch(
-        `${API}/controllers/recruiterLogin.php`,
-        {
-          method: "POST",
-          body: data,
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${API}/controllers/recruiterLogin.php`, {
+        method: "POST",
+        body: data,
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

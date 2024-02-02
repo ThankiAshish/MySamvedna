@@ -72,7 +72,7 @@ const JobSeekerDashboard = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${API}api/controllers/getCountry.php`)
+    fetch(`${API}/controllers/getCountry.php`)
       .then((response) => response.text())
       .then((data) => {
         const options = parseOptions(data);

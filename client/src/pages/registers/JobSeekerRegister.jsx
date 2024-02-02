@@ -159,6 +159,7 @@ const JobSeekerRegister = () => {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         if (data.success) {
           toast.success(data.message);
           navigate("/job-seeker-login");
