@@ -1,12 +1,58 @@
-import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { SessionState } from "../../context/SessionProvider";
 
+const API = import.meta.env.VITE_API_URL;
+
 const RecruiterRegister = () => {
-  const { isLoggedIn } = SessionState();
+  const { setIsLoggedIn, setRecruiterId, setJobSeekerId, setSelfEmployedId } =
+    SessionState();
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch(`${API}/utils/checkLogin.php`, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.is_logged_in) {
+          setIsLoggedIn(true);
+          if (data.recruiters_id) {
+            setRecruiterId(data.recruiters_id);
+            navigate("/recruiter-dashboard");
+          } else if (data.job_seekers_id) {
+            setJobSeekerId(data.job_seekers_id);
+            navigate("/job-seeker-dashboard");
+          } else if (data.self_employed_id) {
+            setSelfEmployedId(data.self_employed_id);
+            navigate("/self-employed-dashboard");
+          }
+        } else {
+          setIsLoggedIn(false);
+          setJobSeekerId(null);
+          setRecruiterId(null);
+          setSelfEmployedId(null);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [
+    setIsLoggedIn,
+    setRecruiterId,
+    setJobSeekerId,
+    setSelfEmployedId,
+    navigate,
+  ]);
 
   const [formData, setFormData] = useState({
     profilePicture: [],
@@ -53,7 +99,7 @@ const RecruiterRegister = () => {
       data.append(key, formData[key]);
     }
 
-    fetch("http://localhost/MySamvedna/api/controllers/recruiterRegister.php", {
+    fetch(`${API}/controllers/recruiterRegister.php`, {
       method: "POST",
       body: data,
       credentials: "include",
@@ -65,7 +111,6 @@ const RecruiterRegister = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         if (data.success) {
           toast.success(data.message);
           navigate("/recruiter-login");
@@ -81,7 +126,6 @@ const RecruiterRegister = () => {
 
   return (
     <>
-      {isLoggedIn ? <Navigate to="/recruiter-dashboard" /> : null}
       <div className="container">
         <section className="recruiters-register">
           <h1>

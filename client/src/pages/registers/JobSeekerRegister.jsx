@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { SessionState } from "../../context/SessionProvider";
+
+const API = import.meta.env.VITE_API_URL;
+
 const JobSeekerRegister = () => {
+  const { setIsLoggedIn, setJobSeekerId, setRecruiterId, setSelfEmployedId } =
+    SessionState();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -38,6 +44,43 @@ const JobSeekerRegister = () => {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
 
+  useEffect(() => {
+    fetch(`${API}/utils/checkLogin.php`, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (data.is_logged_in) {
+          setIsLoggedIn(true);
+          if (data.job_seekers_id) {
+            setJobSeekerId(data.job_seekers_id);
+            navigate("/job-seeker-dashboard");
+          } else if (data.recruiters_id) {
+            setRecruiterId(data.recruiters_id);
+            navigate("/recruiter-dashboard");
+          } else if (data.self_employed_id) {
+            setSelfEmployedId(data.self_employed_id);
+            navigate("/self-employed-dashboard");
+          }
+        } else {
+          setIsLoggedIn(false);
+          setJobSeekerId(null);
+          setRecruiterId(null);
+          setSelfEmployedId(null);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [setIsLoggedIn, setJobSeekerId, setRecruiterId, setSelfEmployedId, navigate]);
+
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
 
@@ -48,7 +91,7 @@ const JobSeekerRegister = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/controllers/getCountry.php")
+    fetch(`${API}/controllers/getCountry.php`)
       .then((response) => response.text())
       .then((data) => {
         const options = parseOptions(data);
@@ -59,9 +102,7 @@ const JobSeekerRegister = () => {
 
   useEffect(() => {
     if (formData.country) {
-      fetch(
-        `http://localhost/MySamvedna/api/controllers/getState.php?country_id=${formData.country}`
-      )
+      fetch(`${API}/controllers/getState.php?country_id=${formData.country}`)
         .then((response) => response.text())
         .then((data) => {
           const options = parseOptions(data);
@@ -73,9 +114,7 @@ const JobSeekerRegister = () => {
 
   useEffect(() => {
     if (formData.state) {
-      fetch(
-        `http://localhost/MySamvedna/api/controllers/getCity.php?state_id=${formData.state}`
-      )
+      fetch(`${API}/controllers/getCity.php?state_id=${formData.state}`)
         .then((response) => response.text())
         .then((data) => {
           const options = parseOptions(data);
@@ -108,7 +147,7 @@ const JobSeekerRegister = () => {
       data.append(key, formData[key]);
     }
 
-    fetch("http://localhost/MySamvedna/api/controllers/jobSeekerRegister.php", {
+    fetch(`${API}/controllers/jobSeekerRegister.php`, {
       method: "POST",
       body: data,
       credentials: "include",
@@ -120,6 +159,7 @@ const JobSeekerRegister = () => {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         if (data.success) {
           toast.success(data.message);
           navigate("/job-seeker-login");

@@ -6,10 +6,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $stmt = $conn->prepare(
             "SELECT 
                 j.job_id, 
+                j.companyName,
                 j.jobDesignation,
                 j.jobType,
                 j.placeOfWork,
                 j.disabilityInfoPercentage,
+                j.disabilityInfoType,
                 j.dutyDescription,
                 r.profilePicture
             FROM 

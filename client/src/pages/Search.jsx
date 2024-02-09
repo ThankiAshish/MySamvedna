@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+const API = import.meta.env.VITE_API_URL;
+
 const Search = () => {
   const [formData, setFormData] = useState({
     search: "",
@@ -27,7 +29,7 @@ const Search = () => {
       data.append(key, formData[key]);
     }
 
-    fetch("http://localhost/MySamvedna/api/controllers/searchJobs.php", {
+    fetch(`${API}/controllers/searchJobs.php`, {
       method: "POST",
       body: data,
       credentials: "include",

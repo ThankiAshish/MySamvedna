@@ -8,36 +8,58 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Logo from "../../../assets/images/Logo.png";
 
+// const API = import.meta.env.VITE_API_URL;
+
 const RecruiterHeader = () => {
   const navigate = useNavigate();
   const { setIsLoggedIn, setJobSeekerId } = SessionState();
   const [icon, setIcon] = useState("bars");
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const jobSeekerId = sessionStorage.getItem("job_seekers_id");
+    const recruiterId = sessionStorage.getItem("recruiters_id");
 
-        return response.json();
-      })
-      .then((data) => {
-        if (data.is_logged_in) {
-          setIsLoggedIn(true);
-          setJobSeekerId(data.job_seeker_id);
-        } else {
-          setIsLoggedIn(false);
-          setJobSeekerId(null);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [setIsLoggedIn, setJobSeekerId, navigate]);
+    if (isLoggedIn) {
+      if (jobSeekerId) {
+        setIsLoggedIn(true);
+        setJobSeekerId(jobSeekerId);
+
+      } else if (recruiterId) {
+        navigate("/recruiter-dashboard");
+      }
+    }
+    else{
+     
+      navigate("/job-seeker-login");
+
+    }
+  }, [navigate,setIsLoggedIn, setJobSeekerId]);
+  // useEffect(() => {
+  //   fetch(`${API}/utils/checkLogin.php`, {
+  //     method: "GET",
+  //     credentials: "include",
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       if (data.is_logged_in) {
+  //         setIsLoggedIn(true);
+  //         setJobSeekerId(data.job_seeker_id);
+  //       } else {
+  //         setIsLoggedIn(false);
+  //         setJobSeekerId(null);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, [setIsLoggedIn, setJobSeekerId]);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -86,30 +108,10 @@ const RecruiterHeader = () => {
   };
 
   const handleLogout = () => {
-    fetch("http://localhost/MySamvedna/api/controllers/jobSeekerLogout.php", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          setIsLoggedIn(false);
-          setJobSeekerId(null);
-          toast.success(data.message);
-          navigate("/job-seeker-login");
-        } else {
-          toast.error(data.message);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('job_seekers_id');
+    toast.success("You have successfully logged out.");
+    navigate("/job-seeker-login");
   };
 
   return (
@@ -134,9 +136,9 @@ const RecruiterHeader = () => {
             </Link>
           </li>
           <div className="btn-container">
-            <Link className="btn" onClick={handleLogout}>
+            <button className="btn" onClick={handleLogout}>
               Logout
-            </Link>
+            </button>
           </div>
         </ul>
         <FontAwesomeIcon

@@ -1,7 +1,15 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+
+const API = import.meta.env.VITE_API_URL;
 
 const SearchResults = () => {
+  const navigate = useNavigate();
   const location = useLocation();
+
+  if (!location.state) {
+    navigate("/");
+  }
+
   const results = location.state.results;
 
   return (
@@ -12,7 +20,7 @@ const SearchResults = () => {
           {results.map((job) => (
             <div className="job" key={job.job_id}>
               <img
-                src={`http://localhost/MySamvedna/api/uploads/profilePictures/${job.profilePicture}`}
+                src={`${API}/uploads/profilePictures/${job.profilePicture}`}
                 alt={job.profilePicture}
               />
               <h2>{job.jobDesignation}</h2>

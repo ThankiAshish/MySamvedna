@@ -1,49 +1,39 @@
 import { useState, useEffect } from "react";
-import { useParams, Navigate, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { SessionState } from "../context/SessionProvider";
+// import { SessionState } from "../context/SessionProvider";
+
+const API = import.meta.env.VITE_API_URL;
 
 const EditJob = () => {
   const [job, setJob] = useState({});
   const { id } = useParams();
-  const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } = SessionState();
-
+  // const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } = SessionState();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const jobSeekerId = sessionStorage.getItem("job_seekers_id");
+    const recruiterId = sessionStorage.getItem("recruiters_id");
 
-        return response.json();
-      })
-      .then((data) => {
-        if (data.is_logged_in) {
-          setIsLoggedIn(true);
-          setRecruiterId(data.recruiters_id);
-        } else {
-          setIsLoggedIn(false);
-          setRecruiterId(null);
-          navigate("/recruiter-login")
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId, navigate]);
+    if (isLoggedIn) {
+      if (jobSeekerId) {
+        navigate("/job-seeker-dashboard");
+      } else if (recruiterId) {
+        // navigate("/recruiter-dashboard");
+      }
+    } else {
+      navigate("/recruiter-login");
+    }
+  }, [navigate]);
 
   useEffect(() => {
     const getJob = async () => {
       try {
         const response = await fetch(
-          `http://localhost/MySamvedna/api/controllers/getJob.php?job_id=${id}`,
+          `${API}/controllers/getJob.php?job_id=${id}`,
           {
             method: "GET",
             credentials: "include",
@@ -68,7 +58,7 @@ const EditJob = () => {
     };
 
     getJob();
-  }, []);
+  }, [id, job]);
 
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -94,14 +84,11 @@ const EditJob = () => {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost/MySamvedna/api/controllers/editJob.php`,
-        {
-          method: "POST",
-          credentials: "include",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${API}/controllers/editJob.php`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -123,7 +110,6 @@ const EditJob = () => {
 
   return (
     <>
-      {!isLoggedIn && <Navigate to="/recruiter-login" />}
       <div className="container">
         <section className="post-jobs">
           <h1>

@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { SessionState } from "../../context/SessionProvider";
+// import { SessionState } from "../../context/SessionProvider";
+
+const API = import.meta.env.VITE_API_URL;
 
 const JobSeekerDashboard = () => {
-  const { isLoggedIn, setIsLoggedIn, setJobSeekerId } = SessionState();
+  // const { setIsLoggedIn, setJobSeekerId, setRecruiterId } = SessionState();
   const [jobSeeker, setJobSeeker] = useState({});
 
   const [countries, setCountries] = useState([]);
@@ -15,7 +17,57 @@ const JobSeekerDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const jobSeekerId = sessionStorage.getItem("job_seekers_id");
+    const recruiterId = sessionStorage.getItem("recruiters_id");
+
+    if (isLoggedIn) {
+      if (jobSeekerId) {
+        // navigate("/job-seeker-dashboard");
+      } else if (recruiterId) {
+        navigate("/recruiter-dashboard");
+      }
+    }
+    else{
+      navigate("/job-seeker-login");
+
+    }
+  }, [navigate]);
+
+  // useEffect(() => {
+  //   fetch(`${API}/utils/checkLogin.php`, {
+  //     method: "GET",
+  //     credentials: "include",
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       if (data.is_logged_in) {
+  //         setIsLoggedIn(true);
+  //         if (data.job_seekers_id) {
+  //           setJobSeekerId(data.job_seekers_id);
+  //         } else if (data.recruiters_id) {
+  //           setRecruiterId(data.recruiters_id);
+  //           navigate("/recruiter-dashboard");
+  //         }
+  //       } else {
+  //         setIsLoggedIn(false);
+  //         setJobSeekerId(null);
+  //         navigate("/job-seeker-login");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, [setIsLoggedIn, setJobSeekerId, setRecruiterId, navigate]);
+
+  useEffect(() => {
+    fetch(`${API}/controllers/renderJobSeekerData.php`, {
       method: "GET",
       credentials: "include",
     })
@@ -23,40 +75,9 @@ const JobSeekerDashboard = () => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-
         return response.json();
       })
       .then((data) => {
-        if (data.is_logged_in) {
-          setIsLoggedIn(true);
-          setJobSeekerId(data.job_seekers_id);
-        } else {
-          setIsLoggedIn(false);
-          setJobSeekerId(null);
-          navigate("/job-seeker-login");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [isLoggedIn, setIsLoggedIn, setJobSeekerId, navigate]);
-
-  useEffect(() => {
-    fetch(
-      "http://localhost/MySamvedna/api/controllers/renderJobSeekerData.php",
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
         if (data.success) {
           setJobSeeker(data.jobSeeker[0]);
         } else {
@@ -69,7 +90,7 @@ const JobSeekerDashboard = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/controllers/getCountry.php")
+    fetch(`${API}/controllers/getCountry.php`)
       .then((response) => response.text())
       .then((data) => {
         const options = parseOptions(data);
@@ -80,9 +101,7 @@ const JobSeekerDashboard = () => {
 
   useEffect(() => {
     if (jobSeeker && jobSeeker.country) {
-      fetch(
-        `http://localhost/MySamvedna/api/controllers/getState.php?country_id=${jobSeeker.country}`
-      )
+      fetch(`${API}/controllers/getState.php?country_id=${jobSeeker.country}`)
         .then((response) => response.text())
         .then((data) => {
           const options = parseOptions(data);
@@ -94,9 +113,7 @@ const JobSeekerDashboard = () => {
 
   useEffect(() => {
     if (jobSeeker && jobSeeker.state) {
-      fetch(
-        `http://localhost/MySamvedna/api/controllers/getCity.php?state_id=${jobSeeker.state}`
-      )
+      fetch(`${API}/controllers/getCity.php?state_id=${jobSeeker.state}`)
         .then((response) => response.text())
         .then((data) => {
           const options = parseOptions(data);
@@ -126,15 +143,11 @@ const JobSeekerDashboard = () => {
       data.append(key, jobSeeker[key]);
     }
 
-
-    fetch(
-      "http://localhost/MySamvedna/api/controllers/editJobSeekerData.php",
-      {
-        method: "POST",
-        credentials: "include",
-        body: data,
-      }
-    )
+    fetch(`${API}/controllers/editJobSeekerData.php`, {
+      method: "POST",
+      credentials: "include",
+      body: data,
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -147,7 +160,7 @@ const JobSeekerDashboard = () => {
           toast.success(data.message);
           navigate("/job-seeker-dashboard");
         } else {
-          toast.error(data.message);  
+          toast.error(data.message);
           console.log(data.message);
         }
       })
@@ -276,9 +289,9 @@ const JobSeekerDashboard = () => {
                   onChange={handleInputChange}
                   value={jobSeeker && jobSeeker.permanentAddress}
                   required
-                >{
-                  jobSeeker && jobSeeker.permanentAddress
-                }</textarea>
+                >
+                  {jobSeeker && jobSeeker.permanentAddress}
+                </textarea>
 
                 <textarea
                   id="currentAddress"
@@ -546,11 +559,7 @@ const JobSeekerDashboard = () => {
               </fieldset>
 
               <div className="btn-container">
-                <button
-                  type="submit"
-                  value="Register"
-                  className="btn"
-                >
+                <button type="submit" value="Register" className="btn">
                   Update
                 </button>
                 <button type="button" className="btn btn-delete">

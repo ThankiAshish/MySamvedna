@@ -1,43 +1,26 @@
 import { useEffect } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { SessionState } from "../../context/SessionProvider";
+import { Link, useNavigate } from "react-router-dom";
+// import { SessionState } from "../../context/SessionProvider";
 
 const RecruiterDashboard = () => {
   const navigate = useNavigate();
-  const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } =
-    SessionState();
-
+  // const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } =
+  //   SessionState();
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const jobSeekerId = sessionStorage.getItem("job_seekers_id");
+    const recruiterId = sessionStorage.getItem("recruiters_id");
 
-        return response.json();
-      })
-      .then((data) => {
-        if (data.is_logged_in) {
-          setIsLoggedIn(true);
-          setRecruiterId(data.recruiters_id);
-        } else {
-          setIsLoggedIn(false);
-          setRecruiterId(null);
-          navigate("/recruiter-login")
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
-    if (!isLoggedIn) {
-      <Navigate to="/recruiter-login" />;
+    if (isLoggedIn) {
+      if (jobSeekerId) {
+        navigate("/job-seeker-dashboard");
+      } else if (recruiterId) {
+        // navigate("/recruiter-dashboard");
+      }
+    } else {
+      navigate("/recruiter-login");
     }
-  }, [isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId, navigate]);
-
+  }, [navigate]);
   return (
     <>
       <div className="container">

@@ -2,40 +2,64 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { SessionState } from "../../context/SessionProvider";
+// import { SessionState } from "../../context/SessionProvider";
+
+const API = import.meta.env.VITE_API_URL;
 
 const JobSeekerLogin = () => {
   const navigate = useNavigate();
-  const { isLoggedIn, setIsLoggedIn, setJobSeekerId } = SessionState();
+  // const { setIsLoggedIn, setJobSeekerId, setRecruiterId } = SessionState();
 
   useEffect(() => {
-    fetch("http://localhost/MySamvedna/api/utils/checkLogin.php", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const jobSeekerId = sessionStorage.getItem("job_seekers_id");
+    const recruiterId = sessionStorage.getItem("recruiters_id");
 
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        if (data.is_logged_in) {
-          setIsLoggedIn(true);
-          setJobSeekerId(data.job_seekers_id);
-          navigate("/job-seeker-dashboard");
-        } else {
-          setIsLoggedIn(false);
-          setJobSeekerId(null);
-          navigate("/job-seeker-login");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [isLoggedIn, setIsLoggedIn, setJobSeekerId, navigate]);
+    if (isLoggedIn) {
+      if (jobSeekerId) {
+        navigate("/job-seeker-dashboard");
+      } else if (recruiterId) {
+        navigate("/recruiter-dashboard");
+      }
+    }
+    else{
+      navigate("/job-seeker-login");
+
+    }
+  }, [navigate]);
+
+  // useEffect(() => {
+  //   fetch(`${API}/utils/checkLogin.php`, {
+  //     method: "GET",
+  //     credentials: "include",
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log(data);
+  //       if (data.is_logged_in) {
+  //         setIsLoggedIn(true);
+  //         if (data.job_seekers_id) {
+  //           setJobSeekerId(data.job_seekers_id);
+  //           navigate("/job-seeker-dashboard");
+  //         } else if (data.recruiters_id) {
+  //           setRecruiterId(data.recruiters_id);
+  //           navigate("/recruiter-dashboard");
+  //         }
+  //       } else {
+  //         setIsLoggedIn(false);
+  //         setJobSeekerId(null);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, [setIsLoggedIn, setRecruiterId, setJobSeekerId, navigate]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -46,7 +70,6 @@ const JobSeekerLogin = () => {
     e.preventDefault();
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -55,14 +78,11 @@ const JobSeekerLogin = () => {
     data.append("password", formData.password);
 
     try {
-      const response = await fetch(
-        "http://localhost/MySamvedna/api/controllers/jobSeekerLogin.php",
-        {
-          method: "POST",
-          body: data,
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${API}/controllers/jobSeekerLogin.php`, {
+        method: "POST",
+        body: data,
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -72,11 +92,9 @@ const JobSeekerLogin = () => {
 
       if (responseData.success) {
         toast.success(responseData.message);
-        setIsLoggedIn(true);
-        setJobSeekerId(responseData.job_seeker_id);
-        if (response.ok) {
-          navigate("/job-seeker-dashboard");
-        }
+        sessionStorage.setItem("isLoggedIn", true);
+        sessionStorage.setItem("job_seekers_id", responseData.job_seeker_id);
+        navigate("/job-seeker-dashboard");
       } else {
         toast.error(responseData.message);
       }
