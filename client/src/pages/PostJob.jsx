@@ -2,41 +2,31 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { SessionState } from "../context/SessionProvider";
+// import { SessionState } from "../context/SessionProvider";
 
 const API = import.meta.env.VITE_API_URL;
 
 const PostJob = () => {
-  const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } = SessionState();
+  //  const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } = SessionState();
+  
+  const recruiterId = sessionStorage.getItem("recruiters_id");
   const navigate = useNavigate();
-
   useEffect(() => {
-    fetch(`${API}/api/utils/checkLogin.php`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return response.json();
-      })
-      .then((data) => {
-        if (data.is_logged_in) {
-          setIsLoggedIn(true);
-          setRecruiterId(data.recruiters_id);
-        } else {
-          setIsLoggedIn(false);
-          setRecruiterId(null);
-          navigate("/recruiter-login")
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId, navigate]);
-
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const jobSeekerId = sessionStorage.getItem("job_seekers_id");
+    const recruiterId = sessionStorage.getItem("recruiters_id");
+    // console.log(recruiterId);
+    if (isLoggedIn) {
+      if (jobSeekerId) {
+        navigate("/job-seeker-dashboard");
+      } else if (recruiterId) {
+        // navigate("/recruiter-dashboard");
+      }
+    } else {
+      navigate("/recruiter-login");
+    }
+  }, [navigate]);
+ 
   const [formData, setFormData] = useState({
     companyName: "",
     website: "",
@@ -204,9 +194,9 @@ const PostJob = () => {
       })
       .then((data) => {
         console.log(data);
-        if(data.success) {
+        if (data.success) {
           toast.success(data.message);
-          navigate("/recruiter-dashboard/view-jobs")
+          navigate("/recruiter-dashboard/view-jobs");
         } else {
           toast.error(data.message);
         }

@@ -872,6 +872,63 @@ footer p {
   animation: pulse 1s ease-in-out !important;
 }
 
+.testimonials {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3rem;
+  padding-block: 3rem;
+}
+
+.testimonials .testimonial-cards {
+  display: grid;
+  place-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 3rem;
+}
+
+.testimonials .testimonial-cards .testimonial-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: center;
+  background: var(--background-transparent);
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.25);
+  padding: 2rem;
+  border-radius: 0.25rem;
+}
+
+.testimonials .testimonial-cards .testimonial-card .quote-icon {
+  font-size: 3rem;
+  color: var(--primary);
+}
+
+.testimonials .testimonial-cards .testimonial-card img {
+  width: 100px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.25);
+  border: 2px solid var(--primary);
+}
+
+.testimonials .testimonial-cards .testimonial-card .testimonial-content p {
+  font-size: 1rem;
+  font-weight: 300;
+  text-align: center;
+}
+
+.testimonials .testimonial-cards .testimonial-card h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: center;
+}
+
 /* Pages > Donate */
 .donate {
   min-height: 100dvh;

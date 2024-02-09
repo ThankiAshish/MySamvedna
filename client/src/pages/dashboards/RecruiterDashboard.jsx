@@ -1,45 +1,26 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { SessionState } from "../../context/SessionProvider";
-
-const API = import.meta.env.VITE_API_URL;
+// import { SessionState } from "../../context/SessionProvider";
 
 const RecruiterDashboard = () => {
   const navigate = useNavigate();
-  const { setIsLoggedIn, setRecruiterId, setJobSeekerId } = SessionState();
-
+  // const { isLoggedIn, setIsLoggedIn, recruiterId, setRecruiterId } =
+  //   SessionState();
   useEffect(() => {
-    fetch(`${API}/utils/checkLogin.php`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const jobSeekerId = sessionStorage.getItem("job_seekers_id");
+    const recruiterId = sessionStorage.getItem("recruiters_id");
 
-        return response.json();
-      })
-      .then((data) => {
-        if (data.is_logged_in) {
-          setIsLoggedIn(true);
-          if (data.recruiters_id) {
-            setRecruiterId(data.recruiters_id);
-          } else if (data.job_seekers_id) {
-            setJobSeekerId(data.job_seekers_id);
-            navigate("/job-seeker-dashboard");
-          }
-        } else {
-          setIsLoggedIn(false);
-          setRecruiterId(null);
-          navigate("/recruiter-login");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [setIsLoggedIn, setRecruiterId, setJobSeekerId, navigate]);
-
+    if (isLoggedIn) {
+      if (jobSeekerId) {
+        navigate("/job-seeker-dashboard");
+      } else if (recruiterId) {
+        // navigate("/recruiter-dashboard");
+      }
+    } else {
+      navigate("/recruiter-login");
+    }
+  }, [navigate]);
   return (
     <>
       <div className="container">

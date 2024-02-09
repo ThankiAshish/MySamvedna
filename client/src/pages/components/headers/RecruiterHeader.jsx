@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 import { SessionState } from "../../../context/SessionProvider";
 
@@ -16,6 +16,28 @@ const RecruiterHeader = () => {
 
   const [icon, setIcon] = useState("bars");
 
+  useEffect(() => {
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const jobSeekerId = sessionStorage.getItem("job_seekers_id");
+    const recruiterId = sessionStorage.getItem("recruiters_id");
+
+    if (isLoggedIn) {
+      if (jobSeekerId) {
+        // setIsLoggedIn(true);
+        // setRecruiterId(jobSeekerId);
+        navigate("/job-seeker-dashboard");
+
+      } else if (recruiterId) {
+        setIsLoggedIn(true);
+        setRecruiterId(recruiterId);
+      }
+    }
+    else{
+     
+      navigate("/recruiter-login");
+
+    }
+  }, [navigate,setIsLoggedIn, setRecruiterId]);
   useEffect(() => {
     fetch(`${API}/utils/checkLogin.php`, {
       method: "GET",
@@ -88,32 +110,18 @@ const RecruiterHeader = () => {
     navigate(link.getAttribute("href"));
   };
 
-  const handleLogout = () => {
-    fetch(`${API}/controllers/recruiterLogout.php`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+  
+  const HandleLogout = () => {
+    console.log(sessionStorage.getItem('isLoggedIn'));
+    console.log(sessionStorage.getItem('recruiters_id'));
+    
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('recruiters_id');
 
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          setIsLoggedIn(false);
-          setRecruiterId(null);
-          toast.success(data.message);
-          navigate("/recruiter-login");
-        } else {
-          toast.error(data.message);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+    console.log(sessionStorage.getItem('isLoggedIn'));
+    console.log(sessionStorage.getItem('recruiters_id'));
+    navigate("/login");
+};
 
   return (
     <div className="container">
@@ -144,9 +152,9 @@ const RecruiterHeader = () => {
             >
               Post a Job
             </Link>
-            <Link className="btn btn-outline logout" onClick={handleLogout}>
+            <button className="btn btn-outline logout" onClick={HandleLogout}>
               Logout
-            </Link>
+            </button>
           </div>
         </ul>
         <FontAwesomeIcon

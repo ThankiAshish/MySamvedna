@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Logo from "../../../assets/images/Logo.png";
 
-const API = import.meta.env.VITE_API_URL;
+// const API = import.meta.env.VITE_API_URL;
 
 const Header = () => {
   const navigate = useNavigate();
@@ -19,43 +19,57 @@ const Header = () => {
     setRecruiterId,
     jobSeekerId,
     setJobSeekerId,
-    selfEmployedId,
-    setSelfEmployedId,
+    selfEmployedId
+
   } = SessionState();
-
   useEffect(() => {
-    fetch(`${API}/utils/checkLogin.php`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const jobSeekerId = sessionStorage.getItem("job_seekers_id");
+    const recruiterId = sessionStorage.getItem("recruiters_id");
 
-        return response.json();
-      })
-      .then((data) => {
-        if (data.is_logged_in) {
-          setIsLoggedIn(true);
-          if (data.recruiters_id) {
-            setRecruiterId(data.recruiters_id);
-          } else if (data.job_seekers_id) {
-            setJobSeekerId(data.job_seekers_id);
-          } else if (data.self_employed_id) {
-            setSelfEmployedId(data.self_employed_id);
-          }
-        } else {
-          setIsLoggedIn(false);
-          setRecruiterId(null);
-          setJobSeekerId(null);
-          setSelfEmployedId(null);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [setIsLoggedIn, setRecruiterId, setJobSeekerId, setSelfEmployedId]);
+    if (isLoggedIn) {
+      if (jobSeekerId) {
+        setJobSeekerId(jobSeekerId);
+      } else if (recruiterId) {
+        setRecruiterId(recruiterId);
+
+      }
+    }
+   
+  }, [setIsLoggedIn, setRecruiterId, setJobSeekerId, navigate]);
+  // useEffect(() => {
+  //   fetch(`${API}/utils/checkLogin.php`, {
+  //     method: "GET",
+  //     credentials: "include",
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       if (data.is_logged_in) {
+  //         setIsLoggedIn(true);
+  //         if (data.recruiters_id) {
+  //           setRecruiterId(data.recruiters_id);
+  //         } else if (data.job_seekers_id) {
+  //           setJobSeekerId(data.job_seekers_id);
+  //         } else if (data.self_employed_id) {
+  //           setSelfEmployedId(data.self_employed_id);
+  //         }
+  //       } else {
+  //         setIsLoggedIn(false);
+  //         setRecruiterId(null);
+  //         setJobSeekerId(null);
+  //         setSelfEmployedId(null);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, [setIsLoggedIn, setRecruiterId, setJobSeekerId, setSelfEmployedId]);
 
   useEffect(() => {
     window.addEventListener("resize", () => {

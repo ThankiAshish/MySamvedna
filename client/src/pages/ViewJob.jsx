@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { SessionState } from "../context/SessionProvider";
+// import { SessionState } from "../context/SessionProvider";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -17,7 +17,7 @@ const ViewJob = () => {
 
   const [job, setJob] = useState({});
 
-  const { setIsLoggedIn, setRecruiterId } = SessionState();
+  // const { setIsLoggedIn, setRecruiterId } = SessionState();  
 
   useEffect(() => {
     fetch(`${API}/controllers/getJob.php?job_id=${jobId}`, {
@@ -43,33 +43,49 @@ const ViewJob = () => {
       });
   }, [jobId]);
 
-  useEffect(() => {
-    fetch(`${API}/utils/checkLogin.php`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+  // useEffect(() => {
+  //   fetch(`${API}/utils/checkLogin.php`, {
+  //     method: "GET",
+  //     credentials: "include",
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
 
-        return response.json();
-      })
-      .then((data) => {
-        if (data.isLoggedIn) {
-          setIsLoggedIn(true);
-          if (data.recruiters_id) {
-            setRecruiterId(data.recruiters_id);
-          }
-        } else {
-          setIsLoggedIn(false);
-          setRecruiterId(null);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [setIsLoggedIn, setRecruiterId, navigate]);
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       if (data.isLoggedIn) {
+  //         setIsLoggedIn(true);
+  //         if (data.recruiters_id) {
+  //           setRecruiterId(data.recruiters_id);
+  //         }
+  //       } else {
+  //         setIsLoggedIn(false);
+  //         setRecruiterId(null);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, [setIsLoggedIn, setRecruiterId, navigate]);
+
+  useEffect(() => {
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const jobSeekerId = sessionStorage.getItem("job_seekers_id");
+    const recruiterId = sessionStorage.getItem("recruiters_id");
+
+    if (isLoggedIn) {
+      if (jobSeekerId) {
+        navigate("/job-seeker-dashboard");
+      } else if (recruiterId) {
+        // navigate("/recruiter-dashboard");
+      }
+    } else {
+      navigate("/job-seeker-login");
+    }
+  }, [navigate]);
 
   return (
     <div className="container">
@@ -178,9 +194,7 @@ const ViewJob = () => {
                 </div>
                 <div className="job-detail">
                   <h3>Vehicle Type:</h3>
-                  <p>
-                    {job.conveyanceType}
-                  </p>
+                  <p>{job.conveyanceType}</p>
                 </div>
               </>
             ) : null}
