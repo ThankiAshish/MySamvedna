@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -28,7 +28,6 @@ const ViewJob = () => {
       })
       .then((data) => {
         if (data.success) {
-          console.log(data.job[0]);
           setJob(data.job[0]);
         } else {
           console.log(data.message);
@@ -206,6 +205,26 @@ const ViewJob = () => {
                 <h3>Technical Interview Details:</h3>
                 <p>{job.interviewTopics}</p>
               </div>
+            )}
+          </div>
+          <div className="job-footer">
+            {job.resumeEmail && (
+              <Link
+                className="btn"
+                to={`mailto:${job.email}?subject=Application for the post of ${job.jobDesignation}&body=I am interested in the job. Please find my resume attached.`}
+              >
+                Apply
+              </Link>
+            )}
+            {job.resumeWebsite && (
+              <a
+                className="btn"
+                href={job.resumeWebsite}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Apply
+              </a>
             )}
           </div>
         </div>

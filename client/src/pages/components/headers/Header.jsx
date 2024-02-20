@@ -25,7 +25,7 @@ const Header = () => {
         navigate("/job-seeker-dashboard");
       } else if (recruiterId) {
         setRecruiterId(recruiterId);
-        navigate("/recruiter-dashboard");
+        // navigate("/recruiter-dashboard");
       }
     }
   }, [navigate]);
