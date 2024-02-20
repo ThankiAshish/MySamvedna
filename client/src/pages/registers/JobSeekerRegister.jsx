@@ -2,13 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { SessionState } from "../../context/SessionProvider";
-
 const API = import.meta.env.VITE_API_URL;
 
 const JobSeekerRegister = () => {
-  const { setIsLoggedIn, setJobSeekerId, setRecruiterId, setSelfEmployedId } =
-    SessionState();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -47,43 +43,6 @@ const JobSeekerRegister = () => {
   const [qualifications, setQualifications] = useState([]);
   const [specializations, setSpecializations] = useState([]);
 
-  useEffect(() => {
-    fetch(`${API}/utils/checkLogin.php`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return response.json();
-      })
-      .then((data) => {
-        if (data.is_logged_in) {
-          setIsLoggedIn(true);
-          if (data.job_seekers_id) {
-            setJobSeekerId(data.job_seekers_id);
-            navigate("/job-seeker-dashboard");
-          } else if (data.recruiters_id) {
-            setRecruiterId(data.recruiters_id);
-            navigate("/recruiter-dashboard");
-          } else if (data.self_employed_id) {
-            setSelfEmployedId(data.self_employed_id);
-            navigate("/self-employed-dashboard");
-          }
-        } else {
-          setIsLoggedIn(false);
-          setJobSeekerId(null);
-          setRecruiterId(null);
-          setSelfEmployedId(null);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [setIsLoggedIn, setJobSeekerId, setRecruiterId, setSelfEmployedId, navigate]);
-
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
 
@@ -92,6 +51,20 @@ const JobSeekerRegister = () => {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+
+  useEffect(() => {
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const jobSeekerId = sessionStorage.getItem("job_seekers_id");
+    const recruiterId = sessionStorage.getItem("recruiters_id");
+
+    if (isLoggedIn) {
+      if (jobSeekerId) {
+        navigate("/job-seeker-dashboard");
+      } else if (recruiterId) {
+        navigate("/recruiter-dashboard");
+      }
+    }
+  }, [navigate]);
 
   useEffect(() => {
     fetch(`${API}/controllers/getCountry.php`)

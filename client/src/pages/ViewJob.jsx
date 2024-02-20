@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-// import { SessionState } from "../context/SessionProvider";
-
 const API = import.meta.env.VITE_API_URL;
 
 const ViewJob = () => {
@@ -16,8 +14,6 @@ const ViewJob = () => {
   const jobId = location.state.jobId;
 
   const [job, setJob] = useState({});
-
-  // const { setIsLoggedIn, setRecruiterId } = SessionState();  
 
   useEffect(() => {
     fetch(`${API}/controllers/getJob.php?job_id=${jobId}`, {
@@ -42,34 +38,6 @@ const ViewJob = () => {
         console.error(error);
       });
   }, [jobId]);
-
-  // useEffect(() => {
-  //   fetch(`${API}/utils/checkLogin.php`, {
-  //     method: "GET",
-  //     credentials: "include",
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! status: ${response.status}`);
-  //       }
-
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       if (data.isLoggedIn) {
-  //         setIsLoggedIn(true);
-  //         if (data.recruiters_id) {
-  //           setRecruiterId(data.recruiters_id);
-  //         }
-  //       } else {
-  //         setIsLoggedIn(false);
-  //         setRecruiterId(null);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, [setIsLoggedIn, setRecruiterId, navigate]);
 
   useEffect(() => {
     const isLoggedIn = sessionStorage.getItem("isLoggedIn");
