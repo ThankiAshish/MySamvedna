@@ -37,6 +37,7 @@ const JobSeekerRegister = () => {
     twoWheeler: false,
     threeWheeler: false,
     car: false,
+    disabilityPercentage: "",
     specializationInDisability: "",
   });
 
@@ -530,8 +531,8 @@ const JobSeekerRegister = () => {
                 <label htmlFor="car">Car</label>
               </div>
             )}
-            <select name="percentage" onChange={handleInputChange} required>
-              <option value="" disabled>
+            <select name="disabilityPercentage" onChange={handleInputChange} required>
+              <option value="" disabled selected>
                 Select Percentage of Disability
               </option>
               <option value="40-45">40-45</option>
