@@ -64,8 +64,8 @@ const Header = () => {
       links.forEach((link) =>
         link.removeEventListener("click", handleLinkClick)
       );
-      window.removeEventListener("resize", () => { });
-      window.removeEventListener("change", () => { });
+      window.removeEventListener("resize", () => {});
+      window.removeEventListener("change", () => {});
     };
   }, []);
 
@@ -94,6 +94,15 @@ const Header = () => {
               onClick={handleLinkNavigation}
             >
               Donate
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="nav-link"
+              to="/blogs"
+              onClick={handleLinkNavigation}
+            >
+              Blogs
             </Link>
           </li>
           <li>

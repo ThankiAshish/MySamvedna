@@ -22,6 +22,11 @@ const Footer = () => {
               </Link>
             </li>
             <li>
+              <Link to="/blogs" className="nav-link">
+                Blogs
+              </Link>
+            </li>
+            <li>
               <Link to="/gallery" className="nav-link">
                 Gallery
               </Link>
