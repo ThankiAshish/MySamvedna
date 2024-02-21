@@ -38,22 +38,6 @@ const ViewJob = () => {
       });
   }, [jobId]);
 
-  useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-    const jobSeekerId = sessionStorage.getItem("job_seekers_id");
-    const recruiterId = sessionStorage.getItem("recruiters_id");
-
-    if (isLoggedIn) {
-      if (jobSeekerId) {
-        navigate("/job-seeker-dashboard");
-      } else if (recruiterId) {
-        // navigate("/recruiter-dashboard");
-      }
-    } else {
-      navigate("/job-seeker-login");
-    }
-  }, [navigate]);
-
   return (
     <div className="container">
       <section className="view-job">
